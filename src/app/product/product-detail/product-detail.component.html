@@ -1,0 +1,69 @@
+<div 
+  fxLayout="row wrap" 
+  fxLayout.xs="column" 
+  fxLayoutAlign="space-evenly stretch"
+  *ngIf="fooditem$|async as fi">
+
+  <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32">
+    <mat-card-header>
+      <div mat-card-avatar [style.background-image]="'url('+ fi.images[0] +')'" [style.background-size]="'cover'"></div>
+      <mat-card-title>Ambikesh</mat-card-title>
+      <mat-card-subtitle>{{fi.address.address}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <img mat-card-image [src]="fi.images[0]">
+
+    <mat-grid-list *ngIf="fi.images.length > 1"cols="4">
+      <mat-grid-tile *ngFor="let image of fi.images">
+        <img mat-card-image [src]="image">
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div fxLayout="row wrap">
+      <h3>
+        <mat-icon color="primary">new_releases</mat-icon>
+      </h3>
+      <h3 fxFlex="0 1 60">{{fi.title}}</h3>
+      <span class="spacer"></span>
+      <h3>INR {{fi.price}}</h3>
+    </div>
+    
+    <mat-divider></mat-divider>
+    <h3>Payment and Delivery Options</h3>
+
+    <mat-card-header>
+      <mat-icon>attach_money</mat-icon>
+      <mat-icon>credit_card</mat-icon>
+      <mat-icon color="accent">motorcycle</mat-icon>
+      <mat-icon>directions_run</mat-icon>
+    </mat-card-header>
+
+    <mat-card-actions align="right">
+      <button mat-button>
+        <mat-icon>favorite_border</mat-icon> 10
+      </button>
+      <button mat-button>
+        <mat-icon>chat_bubble_outline</mat-icon> 3
+      </button>
+      <!-- <mat-icon>forum</mat-icon> 10 -->
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32">
+    <h3>Product details</h3>
+    <mat-list>
+      <mat-list-item><h1>{{fi.description}}</h1></mat-list-item>    
+      <mat-list-item><h2>{{fi.price}}</h2></mat-list-item>
+      <mat-list-item>{{fi.serving}}</mat-list-item>
+      <mat-list-item><h3>{{fi.category}}</h3></mat-list-item>
+      <mat-list-item>{{fi.cuisine}}</mat-list-item>
+    </mat-list>
+    
+  </mat-card>
+
+  <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32">
+    <h3>More from Ambikesh</h3>  
+  </mat-card>
+  <!-- <app-product-list></app-product-list> -->
+
+</div>

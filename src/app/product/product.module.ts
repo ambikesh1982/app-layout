@@ -1,0 +1,30 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductNewComponent } from './product-new/product-new.component';
+import { ProductModifyComponent } from './product-modify/product-modify.component';
+import { MaterialModule } from '../material.module';
+import { RouterModule, Routes,  } from '@angular/router';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from '../shared/shared.module';
+
+const productRoutes: Routes = [
+  { path: '', redirectTo: '/list', pathMatch: 'full'},
+  { path: 'list', component: ProductListComponent, data: {title: 'list'} },
+  { path: 'detail/:id', component: ProductDetailComponent, data: { title: 'detail' } },
+  { path: 'addnew', component: ProductNewComponent, data: { title: 'New Fooditem' } },
+  { path: 'modify/:id', component: ProductModifyComponent, data: { title: 'modify' } },
+];
+
+@NgModule({
+  imports: [
+    CommonModule,
+    FlexLayoutModule,
+    MaterialModule,
+    RouterModule.forChild(productRoutes),
+    SharedModule
+  ],
+  declarations: [ProductListComponent, ProductDetailComponent, ProductNewComponent, ProductModifyComponent]
+})
+export class ProductModule { }
