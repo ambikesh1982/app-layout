@@ -16,6 +16,7 @@ import { ProductService } from './core/product.service';
 import { AppCartModule } from './app-cart/app-cart.module';
 import { SignInModule } from './sign-in/sign-in.module';
 import { AppSearchModule } from './app-search/app-search.module';
+import { NavigateAwayGuard } from './shared/navigate-away.guard';
 // import { MediaMatcher } from '@angular/cdk/layout';
 
 
@@ -35,7 +36,7 @@ import { AppSearchModule } from './app-search/app-search.module';
     SharedModule,
     SignInModule
   ],
-  providers: [LayoutService, ProductService],
+  providers: [LayoutService, ProductService, NavigateAwayGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

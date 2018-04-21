@@ -8,12 +8,13 @@ import { MaterialModule } from '../material.module';
 import { RouterModule, Routes,  } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from '../shared/shared.module';
+import { NavigateAwayGuard } from '../shared/navigate-away.guard';
 
 const productRoutes: Routes = [
   { path: '', redirectTo: '/list', pathMatch: 'full'},
-  { path: 'list', component: ProductListComponent, data: {title: 'list'} },
+  { path: 'list', component: ProductListComponent, data: { title: 'list' } },
   { path: 'detail/:id', component: ProductDetailComponent, data: { title: 'detail' } },
-  { path: 'addnew', component: ProductNewComponent, data: { title: 'New Fooditem' } },
+  { path: 'addnew', component: ProductNewComponent, data: { title: 'New Fooditem' }, canDeactivate: [NavigateAwayGuard] },
   { path: 'modify/:id', component: ProductModifyComponent, data: { title: 'modify' } },
 ];
 
