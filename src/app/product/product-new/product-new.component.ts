@@ -25,6 +25,11 @@ export class ProductNewComponent implements OnInit {
     this.layoutService.fabAction$.next(fabAction);
    }
 
+  canDeactivate() {
+    console.log('canDeactivate Guard');
+    return window.confirm('Do you want to Discard Changes');
+  }
+
   ngOnInit() {
   }
 
