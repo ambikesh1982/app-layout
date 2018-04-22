@@ -24,8 +24,7 @@ export class ProductDetailComponent implements OnInit {
     const toolbar: AppToolbar = {
       showPageTitle: true,
       pageTitle: 'Fooditem details!',
-      showAppTrayIcon: true,
-      showGoBackIcon: true,
+      showCancelIcon: true,
     };
 
     const fabAction: FabAction = {
