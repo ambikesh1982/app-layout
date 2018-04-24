@@ -11,11 +11,11 @@ import { SharedModule } from '../shared/shared.module';
 import { NavigateAwayGuard } from '../shared/navigate-away.guard';
 
 const productRoutes: Routes = [
-  { path: '', redirectTo: '/list', pathMatch: 'full'},
-  { path: 'list', component: ProductListComponent, data: { title: 'list' } },
-  { path: 'detail/:id', component: ProductDetailComponent, data: { title: 'detail' } },
-  { path: 'addnew', component: ProductNewComponent, data: { title: 'New Fooditem' }, canDeactivate: [NavigateAwayGuard] },
-  { path: 'modify/:id', component: ProductModifyComponent, data: { title: 'modify' } },
+  { path: '', redirectTo: '/product/list', pathMatch: 'full'},
+  { path: 'product/list', component: ProductListComponent, data: { title: 'list' } },
+  { path: 'product/detail/:id', component: ProductDetailComponent, data: { title: 'detail' } },
+  { path: 'product/addnew', component: ProductNewComponent, data: { title: 'New Fooditem' }, canDeactivate: [NavigateAwayGuard] },
+  { path: 'product/modify/:id', component: ProductModifyComponent, data: { title: 'modify' } },
 ];
 
 @NgModule({

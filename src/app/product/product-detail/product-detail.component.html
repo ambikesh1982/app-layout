@@ -56,13 +56,16 @@
       <mat-card-title>Ambikesh</mat-card-title>
       <mat-card-subtitle>{{fi.address.address}}</mat-card-subtitle>
     </mat-card-header>
+    <mat-card-content>Hello food lover! Serving you authentic north indian food. Please check my other food posts as well.</mat-card-content>
+    <mat-divider></mat-divider>
+    <br>
     <h3>Payment and delivery options</h3>
     <mat-selection-list>
-      <mat-list-option>Cash of delivery!</mat-list-option>
-      <mat-list-option>Pay online!</mat-list-option>
-      <mat-list-option>Take away</mat-list-option>
-      <mat-list-option>Home delivery</mat-list-option>
-      <mat-list-option>Dine in</mat-list-option>
+      <mat-list-option selected>Cash of delivery!</mat-list-option>
+      <mat-list-option disabled>Pay online!</mat-list-option>
+      <mat-list-option selected>Take away</mat-list-option>
+      <mat-list-option disabled>Home delivery</mat-list-option>
+      <mat-list-option selected>Dine in</mat-list-option>
     </mat-selection-list>
   </mat-card>
 

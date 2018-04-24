@@ -2,7 +2,7 @@
     <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" *ngFor="let fi of fooditems$|async; let i = index" style="padding-bottom: 0">
 
         <div>
-            <img mat-card-image [src]="fi.images[0]" routerLink="/detail/{{i}}">
+            <img mat-card-image [src]="fi.images[0]" routerLink="/product/detail/{{i}}">
         </div>
 
         <div fxLayout="row wrap">
