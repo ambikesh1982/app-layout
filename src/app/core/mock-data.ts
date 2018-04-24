@@ -18,7 +18,7 @@ interface Fooditem {
 
 export const FOODITEMS: Fooditem[] = [
     {
-        id: '#1',
+        id: '0',
         title: 'Aloo Gobhi',
         description: 'North indian vegeterian dish',
         currency: 'INR',
@@ -32,7 +32,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0}
     },
     {
-        id: '#2',
+        id: '1',
         title: 'Chicken 65',
         description: 'Non-vegetarian spicy dish',
         currency: 'INR',
@@ -46,7 +46,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 21', lat: 0, lng: 0 }
     },
     {
-        id: '#3',
+        id: '2',
         title: 'Egg Curry',
         description: 'Rich onion base gravy with stirr fried boiled egg.',
         currency: 'INR',
@@ -60,7 +60,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '#4',
+        id: '3',
         title: 'Veg fried rice',
         description: 'Basmati rice fried with fresh vegetables.',
         currency: 'INR',
@@ -74,7 +74,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 17', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '4',
         title: 'Grilled Cheese Bread',
         description: 'North indian vegeterian dish',
         currency: 'INR',
@@ -88,7 +88,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '5',
         title: 'Chicken Dum Biryani',
         description: 'North indian Chicken dish',
         currency: 'INR',
@@ -102,7 +102,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '6',
         title: 'Halwa',
         description: 'North indian sweet dish',
         currency: 'INR',
@@ -116,7 +116,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '7',
         title: 'North Indian Thali',
         description: 'North indian thali with verity of dishes',
         currency: 'INR',
@@ -130,7 +130,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '8',
         title: 'Jalebi',
         description: 'North indian vegeterian dish',
         currency: 'INR',
@@ -144,7 +144,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '9',
         title: 'Gujrati Thali',
         description: 'North indian vegeterian dish',
         currency: 'INR',
@@ -158,7 +158,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '10',
         title: 'Aloo Gobhi',
         description: 'North indian vegeterian dish',
         currency: 'INR',
@@ -172,7 +172,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '11',
         title: 'Aloo Gobhi',
         description: 'North indian vegeterian dish',
         currency: 'INR',
@@ -186,7 +186,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '12',
         title: 'Aloo Gobhi',
         description: 'North indian vegeterian dish',
         currency: 'INR',
@@ -200,7 +200,7 @@ export const FOODITEMS: Fooditem[] = [
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
-        id: '1234',
+        id: '13',
         title: 'Aloo Gobhi',
         description: 'North indian vegeterian dish',
         currency: 'INR',

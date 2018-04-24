@@ -1,8 +1,8 @@
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
-    <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" *ngFor="let fi of fooditems$|async; let i = index" style="padding-bottom: 0">
+    <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" *ngIf="fooditem as fi" style="padding-bottom: 0">
 
         <div>
-            <img mat-card-image [src]="fi.images[0]" routerLink="/product/detail/{{i}}">
+            <img mat-card-image [src]="fi.images[0]">
         </div>
 
         <div fxLayout="row wrap">
@@ -10,10 +10,10 @@
             <span class="spacer"></span>
             <button mat-icon-button>
                 <h3>
-                    <mat-icon>favorite_border</mat-icon>
+                    <mat-icon>schedule</mat-icon>
                 </h3>
             </button>
-            <h3>10</h3>
+            <h3>40 mins </h3>
         </div>
 
         <mat-card-content>

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ListCardComponent implements OnInit {
 
-  @Input() fooditems$: Observable<Fooditem[]>;
+  @Input() fooditem: Fooditem;
 
   constructor() { }
 
