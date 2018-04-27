@@ -7,13 +7,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FabActionComponent } from './fab-action.component';
 import { FooterComponent } from './footer.component';
-import { ListCardComponent } from './list-card.component';
+import { ProductCardComponent } from './product-card/product-card.component';
 
 const SHARED_COMPONENTS = [
   AppToolbarComponent,
   FabActionComponent,
   FooterComponent,
-  ListCardComponent
+  ProductCardComponent
 ];
 
 @NgModule({
@@ -23,7 +23,7 @@ const SHARED_COMPONENTS = [
     MaterialModule,
     RouterModule
   ],
-  declarations: [AppToolbarComponent, FabActionComponent, FooterComponent, ListCardComponent],
+  declarations: [AppToolbarComponent, FabActionComponent, FooterComponent, ProductCardComponent],
   exports: [
     SHARED_COMPONENTS
   ]

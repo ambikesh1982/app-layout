@@ -9,7 +9,9 @@ interface Fooditem {
     category?: string;
     cuisine?: string;
     images?: string[];
-    stepperStep?: number;
+    // stepperStep?: number;
+    paymentOptions?: { cashOnDelivery?: boolean, onlinePayment?: boolean };
+    deliveryOptions?: { takeAway?: boolean, homeDelivery?: boolean, dineIn?: boolean };
     // createdAt: Date;
     // createdBy: MiniUser;
     address?: { address: string, lat: number, lng: number };
@@ -28,7 +30,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'North Indian',
         images: ['./assets/images/aloo_gobi.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0}
     },
     {
@@ -42,7 +45,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Starter',
         cuisine: 'Indo-Chinese',
         images: ['./assets/images/chicken-65.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 21', lat: 0, lng: 0 }
     },
     {
@@ -56,7 +60,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'North Indian',
         images: ['./assets/images/egg-curry.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -70,7 +75,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'Indo-Chinese',
         images: ['./assets/images/fried-rice.png'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 17', lat: 0, lng: 0 }
     },
     {
@@ -84,7 +90,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Snacks',
         cuisine: 'North Indian',
         images: ['./assets/images/grilledcheese.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -98,7 +105,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'North Indian',
         images: ['./assets/images/image-1.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -112,7 +120,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Dessert',
         cuisine: 'North Indian',
         images: ['./assets/images/image-2.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -126,7 +135,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'North Indian',
         images: ['./assets/images/image-3.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -140,7 +150,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Dessert',
         cuisine: 'North Indian',
         images: ['./assets/images/Jalebi.jpeg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -154,7 +165,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'North Indian',
         images: ['./assets/images/north-indian-thali.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -168,7 +180,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'North Indian',
         images: ['./assets/images/paneer_tikka.jpeg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -182,7 +195,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'North Indian',
         images: ['./assets/images/panipuri.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -196,7 +210,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'North Indian',
         images: ['./assets/images/pasta.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     },
     {
@@ -210,7 +225,8 @@ export const FOODITEMS: Fooditem[] = [
         category: 'Main Course',
         cuisine: 'North Indian',
         images: ['./assets/images/pongel.jpg'],
-        stepperStep: 0,
+        paymentOptions: {cashOnDelivery: true, onlinePayment: false},
+        deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
         address: { address: 'Hougang Street 11', lat: 0, lng: 0 }
     }
 ];

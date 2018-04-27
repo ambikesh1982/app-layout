@@ -3,7 +3,8 @@ import { LayoutService, AppToolbar, FabAction } from '../../core/layout.service'
 import { ProductService } from '../../core/product.service';
 import { Fooditem } from '../../core/models';
 import { Observable } from 'rxjs/Observable';
-import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 
 @Component({
@@ -15,15 +16,15 @@ export class ProductDetailComponent implements OnInit {
 
   fooditem$: Observable<Fooditem>;
   fooditems$: Observable<Fooditem[]>;
-  productID: string;
 
   constructor( private layoutService: LayoutService,
   private productService: ProductService,
     private route: ActivatedRoute) {
+    console.log('From constructor');
 
     const toolbar: AppToolbar = {
       showPageTitle: true,
-      pageTitle: 'Fooditem details!',
+      pageTitle: 'Chicken 65',
       showCancelIcon: true,
     };
 
@@ -34,13 +35,22 @@ export class ProductDetailComponent implements OnInit {
 
     this.layoutService.appToolBar$.next(toolbar);
     this.layoutService.fabAction$.next(fabAction);
-      this.productID = this.route.snapshot.paramMap.get('id');
     }
 
   ngOnInit() {
-    this.fooditem$ = this.productService.getProductByID(+this.productID);
-    this.fooditems$ = this.productService.getProductsByUser();
+    // TODO: Unsubscribe the subscription to avoid memory leak.
+    this.route.paramMap.subscribe( (routerParam: ParamMap)  => {
+      const productID = routerParam.get('id');
+      this.fooditem$ = this.productService.getProductByID(+productID);
+    });
 
+    this.fooditem$.subscribe( fooditem => {
+      console.log('Title', fooditem.title);
+    });
+
+    this.fooditems$ = this.productService.getProductsByUser().pipe(
+      take(1)
+    );
   }
 
 }
