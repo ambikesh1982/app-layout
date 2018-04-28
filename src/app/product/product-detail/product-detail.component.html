@@ -1,20 +1,27 @@
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" *ngIf="fooditem$|async as fi">
-  
+
   <app-product-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="1" [fooditem]="fi"></app-product-card>
 
-  
-  <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="2">
 
+  <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="2">
     <h3>Payment and delivery options</h3>
     <mat-selection-list>
-      <mat-list-option disabled [selected]="fi.paymentOptions.cashOnDelivery">Cash of delivery!</mat-list-option>
-      <mat-list-option disabled [selected]="fi.paymentOptions.onlinePayment">Pay online!</mat-list-option>
-      <mat-list-option selected>Take away</mat-list-option>
-      <mat-list-option disabled>Home delivery</mat-list-option>
-      <mat-list-option selected>Dine in</mat-list-option>
+      <mat-list-option [selected]="fi.paymentOptions.cashOnDelivery">
+        Cash of delivery
+      </mat-list-option>
+      <mat-list-option [selected]="fi.paymentOptions.onlinePayment">
+        Pay online
+      </mat-list-option>
+      <mat-list-option selected>
+        Take away
+      </mat-list-option>
+      <mat-list-option >
+        Home delivery
+      </mat-list-option>
+      <mat-list-option selected>
+        Dine in
+      </mat-list-option>
     </mat-selection-list>
-
-
   </mat-card>
 
   <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="4">
@@ -33,19 +40,14 @@
       <mat-card-subtitle>{{fi.address.address}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>Hello food lover! Serving you authentic north indian food. Please check my other food posts as well.</mat-card-content>
-  <h3>More from Ambikesh</h3>
+    <h3>More from Ambikesh</h3>
 
-  <mat-grid-list cols="3">
-    <mat-grid-tile *ngFor="let fooditem of fooditems$|async">
-      <img mat-card-image [src]="fooditem.images[0]">
-    </mat-grid-tile>
-  </mat-grid-list>
+    <mat-grid-list cols="3">
+      <mat-grid-tile *ngFor="let fooditem of fooditems$|async">
+        <img mat-card-image [src]="fooditem.images[0]">
+      </mat-grid-tile>
+    </mat-grid-list>
 
-  <!-- <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
-    <app-product-card fxFlex="0 1 48" fxFlex.lg="0 1 32" *ngFor="let fooditem of fooditems$|async" [fooditem]="fooditem" routerLink="/product/detail/{{fooditem.id}}">
-    </app-product-card>
-  </div> -->
-
- </mat-card>
+  </mat-card>
 
 </div>
