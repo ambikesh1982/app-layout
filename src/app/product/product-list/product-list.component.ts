@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../core/product.service';
 import { Fooditem } from '../../core/models';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { LayoutService, AppToolbar, FabAction } from '../../core/layout.service';
 
 

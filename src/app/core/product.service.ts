@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+// tslint:disable-next-line:import-blacklist
+import { Observable ,  of } from 'rxjs';
 
 import { Fooditem } from './models';
 import { FOODITEMS } from './mock-data';

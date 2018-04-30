@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+// tslint:disable-next-line:import-blacklist
+import { BehaviorSubject } from 'rxjs';
 
 export interface AppToolbar {
   pageTitle?: string;

@@ -1,19 +1,22 @@
 <div fxLayout="column">
-<mat-toolbar>
-  <mat-slider style ="width: 100%" value="2" max="10"></mat-slider>
-</mat-toolbar>
+  <br>
 
+  <mat-slider 
+    style="width: 100%" 
+    value="2" 
+    max="10"
+    min="0"
+    thumbLabel="true"
+    tickInterval="1"
+    >
+  </mat-slider>
+
+  <div class="map" #mapElement></div>
 
   <mat-card>
-    Google map component
-  </mat-card>
-
-
-
-  <mat-card>
-  <mat-grid-list cols="3" gutterSize="1px">
-    <mat-grid-tile *ngFor="let category of categories" style="background: lightblue;">{{category}}</mat-grid-tile>
-  </mat-grid-list>
+    <mat-grid-list cols="3" gutterSize="1px">
+      <mat-grid-tile *ngFor="let cuisine of cuisines" style="background: lightblue;">{{cuisine}}</mat-grid-tile>
+    </mat-grid-list>
   </mat-card>
 
 

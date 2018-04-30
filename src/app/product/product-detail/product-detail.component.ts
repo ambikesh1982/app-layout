@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { LayoutService, AppToolbar, FabAction } from '../../core/layout.service';
 import { ProductService } from '../../core/product.service';
 import { Fooditem } from '../../core/models';
-import { Observable } from 'rxjs/Observable';
-import { take } from 'rxjs/operators';
+// tslint:disable-next-line:import-blacklist
+import { Observable } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 
@@ -49,6 +50,7 @@ export class ProductDetailComponent implements OnInit {
     });
 
     this.fooditems$ = this.productService.getProductsByUser().pipe(
+      map(fooditems => fooditems),
       take(1)
     );
   }
