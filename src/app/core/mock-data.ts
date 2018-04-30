@@ -28,7 +28,7 @@ export const FOODITEMS: Fooditem[] = [
         serving: 2,
         isNonVeg: false,
         category: 'Main Course',
-        cuisine: 'North Indian',
+        cuisine: 'Indian',
         images: ['./assets/images/aloo_gobi.jpg'],
         paymentOptions: {cashOnDelivery: true, onlinePayment: false},
         deliveryOptions: {takeAway: true, homeDelivery: false, dineIn: false},
