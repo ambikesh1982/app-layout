@@ -22,6 +22,8 @@ import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 import { environment } from '../environments/environment';
 import { GoogleMapService } from './core/google-map.service';
 import { ScriptLoadService } from './core/script-load.service';
+import { DataService } from './core/data.service';
+
 // import { MediaMatcher } from '@angular/cdk/layout';
 
 
@@ -45,7 +47,7 @@ import { ScriptLoadService } from './core/script-load.service';
     SharedModule,
     SignInModule
   ],
-  providers: [LayoutService, GoogleMapService, ProductService, NavigateAwayGuard, ScriptLoadService],
+  providers: [LayoutService, GoogleMapService, ProductService, NavigateAwayGuard, ScriptLoadService, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

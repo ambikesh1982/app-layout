@@ -10,6 +10,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from '../shared/shared.module';
 import { NavigateAwayGuard } from '../shared/navigate-away.guard';
 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { environment } from '../../environments/environment';
+
+
 const productRoutes: Routes = [
   { path: '', redirectTo: '/product/list', pathMatch: 'full'},
   { path: 'product/list', component: ProductListComponent, data: { title: 'list' } },
@@ -24,7 +30,11 @@ const productRoutes: Routes = [
     FlexLayoutModule,
     MaterialModule,
     RouterModule.forChild(productRoutes),
-    SharedModule
+    SharedModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   declarations: [ProductListComponent, ProductDetailComponent, ProductNewComponent, ProductModifyComponent]
 })

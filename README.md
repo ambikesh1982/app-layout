@@ -10,6 +10,21 @@
 
 4. app.module changes
     import {FlexLayoutModule} from '@angular/flex-layout';
+5. Service Creation 
+    ng g service /core/data
+ 6. Firestore Setup
+    npm install firebase angularfire2 --save
+
+    i. ngModel imports- 
+        import { AngularFirestore } from 'angularfire2/firestore';
+        import { AngularFirestoreModule } from 'angularfire2/firestore';
+        import { AngularFireStorageModule } from 'angularfire2/storage';
+
+    ii. Add to imports 
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireModule,
+        AngularFirestoreModule,
+        AngularFireStorageModule
 
 Module and Components:
     ng g module product

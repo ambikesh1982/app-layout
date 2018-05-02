@@ -3,6 +3,7 @@ import { ProductService } from '../../core/product.service';
 import { Fooditem } from '../../core/models';
 import { Observable } from 'rxjs';
 import { LayoutService, AppToolbar, FabAction } from '../../core/layout.service';
+import { DataService } from '../../core/data.service';
 
 
 @Component({
@@ -15,7 +16,9 @@ export class ProductListComponent implements OnInit {
   matCards = Array(21);
   fooditems$: Observable<Fooditem[]>;
 
-  constructor( private productService: ProductService, public layoutService: LayoutService) {
+  constructor(private productService: ProductService,
+    public layoutService: LayoutService,
+    private dataService: DataService) {
 
     const toolbar: AppToolbar = {
       showPageTitle: true,
@@ -35,7 +38,8 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fooditems$ = this.productService.getProducts();
+    // this.fooditems$ = this.productService.getProducts();
+    this.fooditems$ = this.dataService.getProductList();
   }
 
 }
