@@ -17,11 +17,11 @@ import { ProductService } from './core/product.service';
 import { AppCartModule } from './app-cart/app-cart.module';
 import { SignInModule } from './sign-in/sign-in.module';
 import { AppSearchModule } from './app-search/app-search.module';
-import { NavigateAwayGuard } from './shared/navigate-away.guard';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 import { environment } from '../environments/environment';
 import { GoogleMapService } from './core/google-map.service';
 import { ScriptLoadService } from './core/script-load.service';
+<<<<<<< HEAD
 import { FirestoreService } from './core/firestore.service';
 
 // firebase imports
@@ -29,6 +29,11 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+=======
+import { DataService } from './core/data.service';
+import { CanDeactivateGuard } from './shared/can-deactivate-guard';
+
+>>>>>>> 92735b5a2a78ab12b3180f774faabc2fc5fa79ef
 // import { MediaMatcher } from '@angular/cdk/layout';
 
 
@@ -56,7 +61,11 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
     SharedModule,
     SignInModule
   ],
+<<<<<<< HEAD
   providers: [LayoutService, FirestoreService, GoogleMapService, ProductService, NavigateAwayGuard, ScriptLoadService],
+=======
+  providers: [LayoutService, GoogleMapService, ProductService, CanDeactivateGuard, ScriptLoadService, DataService],
+>>>>>>> 92735b5a2a78ab12b3180f774faabc2fc5fa79ef
   bootstrap: [AppComponent]
 })
 export class AppModule { }

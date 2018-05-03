@@ -6,6 +6,7 @@ import { Fooditem } from '../../core/models';
 import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { DataService } from '../../core/data.service';
 
 
 @Component({
@@ -18,8 +19,9 @@ export class ProductDetailComponent implements OnInit {
   fooditem$: Observable<Fooditem>;
   fooditems$: Observable<Fooditem[]>;
 
-  constructor( private layoutService: LayoutService,
-  private productService: ProductService,
+  constructor(private layoutService: LayoutService,
+    // private productService: ProductService,
+    private dataService: DataService,
     private route: ActivatedRoute) {
     console.log('From constructor');
 
@@ -36,20 +38,23 @@ export class ProductDetailComponent implements OnInit {
 
     this.layoutService.appToolBar$.next(toolbar);
     this.layoutService.fabAction$.next(fabAction);
-    }
+  }
 
   ngOnInit() {
     // TODO: Unsubscribe the subscription to avoid memory leak.
-    this.route.paramMap.subscribe( (routerParam: ParamMap)  => {
+    this.route.paramMap.subscribe((routerParam: ParamMap) => {
       const productID = routerParam.get('id');
-      this.fooditem$ = this.productService.getProductByID(+productID);
+      // this.fooditem$ = this.productService.getProductByID(+productID);
+      this.fooditem$ = this.dataService.getProductByID(productID);
+      console.log('ProdId---', productID);
+
     });
 
-    this.fooditem$.subscribe( fooditem => {
+    this.fooditem$.subscribe(fooditem => {
       console.log('Title', fooditem.title);
     });
 
-    this.fooditems$ = this.productService.getProductsByUser();
+    this.fooditems$ = this.dataService.getProductsByUser();
   }
 
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService, AppToolbar, FabAction } from '../../core/layout.service';
+import { DialogService } from '../../shared/dialog.service';
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-product-new',
@@ -8,7 +10,8 @@ import { LayoutService, AppToolbar, FabAction } from '../../core/layout.service'
 })
 export class ProductNewComponent implements OnInit {
 
-  constructor( private layoutService: LayoutService) {
+  constructor( private layoutService: LayoutService,
+               public dialogService: DialogService) {
 
     const toolbar: AppToolbar = {
       showPageTitle: true,
@@ -25,9 +28,10 @@ export class ProductNewComponent implements OnInit {
     this.layoutService.fabAction$.next(fabAction);
    }
 
-  canDeactivate() {
-    console.log('canDeactivate Guard');
-    return window.confirm('Do you want to Discard Changes');
+  canDeactivate(): Observable<boolean> | boolean {
+    console.log('New product canDeactivate Guard');
+    // return window.confirm('Do you want to Discard Changes');
+    return this.dialogService.confirm('Discard changes for this Product?');
   }
 
   ngOnInit() {
