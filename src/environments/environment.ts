@@ -6,15 +6,6 @@
 export const environment = {
   production: false,
 
-  firebase: {
-    apiKey: 'AIzaSyDUqgHiedY15KGfpK9fR4eU1UMDCD3v89A',
-    authDomain: 'foodz9-88685.firebaseapp.com',
-    databaseURL: 'https://foodz9-88685.firebaseio.com',
-    projectId: 'foodz9-88685',
-    storageBucket: 'foodz9-88685.appspot.com',
-    messagingSenderId: '1021286993767'
-  },
-
   googleMapURL: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyD2f1CqoyF3XhEuIPBXidqfXWTKPFyueIY&libraries=places',
   firebase: {
     apiKey: 'AIzaSyBeZeVzu-ZcmnOzzm_uhW6nx2qqNpGT-Ns',
