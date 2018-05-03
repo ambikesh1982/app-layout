@@ -3,9 +3,13 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate
 import { Observable } from 'rxjs';
 import { ProductNewComponent } from '../product/product-new/product-new.component';
 
+export interface CanDeactivateComponent {
+  canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
+}
+
 @Injectable()
-export class NavigateAwayGuard implements CanDeactivate<ProductNewComponent> {
-  canDeactivate(component: ProductNewComponent,
+export class CanDeactivateGuard implements CanDeactivate<CanDeactivateComponent> {
+  canDeactivate(component: CanDeactivateComponent,
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     console.log('FoodListComponent-Guard');

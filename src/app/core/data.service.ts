@@ -33,4 +33,9 @@ export class DataService {
     return this.afs.doc<Fooditem>(productPath).update(productId);
   }
 
+  deleteProduct(productId: Fooditem): Promise<any> {
+    const productPath = `${this.productlistPath}/${productId}`;
+    return this.afs.doc<Fooditem>(productPath).delete();
+  }
+
 }
