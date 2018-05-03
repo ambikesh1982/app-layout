@@ -22,6 +22,13 @@ import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 import { environment } from '../environments/environment';
 import { GoogleMapService } from './core/google-map.service';
 import { ScriptLoadService } from './core/script-load.service';
+import { FirestoreService } from './core/firestore.service';
+
+// firebase imports
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 // import { MediaMatcher } from '@angular/cdk/layout';
 
 
@@ -34,6 +41,10 @@ import { ScriptLoadService } from './core/script-load.service';
     //   apiKey: environment.googleMapsApiKey,
     //   libraries: ['places', 'geometry'] }),
     // AgmCoreModule.forRoot({ apiKey: environment.googleMapsApiKey }),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
+    AngularFireStorageModule, // imports firebase/storage only needed for storage features
     AppCartModule,
     AppSearchModule,
     BrowserAnimationsModule,
@@ -45,7 +56,7 @@ import { ScriptLoadService } from './core/script-load.service';
     SharedModule,
     SignInModule
   ],
-  providers: [LayoutService, GoogleMapService, ProductService, NavigateAwayGuard, ScriptLoadService],
+  providers: [LayoutService, FirestoreService, GoogleMapService, ProductService, NavigateAwayGuard, ScriptLoadService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

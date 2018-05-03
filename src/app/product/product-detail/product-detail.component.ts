@@ -49,10 +49,7 @@ export class ProductDetailComponent implements OnInit {
       console.log('Title', fooditem.title);
     });
 
-    this.fooditems$ = this.productService.getProductsByUser().pipe(
-      map(fooditems => fooditems),
-      take(1)
-    );
+    this.fooditems$ = this.productService.getProductsByUser();
   }
 
 }

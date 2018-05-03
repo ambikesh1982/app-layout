@@ -17,6 +17,11 @@ export class GoogleMapService {
           observer.complete();
         },
         (error: PositionError) => {
+           // error.code can be:
+           //   0: unknown error
+           //   1: permission denied
+           //   2: position unavailable (error response from location provider)
+           //   3: timed out
           console.log('Geolocation service: ' + error.message);
           observer.error(error);
         },

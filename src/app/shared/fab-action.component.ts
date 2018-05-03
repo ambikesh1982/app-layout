@@ -30,7 +30,7 @@ export class FabActionComponent implements OnInit {
           this.fabIcon = 'search';
           break;
         case 'FAB_ACTION_ADD2CART':
-          this.fabIcon = 'add_shopping_cart';
+          this.fabIcon = 'shopping_basket';
           break;
         case 'FAB_ACTION_NEXT':
           this.fabIcon = 'arrow_forward';

@@ -18,3 +18,7 @@ export interface Fooditem {
     // feedback?: Feedback;
 }
 
+export interface ILocation {
+    userLocation?: {'_lat': number, '_lng': number};
+}
+

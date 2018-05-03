@@ -1,13 +1,17 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { LayoutService, FabAction, AppToolbar } from '../core/layout.service';
 import { ProductService } from '../core/product.service';
-import { map, distinct, tap, flatMap, take } from 'rxjs/operators';
-import { Fooditem } from '../core/models';
+import { Fooditem, ILocation } from '../core/models';
 import { GoogleMapService } from '../core/google-map.service';
 import { ScriptLoadService } from '../core/script-load.service';
 
 import { } from 'googlemaps';
 import { environment } from '../../environments/environment';
+import { FirestoreService } from '../core/firestore.service';
+// tslint:disable-next-line:import-blacklist
+import { Observable } from 'rxjs';
+import { map, distinct, tap, flatMap, take } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-search',
@@ -29,8 +33,10 @@ export class SearchComponent implements AfterViewInit, OnInit {
 
   // Reference to div, to show map
   @ViewChild('mapElement') mapElm: ElementRef;
+  geoLocations$: Observable<ILocation[]>;
 
   constructor( private productService: ProductService,
+    private firestore: FirestoreService,
     private googleMapScript: ScriptLoadService) {
       this.cuisines = ['All Cuisines'];
       // Setting up default location
@@ -47,6 +53,9 @@ export class SearchComponent implements AfterViewInit, OnInit {
     ).subscribe(fi => {
       this.cuisines.push(fi);
     });
+
+    this.geoLocations$ = this.firestore.getProducts$(2);
+    this.firestore.saveGeoCodes(1.3522174, 103.87970299999999);
   }
 
   ngAfterViewInit() {

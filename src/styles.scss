@@ -4,6 +4,20 @@
 
 body {
     margin: 0;
+    font-family: Roboto, sans-serif;
+}
+
+app-toolbar {
+  position: fixed; 
+  top: 0; 
+  z-index: 1; 
+  width: 100%
+}
+
+app-fab-action {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }
 
 .spacer {

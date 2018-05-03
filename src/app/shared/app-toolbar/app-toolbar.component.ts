@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
 export class AppToolbarComponent implements OnInit, OnChanges {
 
   @Input() sidenavRef: any;
+  @Input() title: any;
 
   constructor( public layoutService: LayoutService,
     private location: Location) {
