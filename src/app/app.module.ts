@@ -27,6 +27,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { FirestoreService } from './core/firestore.service';
 
 
 // import { MediaMatcher } from '@angular/cdk/layout';
@@ -56,7 +57,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
     SharedModule,
     SignInModule
   ],
-  providers: [LayoutService, GoogleMapService, ProductService, CanDeactivateGuard, ScriptLoadService, DataService],
+  providers: [LayoutService, GoogleMapService, FirestoreService, ProductService, CanDeactivateGuard, ScriptLoadService, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
