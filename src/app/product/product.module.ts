@@ -19,10 +19,10 @@ import { DialogService } from '../shared/dialog.service';
 
 const productRoutes: Routes = [
   { path: '', redirectTo: '/product/list', pathMatch: 'full'},
-  { path: 'product/list', component: ProductListComponent, data: { title: 'list' } },
-  { path: 'product/detail/:id', component: ProductDetailComponent, data: { title: 'detail' } },
-  { path: 'product/addnew', component: ProductNewComponent, data: { title: 'New Fooditem' }, canDeactivate: [CanDeactivateGuard] },
-  { path: 'product/modify/:id', component: ProductModifyComponent, data: { title: 'modify' } },
+  { path: 'product/list', component: ProductListComponent, data: { title: 'PRODUCT_LIST_PAGE' } },
+  { path: 'product/detail/:id', component: ProductDetailComponent, data: { title: 'PRODUCT_DETAIL_PAGE' } },
+  { path: 'product/addnew', component: ProductNewComponent, data: { title: 'PRODUCT_NEW_PAGE' }, canDeactivate: [CanDeactivateGuard] },
+  { path: 'product/modify/:id', component: ProductModifyComponent, data: { title: 'PRODUCT_MODIFY_PAGE' } },
 ];
 
 @NgModule({

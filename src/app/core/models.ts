@@ -9,13 +9,12 @@ export interface Fooditem {
     category?: string;
     cuisine?: string;
     images?: string[];
-    // stepperStep?: number;
     paymentOptions?: { cashOnDelivery?: boolean, onlinePayment?: boolean };
     deliveryOptions?: { takeAway?: boolean, homeDelivery?: boolean, dineIn?: boolean };
-    // createdAt: Date;
-    // createdBy: MiniUser;
-    address?: { address: string, lat: number, lng: number };
-    // feedback?: Feedback;
+    coordinates?: { '_lat': number, '_lng': number };
+    location?: {type: string, name: string};
+    createdAt?: Date;
+    createdBy?: string;
 }
 
 export interface ILocation {

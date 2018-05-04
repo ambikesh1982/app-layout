@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LayoutService, AppToolbar, FabAction } from '../../core/layout.service';
 import { ProductService } from '../../core/product.service';
 import { Fooditem } from '../../core/models';
 // tslint:disable-next-line:import-blacklist
@@ -19,25 +18,10 @@ export class ProductDetailComponent implements OnInit {
   fooditem$: Observable<Fooditem>;
   fooditems$: Observable<Fooditem[]>;
 
-  constructor(private layoutService: LayoutService,
+  constructor(
     // private productService: ProductService,
     private dataService: DataService,
     private route: ActivatedRoute) {
-    console.log('From constructor');
-
-    const toolbar: AppToolbar = {
-      showPageTitle: true,
-      pageTitle: 'Chicken 65',
-      showCancelIcon: true,
-    };
-
-    const fabAction: FabAction = {
-      showFabAction: true,
-      fabAction: 'FAB_ACTION_ADD2CART'
-    };
-
-    this.layoutService.appToolBar$.next(toolbar);
-    this.layoutService.fabAction$.next(fabAction);
   }
 
   ngOnInit() {

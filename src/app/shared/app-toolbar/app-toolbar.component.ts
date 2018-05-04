@@ -20,19 +20,6 @@ export class AppToolbarComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-  //   this.routerData = this.router.events
-  //     .filter((event) => event instanceof NavigationEnd)
-  //     .map(() => this.activatedRoute)
-  //     .map((route) => {
-  //       if (route.firstChild) {
-  //         route = route.firstChild;
-  //       }
-  //       return route;
-  //     })
-  //     .filter((route) => route.outlet === 'primary')
-  //     .mergeMap((route) => {
-  //       return route.data;
-  //     });
   }
 
   ngOnChanges() {

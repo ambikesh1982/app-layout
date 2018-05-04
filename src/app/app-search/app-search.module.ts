@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 import { AgmCoreModule } from '@agm/core';
 
 const appSearchRoutes: Routes = [
-  { path: 'search', component: SearchComponent }
+  { path: 'search', component: SearchComponent, data: {title: 'APP_SEARCH_PAGE'} }
 ];
 
 @NgModule({

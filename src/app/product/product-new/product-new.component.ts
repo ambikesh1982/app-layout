@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LayoutService, AppToolbar, FabAction } from '../../core/layout.service';
 import { DialogService } from '../../shared/dialog.service';
-import { Observable } from "rxjs";
+// tslint:disable-next-line:import-blacklist
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-new',
@@ -10,22 +10,7 @@ import { Observable } from "rxjs";
 })
 export class ProductNewComponent implements OnInit {
 
-  constructor( private layoutService: LayoutService,
-               public dialogService: DialogService) {
-
-    const toolbar: AppToolbar = {
-      showPageTitle: true,
-      pageTitle: 'Add new fooditem!',
-      showCancelIcon: true,
-    };
-
-    const fabAction: FabAction = {
-      showFabAction: true,
-      fabAction: 'FAB_ACTION_NEXT'
-    };
-
-    this.layoutService.appToolBar$.next(toolbar);
-    this.layoutService.fabAction$.next(fabAction);
+  constructor( public dialogService: DialogService) {
    }
 
   canDeactivate(): Observable<boolean> | boolean {

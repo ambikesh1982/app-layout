@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { LayoutService, FabAction, AppToolbar } from '../core/layout.service';
 import { ProductService } from '../core/product.service';
 import { Fooditem, ILocation } from '../core/models';
 import { GoogleMapService } from '../core/google-map.service';

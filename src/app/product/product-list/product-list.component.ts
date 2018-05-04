@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../core/product.service';
 import { Fooditem } from '../../core/models';
+// tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs';
-import { LayoutService, AppToolbar, FabAction } from '../../core/layout.service';
 import { DataService } from '../../core/data.service';
 
 
@@ -16,25 +16,7 @@ export class ProductListComponent implements OnInit {
   matCards = Array(21);
   fooditems$: Observable<Fooditem[]>;
 
-  constructor(private productService: ProductService,
-    public layoutService: LayoutService,
-    private dataService: DataService) {
-
-    const toolbar: AppToolbar = {
-      showPageTitle: true,
-      pageTitle: 'Foodz9',
-      showSideNavToggleIcon: true,
-      showAppTrayIcon: true,
-      showNewProductIcon: true
-    };
-
-    const fabAction: FabAction = {
-      showFabAction: true,
-      fabAction: 'FAB_ACTION_SEARCH'
-    };
-
-    this.layoutService.appToolBar$.next(toolbar);
-    this.layoutService.fabAction$.next(fabAction);
+  constructor( private dataService: DataService ) {
   }
 
   ngOnInit() {

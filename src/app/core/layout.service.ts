@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 // tslint:disable-next-line:import-blacklist
 import { BehaviorSubject } from 'rxjs';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 export interface AppToolbar {
   pageTitle?: string;
-  showPageTitle?: boolean;
   showSideNavToggleIcon?: boolean;
   showNewProductIcon?: boolean;
   showAppTrayIcon?: boolean;
@@ -12,115 +13,67 @@ export interface AppToolbar {
   showGoBackIcon?: boolean;
 }
 
-export interface FabAction {
-  fabAction?: string;
-  showFabAction: boolean;
-}
-
 @Injectable()
 export class LayoutService {
 
   defaultToolbar: AppToolbar = {
     pageTitle: 'Foodz9',
-    showPageTitle: true,
     showSideNavToggleIcon: true,
     showNewProductIcon: true,
     showAppTrayIcon: true,
-    showCancelIcon: false,
-    showGoBackIcon: false
   };
 
-  defaultFabAction: FabAction = {
-    fabAction: 'FAB_ACTION_SEARCH',
-    showFabAction: true,
+  cancelToolbar: AppToolbar = {
+    pageTitle: 'Fooditem details!',
+    showCancelIcon: true,
   };
 
-  fabAction$ = new BehaviorSubject<FabAction>(this.defaultFabAction);
   appToolBar$ = new BehaviorSubject<AppToolbar>(this.defaultToolbar);
 
-  constructor() { }
+  fabActionIcon$ = new BehaviorSubject<string>('search');
 
-}
+  constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
+    _router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      map((route) => {
+        if (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      }),
+      filter((route) => route.outlet === 'primary'),
+      mergeMap((route) => route.data)
+    ).subscribe((data) => {
+      console.log('Router data: ', data);
+      this.setPageLayout(data.title);
+      });
+   }
 
-    // this.setDefaultPageLayout(this.pageTitle, this.fabAction);
-    // this.resetLayout();
-    // _router.events
-    //   .filter((event) => event instanceof NavigationEnd)
-    //   .map(() => this.activatedRoute)
-    //   .map((route) => {
-    //     if (route.firstChild) {
-    //       route = route.firstChild;
-    //     }
-    //     return route;
-    //   })
-    //   .filter((route) => route.outlet === 'primary')
-    //   .mergeMap((route) => route.data)
-    //   .subscribe((data: Data) => {
-    //     switch (data.title) {
-    //       case 'PRODUCT_LIST_PAGE':
-    //         this.newProductPageLayout();
-    //         break;
-    //       case 'PRODUCT_DETAIL_PAGE':
-    //         this.newProductPageLayout();
-    //         break;
-    //       case 'PRODUCT_ADD_NEW_PAGE':
-    //         this.newProductPageLayout();
-    //         break;
-    //       default:
-    //         this.setDefaultPageLayout();
-    //         break;
-    //     }
-    //   });
+   setPageLayout(page: string) {
+     switch (page) {
+       case 'PRODUCT_LIST_PAGE':
+        this.fabActionIcon$.next('search');
+        this.appToolBar$.next(this.defaultToolbar);
+         break;
+       case 'PRODUCT_DETAIL_PAGE':
+         this.fabActionIcon$.next('shopping_basket');
+         this.appToolBar$.next(this.cancelToolbar);
+         break;
+       case 'PRODUCT_NEW_PAGE':
+         this.fabActionIcon$.next('arrow_forward');
+         this.appToolBar$.next(this.cancelToolbar);
+         break;
+       case 'APP_CART_PAGE':
+         this.fabActionIcon$.next('done');
+         this.appToolBar$.next(this.cancelToolbar);
+         break;
+       default:
+         this.fabActionIcon$.next('arrow_forward');
+         this.appToolBar$.next(null);
+         break;
+     }
 
-  // private setDefaultPageLayout(pageTitle?: string, fabAction?: string) {
-  //   this.resetLayout();
-  //   this.pageTitle = pageTitle;
-  //   this.fabAction$.next(fabAction);
-  //   this.showPageTitle = true;
-  //   this.showSideNavToggleIcon = true;
-  //   this.showNewProductIcon = true;
-  //   this.showAppTrayIcon = true;
-  //   this.showFabAction = true;
-  // }
-
-  // setListPageLayout(pageTitle: string, fabAction: string) {
-  //   this.resetLayout();
-  //   this.setDefaultPageLayout(pageTitle, fabAction);
-  // }
-
-  // setDetailPageLayout(pageTitle: string, fabAction: string) {
-  //   this.resetLayout();
-  //   this.pageTitle = pageTitle;
-  //   this.fabAction$.next(fabAction);
-  //   this.showPageTitle = true;
-  //   this.showFabAction = true;
-  //   this.showGoBackIcon = true;
-  //   this.showAppTrayIcon = true;
-  // }
-
-  // setAddNewPageLayout(pageTitle: string, fabAction: string) {
-  //   this.resetLayout();
-  //   this.pageTitle = pageTitle;
-  //   this.fabAction$.next(fabAction);
-  //   this.showPageTitle = true;
-  //   this.showFabAction = true;
-  //   this.showCancelIcon = true;
-  // }
-
-
-  // private resetLayout() {
-  //   this.showPageTitle = false;
-  //   this.showSerachBox = false;
-  //   this.showSideNavToggleIcon = false;
-  //   this.showNewProductIcon = false;
-  //   this.showAppTrayIcon = false;
-  //   this.showCancelIcon = false;
-  //   this.showGoBackIcon = false;
-  //   this.showFabAction = true;
-  //   this.showFooterToolbar = false;
-  // }
-
-
-
-
+   }
+  }
 
