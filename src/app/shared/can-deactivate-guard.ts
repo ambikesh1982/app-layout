@@ -16,6 +16,8 @@ export class CanDeactivateGuard implements CanDeactivate<CanDeactivateComponent>
     console.log('FoodListComponent-Guard');
     console.log(route.params);
     console.log('URL', state.url);
-    return component.canDeactivate() ? component.canDeactivate() : true;
+    // below commented code treggers canDeactivate() method twice.
+    // return component.canDeactivate() ? component.canDeactivate() : true;
+    return component.canDeactivate();
   }
 }

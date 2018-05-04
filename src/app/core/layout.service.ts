@@ -29,7 +29,6 @@ export class LayoutService {
   };
 
   appToolBar$ = new BehaviorSubject<AppToolbar>(this.defaultToolbar);
-
   fabActionIcon$ = new BehaviorSubject<string>('search');
 
   constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
@@ -44,9 +43,9 @@ export class LayoutService {
       }),
       filter((route) => route.outlet === 'primary'),
       mergeMap((route) => route.data)
-    ).subscribe((data) => {
-      console.log('Router data: ', data);
-      this.setPageLayout(data.title);
+    ).subscribe((route_data) => {
+      console.log('Router data: ', route_data);
+      this.setPageLayout(route_data.title);
       });
    }
 
