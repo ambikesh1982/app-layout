@@ -50,30 +50,32 @@ export class LayoutService {
       mergeMap((route) => route.data)
     ).subscribe((route_data) => {
       console.log('Router data: ', route_data);
-      this.setPageLayout(route_data.title);
+      this.setPageLayout(route_data);
       });
    }
 
-   setPageLayout(page: string) {
-     switch (page) {
+   setPageLayout(routerData: any) {
+     switch (routerData.title) {
        case 'PRODUCT_LIST_PAGE':
-        this.fabButton$.next({fabPage: page, fabIcon: 'search'});
+         this.fabButton$.next({ fabPage: routerData.title, fabIcon: 'search'});
         this.appToolBar$.next(this.defaultToolbar);
          break;
        case 'PRODUCT_DETAIL_PAGE':
-         this.fabButton$.next({ fabPage: page, fabIcon: 'shopping_basket'});
-         this.appToolBar$.next(this.cancelToolbar);
+         this.fabButton$.next({ fabPage: routerData.title, fabIcon: 'shopping_basket'});
+         this.appToolBar$.next({
+           pageTitle: routerData.product.title,
+           showCancelIcon: true});
          break;
        case 'PRODUCT_NEW_PAGE':
-         this.fabButton$.next({ fabPage: page, fabIcon: 'arrow_forward'});
+         this.fabButton$.next({ fabPage: routerData.title, fabIcon: 'arrow_forward'});
          this.appToolBar$.next(this.cancelToolbar);
          break;
        case 'APP_CART_PAGE':
-         this.fabButton$.next({ fabPage: page, fabIcon: 'done'});
+         this.fabButton$.next({ fabPage: routerData.title, fabIcon: 'done'});
          this.appToolBar$.next(this.cancelToolbar);
          break;
        default:
-         this.fabButton$.next({ fabPage: page, fabIcon: 'arrow_forward'});
+         this.fabButton$.next({ fabPage: routerData.title, fabIcon: 'arrow_forward'});
          this.appToolBar$.next(this.cancelToolbar);
          break;
      }

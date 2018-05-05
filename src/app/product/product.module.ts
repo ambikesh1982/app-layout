@@ -15,7 +15,8 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { environment } from '../../environments/environment';
 import { CanDeactivateGuard } from '../shared/can-deactivate-guard';
 import { DialogService } from '../shared/dialog.service';
-import { ProductResolverService } from '../core/product-resolver.service';
+import { ProductListResolver } from '../core/product-list.resolver';
+import { ProductResolver } from '../core/product.resolver';
 
 
 // Product module router paths go here...
@@ -24,17 +25,19 @@ const productRoutes: Routes = [
   { path: 'product/list',
     component: ProductListComponent,
     data: { title: 'PRODUCT_LIST_PAGE' },
-    resolve: { products: ProductResolverService} },
+    resolve: { products: ProductListResolver} },
   { path: 'product/detail/:id',
     component: ProductDetailComponent,
-    data: { title: 'PRODUCT_DETAIL_PAGE' } },
+    data: { title: 'PRODUCT_DETAIL_PAGE' },
+    resolve: { product: ProductResolver }},
   { path: 'product/addnew',
     component: ProductNewComponent,
     data: { title: 'PRODUCT_NEW_PAGE' },
     canDeactivate: [CanDeactivateGuard] },
   { path: 'product/modify/:id',
     component: ProductModifyComponent,
-    data: { title: 'PRODUCT_MODIFY_PAGE' } },
+    data: { title: 'PRODUCT_MODIFY_PAGE' },
+    resolve: { product: ProductResolver } },
 ];
 
 

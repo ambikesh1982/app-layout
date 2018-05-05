@@ -33,7 +33,8 @@ import { CanDeactivateGuard } from './shared/can-deactivate-guard';
 import { DataService } from './core/data.service';
 import { FirestoreService } from './core/firestore.service';
 import { LayoutService } from './core/layout.service';
-import { ProductResolverService } from './core/product-resolver.service';
+import { ProductListResolver } from './core/product-list.resolver';
+import { ProductResolver } from './core/product.resolver';
 import { ProductService } from './core/product.service';
 
 
@@ -67,7 +68,8 @@ import { ProductService } from './core/product.service';
     FirestoreService,
     GoogleMapService,
     LayoutService,
-    ProductResolverService,
+    ProductListResolver,
+    ProductResolver,
     ProductService,
     ScriptLoadService,
   ],

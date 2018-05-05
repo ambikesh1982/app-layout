@@ -17,6 +17,7 @@ export class ProductDetailComponent implements OnInit {
 
   fooditem$: Observable<Fooditem>;
   fooditems$: Observable<Fooditem[]>;
+  fooditem: Fooditem;
 
   constructor(
     // private productService: ProductService,
@@ -26,17 +27,8 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit() {
     // TODO: Unsubscribe the subscription to avoid memory leak.
-    this.route.paramMap.subscribe((routerParam: ParamMap) => {
-      const productID = routerParam.get('id');
-      // this.fooditem$ = this.productService.getProductByID(+productID);
-      this.fooditem$ = this.dataService.getProductByID(productID);
-      console.log('ProdId---', productID);
-
-    });
-
-    this.fooditem$.subscribe(fooditem => {
-      console.log('Title', fooditem.title);
-    });
+    this.fooditem = this.route.snapshot.data['product'];
+    console.log('Fooditem from resolver: ', this.fooditem);
 
     this.fooditems$ = this.dataService.getProductsByUser();
   }

@@ -10,13 +10,6 @@ export class AppComponent implements OnInit {
   title = '';
   loading: boolean;
 
-  constructor( private router: Router) {
-    this.loading = true;
-    router.events.subscribe( routerEvent => {
-      this.checkRouterEvent(routerEvent);
-    });
-   }
-
   navList = [
     { menuIcon: 'home', menuName: 'Home', menuRoute: 'list' },
     { menuIcon: 'order', menuName: 'My Orders', menuRoute: 'addnew' },
@@ -27,6 +20,13 @@ export class AppComponent implements OnInit {
     { menuIcon: 'help', menuName: 'Help', menuRoute: './' },
     { menuIcon: 'feedback', menuName: 'Feedback', menuRoute: './' },
   ];
+
+  constructor( private router: Router) {
+    this.loading = true;
+    router.events.subscribe( routerEvent => {
+      this.checkRouterEvent(routerEvent);
+    });
+   }
 
   checkRouterEvent(routerEvent: any): void {
     if (routerEvent instanceof NavigationStart) {
