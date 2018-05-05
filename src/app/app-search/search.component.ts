@@ -54,7 +54,7 @@ export class SearchComponent implements AfterViewInit, OnInit {
     });
 
     this.geoLocations$ = this.firestore.getProducts$(2);
-    this.firestore.saveGeoCodes(1.3522174, 103.87970299999999);
+    // this.firestore.saveGeoCodes(1.3522174, 103.87970299999999);
   }
 
   ngAfterViewInit() {

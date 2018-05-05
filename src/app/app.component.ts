@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = '';
+  loading: boolean;
 
-  constructor() { }
+  constructor( private router: Router) {
+    router.events.subscribe( routerEvent => {
+      this.checkRouterEvent(routerEvent);
+    });
+   }
 
   navList = [
     { menuIcon: 'home', menuName: 'Home', menuRoute: 'list' },
@@ -20,6 +26,17 @@ export class AppComponent implements OnInit {
     { menuIcon: 'help', menuName: 'Help', menuRoute: './' },
     { menuIcon: 'feedback', menuName: 'Feedback', menuRoute: './' },
   ];
+
+  checkRouterEvent(routerEvent: any): void {
+    if (routerEvent instanceof NavigationStart) {
+      this.loading = true;
+    }
+    if (routerEvent instanceof NavigationEnd ||
+      routerEvent instanceof NavigationCancel ||
+      routerEvent instanceof NavigationError) {
+      this.loading = false;
+    }
+  }
 
   ngOnInit() {
   }

@@ -15,15 +15,28 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { environment } from '../../environments/environment';
 import { CanDeactivateGuard } from '../shared/can-deactivate-guard';
 import { DialogService } from '../shared/dialog.service';
+import { ProductResolverService } from '../core/product-resolver.service';
 
 
+// Product module router paths go here...
 const productRoutes: Routes = [
   { path: '', redirectTo: '/product/list', pathMatch: 'full'},
-  { path: 'product/list', component: ProductListComponent, data: { title: 'PRODUCT_LIST_PAGE' } },
-  { path: 'product/detail/:id', component: ProductDetailComponent, data: { title: 'PRODUCT_DETAIL_PAGE' } },
-  { path: 'product/addnew', component: ProductNewComponent, data: { title: 'PRODUCT_NEW_PAGE' }, canDeactivate: [CanDeactivateGuard] },
-  { path: 'product/modify/:id', component: ProductModifyComponent, data: { title: 'PRODUCT_MODIFY_PAGE' } },
+  { path: 'product/list',
+    component: ProductListComponent,
+    data: { title: 'PRODUCT_LIST_PAGE' },
+    resolve: { products: ProductResolverService} },
+  { path: 'product/detail/:id',
+    component: ProductDetailComponent,
+    data: { title: 'PRODUCT_DETAIL_PAGE' } },
+  { path: 'product/addnew',
+    component: ProductNewComponent,
+    data: { title: 'PRODUCT_NEW_PAGE' },
+    canDeactivate: [CanDeactivateGuard] },
+  { path: 'product/modify/:id',
+    component: ProductModifyComponent,
+    data: { title: 'PRODUCT_MODIFY_PAGE' } },
 ];
+
 
 @NgModule({
   imports: [
@@ -38,6 +51,11 @@ const productRoutes: Routes = [
     AngularFireStorageModule
   ],
   providers: [DialogService],
-  declarations: [ProductListComponent, ProductDetailComponent, ProductNewComponent, ProductModifyComponent]
+  declarations: [
+    ProductListComponent,
+    ProductDetailComponent,
+    ProductNewComponent,
+    ProductModifyComponent
+  ]
 })
 export class ProductModule { }

@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../core/product.service';
 import { Fooditem } from '../../core/models';
-// tslint:disable-next-line:import-blacklist
-import { Observable } from 'rxjs';
-import { DataService } from '../../core/data.service';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -13,15 +9,15 @@ import { DataService } from '../../core/data.service';
 })
 export class ProductListComponent implements OnInit {
 
-  matCards = Array(21);
-  fooditems$: Observable<Fooditem[]>;
+  fooditems: Fooditem[];
 
-  constructor( private dataService: DataService ) {
+  constructor( private route: ActivatedRoute ) {
   }
 
   ngOnInit() {
-    // this.fooditems$ = this.productService.getProducts();
-    this.fooditems$ = this.dataService.getProductList();
+    // Unwrapped fooditems coming directly from route resolver.
+    // See product.module.ts file.
+    this.fooditems = this.route.snapshot.data['products'];
   }
 
 }

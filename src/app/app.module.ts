@@ -1,36 +1,40 @@
 // Application modules
 import { AppRoutingModule } from './app-routing.module';
-import { AgmCoreModule } from '@agm/core';
+// import { AgmCoreModule } from '@agm/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './material.module';
 import { NgModule } from '@angular/core';
 
-
-// Application components
-import { AppComponent } from './app.component';
-import { ProductModule } from './product/product.module';
-import { SharedModule } from './shared/shared.module';
-import { LayoutService } from './core/layout.service';
-import { ProductService } from './core/product.service';
-import { AppCartModule } from './app-cart/app-cart.module';
-import { SignInModule } from './sign-in/sign-in.module';
-import { AppSearchModule } from './app-search/app-search.module';
-import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
+// Environment
 import { environment } from '../environments/environment';
-import { GoogleMapService } from './core/google-map.service';
-import { ScriptLoadService } from './core/script-load.service';
-import { DataService } from './core/data.service';
-import { CanDeactivateGuard } from './shared/can-deactivate-guard';
+
+// Firebase modules
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+
+// Google Maps
+import { GoogleMapService } from './core/google-map.service';
+import { ScriptLoadService } from './core/script-load.service';
+
+// Application components
+import { AppCartModule } from './app-cart/app-cart.module';
+import { AppComponent } from './app.component';
+import { AppSearchModule } from './app-search/app-search.module';
+import { ProductModule } from './product/product.module';
+import { SignInModule } from './sign-in/sign-in.module';
+import { SharedModule } from './shared/shared.module';
+
+// Application Services
+import { CanDeactivateGuard } from './shared/can-deactivate-guard';
+import { DataService } from './core/data.service';
 import { FirestoreService } from './core/firestore.service';
-
-
-// import { MediaMatcher } from '@angular/cdk/layout';
+import { LayoutService } from './core/layout.service';
+import { ProductResolverService } from './core/product-resolver.service';
+import { ProductService } from './core/product.service';
 
 
 @NgModule({
@@ -57,7 +61,16 @@ import { FirestoreService } from './core/firestore.service';
     SharedModule,
     SignInModule
   ],
-  providers: [LayoutService, GoogleMapService, FirestoreService, ProductService, CanDeactivateGuard, ScriptLoadService, DataService],
+  providers: [
+    CanDeactivateGuard,
+    DataService,
+    FirestoreService,
+    GoogleMapService,
+    LayoutService,
+    ProductResolverService,
+    ProductService,
+    ScriptLoadService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

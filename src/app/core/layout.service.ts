@@ -13,6 +13,11 @@ export interface AppToolbar {
   showGoBackIcon?: boolean;
 }
 
+export interface FabButton {
+  fabPage: string;
+  fabIcon: string;
+}
+
 @Injectable()
 export class LayoutService {
 
@@ -29,7 +34,7 @@ export class LayoutService {
   };
 
   appToolBar$ = new BehaviorSubject<AppToolbar>(this.defaultToolbar);
-  fabActionIcon$ = new BehaviorSubject<string>('search');
+  fabButton$ = new BehaviorSubject<FabButton>(null);
 
   constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
     _router.events.pipe(
@@ -52,24 +57,24 @@ export class LayoutService {
    setPageLayout(page: string) {
      switch (page) {
        case 'PRODUCT_LIST_PAGE':
-        this.fabActionIcon$.next('search');
+        this.fabButton$.next({fabPage: page, fabIcon: 'search'});
         this.appToolBar$.next(this.defaultToolbar);
          break;
        case 'PRODUCT_DETAIL_PAGE':
-         this.fabActionIcon$.next('shopping_basket');
+         this.fabButton$.next({ fabPage: page, fabIcon: 'shopping_basket'});
          this.appToolBar$.next(this.cancelToolbar);
          break;
        case 'PRODUCT_NEW_PAGE':
-         this.fabActionIcon$.next('arrow_forward');
+         this.fabButton$.next({ fabPage: page, fabIcon: 'arrow_forward'});
          this.appToolBar$.next(this.cancelToolbar);
          break;
        case 'APP_CART_PAGE':
-         this.fabActionIcon$.next('done');
+         this.fabButton$.next({ fabPage: page, fabIcon: 'done'});
          this.appToolBar$.next(this.cancelToolbar);
          break;
        default:
-         this.fabActionIcon$.next('arrow_forward');
-         this.appToolBar$.next(null);
+         this.fabButton$.next({ fabPage: page, fabIcon: 'arrow_forward'});
+         this.appToolBar$.next(this.cancelToolbar);
          break;
      }
 

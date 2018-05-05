@@ -27,6 +27,7 @@
 
 
     <mat-sidenav-content fxLayout="column" style="margin-top: 60px">
+        <mat-spinner *ngIf="loading"></mat-spinner>
 
         <app-toolbar class="mat-elevation-z4"
             [sidenavRef]=sidenav>

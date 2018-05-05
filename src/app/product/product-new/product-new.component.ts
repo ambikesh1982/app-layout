@@ -14,8 +14,6 @@ export class ProductNewComponent implements OnInit {
    }
 
   canDeactivate(): Observable<boolean> | boolean {
-    console.log('New product canDeactivate Guard');
-    // return window.confirm('Do you want to Discard Changes');
     return this.dialogService.confirm('Discard changes for this Product?');
   }
 
