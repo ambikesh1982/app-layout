@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   loading: boolean;
 
   constructor( private router: Router) {
+    this.loading = true;
     router.events.subscribe( routerEvent => {
       this.checkRouterEvent(routerEvent);
     });
