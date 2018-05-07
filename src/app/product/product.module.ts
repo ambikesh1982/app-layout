@@ -17,6 +17,7 @@ import { CanDeactivateGuard } from '../shared/can-deactivate-guard';
 import { DialogService } from '../shared/dialog.service';
 import { ProductListResolver } from '../core/product-list.resolver';
 import { ProductResolver } from '../core/product.resolver';
+import { ImageUploadComponent } from './product-new/image-upload/image-upload.component';
 
 
 // Product module router paths go here...
@@ -58,7 +59,8 @@ const productRoutes: Routes = [
     ProductListComponent,
     ProductDetailComponent,
     ProductNewComponent,
-    ProductModifyComponent
+    ProductModifyComponent,
+    ImageUploadComponent
   ]
 })
 export class ProductModule { }
