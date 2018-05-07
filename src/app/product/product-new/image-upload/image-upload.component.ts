@@ -1,18 +1,19 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { DataService } from '../../../core/data.service';
 import { Fooditem } from '../../../core/models';
 // tslint:disable-next-line:import-blacklist
-import { Observable } from 'rxjs';
-import { DialogService } from '../../../shared/dialog.service';
-import { DataService } from '../../../core/data.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-image-upload',
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.scss']
 })
-export class ImageUploadComponent implements OnInit {
+
+export class ImageUploadComponent implements OnInit, OnDestroy {
 
   @Input() productId: string;
+
   maxFileUploadCount: number;
   selectedFileCount: number;
 
@@ -22,6 +23,8 @@ export class ImageUploadComponent implements OnInit {
   downloadURL$: Observable<string>;
   previewURL: string;
   uploadPercent$: Observable<number>;
+
+  subscription: Subscription;
 
   constructor( private dataService: DataService ) {
     this.storagePath = 'foodz9';
@@ -39,7 +42,7 @@ export class ImageUploadComponent implements OnInit {
       const storagePath = `${this.storagePath}/${this.productId}/${new Date().getTime()}_${file.name}`;
       const uploadTask = this.dataService.uploadImage(file, storagePath);
 
-      uploadTask.subscribe(
+      this.subscription = uploadTask.subscribe(
         snapshot => {
           console.log('uploadTask downloadURL: ', snapshot.downloadURL);
           console.log('uploadTask uploadPercent: ', snapshot.bytesTransferred);
@@ -73,5 +76,8 @@ export class ImageUploadComponent implements OnInit {
 
   ngOnInit() {}
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
 }

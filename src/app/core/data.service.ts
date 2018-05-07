@@ -57,11 +57,12 @@ export class DataService {
     return this.afs.doc<Fooditem>(productPath).delete();
   }
 
-  // Storage
+  // <Storage...>
 
   uploadImage(imageFile: File, storagePath: string): Observable<UploadTaskSnapshot> {
     const task = this.storage.upload(storagePath, imageFile);
     return task.snapshotChanges();
   }
+  // </Storage...>
 
 }
