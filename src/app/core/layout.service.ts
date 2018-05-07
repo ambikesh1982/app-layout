@@ -68,7 +68,10 @@ export class LayoutService {
          break;
        case 'PRODUCT_NEW_PAGE':
          this.fabButton$.next({ fabPage: routerData.title, fabIcon: 'arrow_forward'});
-         this.appToolBar$.next(this.cancelToolbar);
+         this.appToolBar$.next({
+           pageTitle: 'New fooditem',
+           showCancelIcon: true
+         });
          break;
        case 'APP_CART_PAGE':
          this.fabButton$.next({ fabPage: routerData.title, fabIcon: 'done'});
