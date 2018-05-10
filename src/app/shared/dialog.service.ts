@@ -8,24 +8,22 @@ export class DialogService {
 
   constructor(private dialog: MatDialog) { }
 
-//  openDialog(message: string): MatDialogRef<DialogComponent> {
 
-  openDialog(message: string) {
+ openDialog(message: string): MatDialogRef<DialogComponent> {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
-    dialogConfig.data = {
-      id: 1,
-      dispalyMessage: message
-    };
-
     const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
-      data => console.log('Dialog output:', data)
-    );
+    data => {console.log('Dialog output:', message);
+  });
+  this.message = message;
     return dialogRef;
+  }
+
+
   }
   /*
   confirm(message?: string): boolean {
