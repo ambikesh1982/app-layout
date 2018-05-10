@@ -4,6 +4,8 @@ import { DialogService } from '../../shared/dialog.service';
 import { Observable, of } from 'rxjs';
 import { Fooditem } from '../../core/models';
 import { DataService } from '../../core/data.service';
+import { MatDialogRef } from '@angular/material/material';
+import { DialogComponent } from '../../shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-product-new',
@@ -52,8 +54,8 @@ export class ProductNewComponent implements OnInit {
   // </Form...>
 
 
-  canDeactivate(): Observable<boolean> | boolean {
-    return this.dialogService.confirm('Discard changes for this Product?');
+  canDeactivate(): MatDialogRef<DialogComponent> {
+    return this.dialogService.openDialog('Discard changes for this Product?');
   }
 
   ngOnInit() {
