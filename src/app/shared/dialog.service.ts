@@ -19,7 +19,6 @@ export class DialogService {
     dialogRef.afterClosed().subscribe(
     data => {console.log('Dialog output:', message);
   });
-  this.message = message;
     return dialogRef;
   }
 
