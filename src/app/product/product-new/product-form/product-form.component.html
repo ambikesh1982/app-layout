@@ -1,0 +1,65 @@
+<mat-card>
+  <form fxLayout="column" fxLayoutAlign="center stretch" [formGroup]="productForm">
+    <mat-form-field class="product-full-width">
+      <input matInput type="text" placeholder="Title" formControlName="title" required>
+    </mat-form-field>
+
+    <mat-slide-toggle matInput formControlName="isNonVeg" required>Veg / Non-Veg</mat-slide-toggle>
+
+    <mat-form-field class="product-full-width">
+      <input matInput type="textarea" placeholder="Describe your food item here" formControlName="description">
+    </mat-form-field>
+
+    <mat-form-field class="product-full-width">
+      <input matInput type="number" placeholder="Price" formControlName="price" required>
+    </mat-form-field>
+
+    <mat-form-field class="product-full-width">
+      <mat-select placeholder="Serving" formControlName="serving" required>
+        <mat-option *ngFor="let serving of foodServing" [value]="serving">{{serving}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="product-full-width">
+      <mat-select placeholder="Food Category" formControlName="category" required>
+        <mat-option *ngFor="let category of foodCategories" [value]="category">
+          {{category}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="product-full-width">
+      <mat-select placeholder="Food Cuisine" formControlName="cuisine" required>
+        <mat-option>-Add New-</mat-option>
+        <mat-option *ngFor="let cuisine of foodCuisine" [value]="cuisine">
+          {{cuisine}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h3>Payment and delivery options</h3>
+    <mat-selection-list>
+      <mat-list-option>
+        Cash of delivery
+      </mat-list-option>
+      <mat-list-option disabled>
+        Pay online
+      </mat-list-option>
+      <mat-list-option>
+        Take away
+      </mat-list-option>
+      <mat-list-option>
+        Home delivery
+      </mat-list-option>
+      <mat-list-option>
+        Dine in
+      </mat-list-option>
+    </mat-selection-list>
+
+    <!-- <button mat-raised-button [disabled]="productForm.status==='INVALID'? true: false" type="submit">Next</button> -->
+    <!-- <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </div> -->
+  </form>
+</mat-card>

@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, } from '@angular/core';
 import { DataService } from '../../../core/data.service';
 import { Fooditem } from '../../../core/models';
 // tslint:disable-next-line:import-blacklist
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
+import { EventEmitter } from 'events';
 
 @Component({
   selector: 'app-image-upload',
@@ -24,6 +25,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   previewURL: string;
   uploadPercent$: Observable<number>;
 
+  emitImageUrls = new Subject<string[]>();
   subscription: Subscription;
 
   constructor( private dataService: DataService ) {
@@ -55,6 +57,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         },
         () => {
           this.imageURLs.push(this.previewURL);
+          this.emitImageUrls.next(this.imageURLs);
           this.manageFileCount(imageFiles.length);
           console.log('uploadTask completed');
         });
@@ -74,10 +77,15 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this.selectedFileCount = this.selectedFileCount + counter;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('from ngOnInit');
+  }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    console.log('from ngOnDestroy');
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

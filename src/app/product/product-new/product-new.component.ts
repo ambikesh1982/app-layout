@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DialogService } from '../../shared/dialog.service';
 // tslint:disable-next-line:import-blacklist
 import { Observable, of } from 'rxjs';
 import { Fooditem } from '../../core/models';
 import { DataService } from '../../core/data.service';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-product-new',
@@ -13,28 +15,16 @@ import { DataService } from '../../core/data.service';
 
 export class ProductNewComponent implements OnInit {
 
+
+  @ViewChild('upload') upload;
+  @ViewChild('form') form;
+  @ViewChild('place') place;
+
   fooditem: Fooditem;
-
-  maxFileUploadCount: number;
-  selectedFileCount: number;
-
-  /** STORAGE **/
-  storagePath: string;
-  imageURLs: string[];
-  downloadURL$: Observable<string>;
-  previewURL: string;
-  uploadPercent$: Observable<number>;
-
-  // Metadata...
-  foodCategories = ['Main Course', 'Starter', 'Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Sweet', 'Bakery'];
-  foodCuisine = ['North Indian', 'South Indian', 'Punjabi', 'Mughlai', 'Arebic', ];
-  foodServing = [1, 2, 3, 4, 'More'];
-
-
 
   constructor(
     public dialogService: DialogService,
-    private dataService: DataService
+    private dataService: DataService,
   ) {
     this.fooditem = {}; // Create empty fooditem.
     this.fooditem.images = [];
@@ -42,18 +32,42 @@ export class ProductNewComponent implements OnInit {
     this.fooditem.id = 'dummyIdToAvoidFirebaseCalls';
     }
 
-  // 1. Upload photos (Max - 4) <AngularFireStorage.file-upload>
-  // 2. Add fooditem details <Form>
-  // 3. Add geo location (geocodes and Address) <Google maps placeAutoComplete>
-  // 4. Review and post <AngularFireStore.push()>
+  prepareDataFromStepper(stepperEvent: any) {
+    console.log('stepperEvent: ', stepperEvent);
+    if (stepperEvent.previouslySelectedIndex < stepperEvent.selectedIndex) {
 
-  // <Form...>
+      switch (stepperEvent.previouslySelectedIndex) {
+        case 0: {
+          // This executes when you move to step number 2.
+          this.fooditem.images = this.upload.imageURLs;
+          console.log('Completed Step 0: Added image array', this.upload.imageURLs);
+          break;
+        }
+        case 1: {
+          // This executes when you move to step number 3.
+          console.log('Completed Step 1: Added form data ', this.form.productForm.value);
+          break;
+        }
+        case 2: {
+          // This executes when you move to step number 4.
+          // With user address product data is finished.
+          // Show previw of the fooditem and ask user to post or cancel.
+          console.log('Completed Step 2: Added location data ', this.place);
+          // this.product.createProduct(this.newFooditem);
+          break;
+        }
+      }
+    } else { console.log('User moved back to previous step'); }
+  }
 
-  // </Form...>
 
 
   canDeactivate(): Observable<boolean> | boolean {
     return this.dialogService.confirm('Discard changes for this Product?');
+  }
+
+  getImageUrls(event: any) {
+    console.log('Image Urls: ', event.data);
   }
 
   ngOnInit() {

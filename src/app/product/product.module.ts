@@ -18,6 +18,9 @@ import { DialogService } from '../shared/dialog.service';
 import { ProductListResolver } from '../core/product-list.resolver';
 import { ProductResolver } from '../core/product.resolver';
 import { ImageUploadComponent } from './product-new/image-upload/image-upload.component';
+import { ProductFormComponent } from './product-new/product-form/product-form.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { PlaceAutocompleteComponent } from './product-new/place-autocomplete/place-autocomplete.component';
 
 
 // Product module router paths go here...
@@ -44,15 +47,17 @@ const productRoutes: Routes = [
 
 @NgModule({
   imports: [
-    CommonModule,
-    FlexLayoutModule,
-    MaterialModule,
-    RouterModule.forChild(productRoutes),
-    SharedModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireModule,
     AngularFirestoreModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    CommonModule,
+    FlexLayoutModule,
+    FormsModule,
+    MaterialModule,
+    RouterModule.forChild(productRoutes),
+    ReactiveFormsModule,
+    SharedModule,
   ],
   providers: [DialogService],
   declarations: [
@@ -60,7 +65,9 @@ const productRoutes: Routes = [
     ProductDetailComponent,
     ProductNewComponent,
     ProductModifyComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    ProductFormComponent,
+    PlaceAutocompleteComponent
   ]
 })
 export class ProductModule { }
