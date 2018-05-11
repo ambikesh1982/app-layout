@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate } from '@angular/router';
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs';
-import { ProductNewComponent } from '../product/product-new/product-new.component';
 
 export interface CanDeactivateComponent {
   canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;

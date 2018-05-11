@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { FabActionComponent } from './fab-action.component';
 import { FooterComponent } from './footer.component';
 import { ProductCardComponent } from './product-card/product-card.component';
+import { DialogComponent } from './dialog/dialog.component';
+import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material';
 
 const SHARED_COMPONENTS = [
   AppToolbarComponent,
@@ -21,11 +23,19 @@ const SHARED_COMPONENTS = [
     CommonModule,
     FlexLayoutModule,
     MaterialModule,
-    RouterModule
+    RouterModule,
+    MatDialogModule
   ],
-  declarations: [AppToolbarComponent, FabActionComponent, FooterComponent, ProductCardComponent],
+  declarations: [AppToolbarComponent, FabActionComponent, FooterComponent, ProductCardComponent, DialogComponent],
   exports: [
     SHARED_COMPONENTS
-  ]
+  ],
+  entryComponents: [DialogComponent]
+  /*providers: [MatDialog, {
+    provide: MatDialogRef,
+    useValue: {
+      close: (dialogResult: any) => { }
+    }
+  }]*/
 })
 export class SharedModule { }

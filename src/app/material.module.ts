@@ -18,7 +18,10 @@ import {
   MatSelectModule,
   MatStepperModule,
   MatToolbarModule,
-  MAT_CHECKBOX_CLICK_ACTION,
+  MAT_CHECKBOX_CLICK_ACTION
+  // MatDialog,
+  // MatDialogRef,
+  // MatDialogModule
 } from '@angular/material';
 
 @NgModule({
@@ -41,6 +44,9 @@ import {
     MatSelectModule,
     MatStepperModule,
     MatToolbarModule
+    // MatDialog,
+    // MatDialogRef,
+    // MatDialogModule
   ],
   declarations: [],
   // TODO: Customise default behavior of mat_check_box

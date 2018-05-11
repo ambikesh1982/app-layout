@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DataService } from '../../core/data.service';
+import { DialogComponent } from '../../shared/dialog/dialog.component';
+import { MatDialogRef } from '@angular/material';
+import { DialogService } from '../../core/dialog.service';
 
 
 @Component({
@@ -22,6 +25,7 @@ export class ProductDetailComponent implements OnInit {
   constructor(
     // private productService: ProductService,
     private dataService: DataService,
+    private dialogService: DialogService,
     private route: ActivatedRoute) {
   }
 
@@ -32,5 +36,7 @@ export class ProductDetailComponent implements OnInit {
 
     this.fooditems$ = this.dataService.getProductsByUser();
   }
-
+  canDeactivate(): MatDialogRef<DialogComponent> {
+    return this.dialogService.openDialog('Discard changes for this Product?');
+  }
 }

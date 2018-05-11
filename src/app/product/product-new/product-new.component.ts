@@ -1,11 +1,21 @@
+<<<<<<< HEAD
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DialogService } from '../../shared/dialog.service';
+=======
+import { Component, OnInit } from '@angular/core';
+import { DialogService } from '../../core/dialog.service';
+>>>>>>> 1cd0a98087fb7fe1e6311ba2594e8870ede2fc5d
 // tslint:disable-next-line:import-blacklist
 import { Observable, of } from 'rxjs';
 import { Fooditem } from '../../core/models';
 import { DataService } from '../../core/data.service';
+<<<<<<< HEAD
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
+=======
+import { MatDialogRef } from '@angular/material/material';
+import { DialogComponent } from '../../shared/dialog/dialog.component';
+>>>>>>> 1cd0a98087fb7fe1e6311ba2594e8870ede2fc5d
 
 @Component({
   selector: 'app-product-new',
@@ -62,8 +72,8 @@ export class ProductNewComponent implements OnInit {
 
 
 
-  canDeactivate(): Observable<boolean> | boolean {
-    return this.dialogService.confirm('Discard changes for this Product?');
+  canDeactivate(): MatDialogRef<DialogComponent> {
+    return this.dialogService.openDialog('Discard changes for this Product?');
   }
 
   getImageUrls(event: any) {
