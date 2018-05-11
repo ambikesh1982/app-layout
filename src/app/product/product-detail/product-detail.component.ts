@@ -8,7 +8,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DataService } from '../../core/data.service';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { MatDialogRef } from '@angular/material';
-import { DialogService } from '../../shared/dialog.service';
+import { DialogService } from '../../core/dialog.service';
 
 
 @Component({

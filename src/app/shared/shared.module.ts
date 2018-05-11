@@ -10,7 +10,6 @@ import { FooterComponent } from './footer.component';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material';
-import { DialogService } from './dialog.service';
 
 const SHARED_COMPONENTS = [
   AppToolbarComponent,

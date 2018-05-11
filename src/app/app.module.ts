@@ -29,7 +29,7 @@ import { SignInModule } from './sign-in/sign-in.module';
 import { SharedModule } from './shared/shared.module';
 
 // Application Services
-import { CanDeactivateGuard } from './shared/can-deactivate-guard';
+import { CanDeactivateGuard } from './core/can-deactivate-guard';
 import { DataService } from './core/data.service';
 import { FirestoreService } from './core/firestore.service';
 import { LayoutService } from './core/layout.service';

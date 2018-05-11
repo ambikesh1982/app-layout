@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material';
 
-import { DialogComponent } from './dialog/dialog.component';
+import { DialogComponent } from '../shared/dialog/dialog.component';
 
 @Injectable()
 export class DialogService {
@@ -29,4 +29,4 @@ export class DialogService {
     console.log('canDeactivate Guard');
     return window.confirm(message || 'Are you sure?');
   }*/
-}
+

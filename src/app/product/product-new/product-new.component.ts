@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService } from '../../shared/dialog.service';
+import { DialogService } from '../../core/dialog.service';
 // tslint:disable-next-line:import-blacklist
 import { Observable, of } from 'rxjs';
 import { Fooditem } from '../../core/models';
