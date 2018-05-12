@@ -11,7 +11,7 @@
   </mat-step>
 
   <mat-step>
-    <app-place-autocomplete #place></app-place-autocomplete>
+    <app-place-autocomplete #place *ngIf="autoComplete"></app-place-autocomplete>
   </mat-step>
 
   <mat-step>

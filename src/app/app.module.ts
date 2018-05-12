@@ -17,7 +17,6 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 // Google Maps
-import { GoogleMapService } from './core/google-map.service';
 import { ScriptLoadService } from './core/script-load.service';
 
 // Application components
@@ -36,6 +35,7 @@ import { LayoutService } from './core/layout.service';
 import { ProductListResolver } from './core/product-list.resolver';
 import { ProductResolver } from './core/product.resolver';
 import { ProductService } from './core/product.service';
+import { LocationService } from './core/location.service';
 
 
 @NgModule({
@@ -66,7 +66,7 @@ import { ProductService } from './core/product.service';
     CanDeactivateGuard,
     DataService,
     FirestoreService,
-    GoogleMapService,
+    LocationService,
     LayoutService,
     ProductListResolver,
     ProductResolver,

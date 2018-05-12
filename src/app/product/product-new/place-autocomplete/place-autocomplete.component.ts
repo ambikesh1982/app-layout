@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { ScriptLoadService } from '../../../core/script-load.service';
 import { environment } from '../../../../environments/environment';
+import { LocationService } from '../../../core/location.service';
 
 @Component({
   selector: 'app-place-autocomplete',
@@ -12,7 +13,14 @@ export class PlaceAutocompleteComponent implements OnInit {
 
   @ViewChild('addessSearch') searchElm: ElementRef;
 
-  constructor(private load: ScriptLoadService, private ngZone: NgZone) { }
+  constructor(
+    private load: ScriptLoadService,
+    private location: LocationService,
+    private ngZone: NgZone) {
+    this.location.getCurrentPosition().subscribe( loc => {
+      console.log('LocationService: { lat: ', loc.coords.latitude, ', lng: ', loc.coords.longitude, ' }' );
+    });
+   }
 
   ngOnInit() {
     this.load.loadScript(environment.googleMapURL, 'google-map', () => {

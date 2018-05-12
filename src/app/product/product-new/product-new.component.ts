@@ -23,6 +23,7 @@ export class ProductNewComponent implements OnInit {
   @ViewChild('place') place;
 
   fooditem: Fooditem;
+  autoComplete = false;
 
   constructor(
     public dialogService: DialogService,
@@ -48,6 +49,8 @@ export class ProductNewComponent implements OnInit {
         case 1: {
           // This executes when you move to step number 3.
           console.log('Completed Step 1: Added form data ', this.form.productForm.value);
+          this.autoComplete = true;
+
           break;
         }
         case 2: {
