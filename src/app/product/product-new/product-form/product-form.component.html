@@ -1,24 +1,29 @@
 <mat-card>
   <form fxLayout="column" fxLayoutAlign="center stretch" [formGroup]="productForm">
-    <mat-form-field class="product-full-width">
-      <input matInput type="text" placeholder="Title" formControlName="title" required>
+    <mat-form-field class="product-full-width" appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput type="text" formControlName="title" required>
     </mat-form-field>
 
     <mat-slide-toggle matInput formControlName="isNonVeg" required>Veg / Non-Veg</mat-slide-toggle>
 
-    <mat-form-field class="product-full-width">
-      <input matInput type="textarea" placeholder="Describe your food item here" formControlName="description">
+    <mat-form-field class="product-full-width" appearance="outline">
+      <mat-label>Describe your food item here</mat-label>
+      <input matInput type="textarea" formControlName="description">
     </mat-form-field>
 
-    <mat-form-field class="product-full-width">
+    <div fxLayout="row wrap" fxLayoutAlign="center stretch">
+
+    <mat-form-field>
       <input matInput type="number" placeholder="Price" formControlName="price" required>
     </mat-form-field>
-
-    <mat-form-field class="product-full-width">
+    <span class="spacer"></span>
+    <mat-form-field>
       <mat-select placeholder="Serving" formControlName="serving" required>
         <mat-option *ngFor="let serving of foodServing" [value]="serving">{{serving}}</mat-option>
       </mat-select>
     </mat-form-field>
+    </div>
 
     <mat-form-field class="product-full-width">
       <mat-select placeholder="Food Category" formControlName="category" required>
@@ -37,7 +42,25 @@
       </mat-select>
     </mat-form-field>
 
-    <h3>Payment and delivery options</h3>
+    <h3>Payment options</h3>
+    <div fxLayout="row wrap" fxLayoutAlign="center stretch">
+      <mat-checkbox formControlName="cashOnDelivery">Cash on delivery</mat-checkbox>
+      <span class="spacer"></span>
+      <mat-checkbox formControlName="onlinePayment">Online</mat-checkbox>
+    </div>
+    <h3>Delivery options</h3>
+    <div fxLayout="row wrap" fxLayoutAlign="start space-around">
+      <mat-checkbox formControlName="takeAway">Take Away</mat-checkbox>
+      <span class="spacer"></span>
+      <mat-checkbox formControlName="homeDelivery">Home Delivery</mat-checkbox>
+      <span class="spacer"></span>
+      <mat-checkbox formControlName="dineIn">Dine In</mat-checkbox>
+    </div>
+    <mat-form-field>
+      <input matInput  type="number" placeholder="serving">
+    </mat-form-field>
+
+    <!-- <h3>Payment and delivery options</h3>
     <mat-selection-list>
       <mat-list-option>
         Cash of delivery
@@ -54,7 +77,7 @@
       <mat-list-option>
         Dine in
       </mat-list-option>
-    </mat-selection-list>
+    </mat-selection-list> -->
 
     <!-- <button mat-raised-button [disabled]="productForm.status==='INVALID'? true: false" type="submit">Next</button> -->
     <!-- <div>

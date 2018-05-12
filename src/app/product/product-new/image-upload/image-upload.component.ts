@@ -50,6 +50,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
           console.log('uploadTask uploadPercent: ', snapshot.bytesTransferred);
           if (snapshot.downloadURL) {
             this.previewURL = snapshot.downloadURL;
+            console.log('uploadTask downloadURL: ', snapshot.downloadURL);
           }
         },
         error => {

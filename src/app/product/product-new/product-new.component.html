@@ -2,16 +2,16 @@
   style="padding: 0px" 
   (selectionChange)=prepareDataFromStepper($event)>
   
-  <mat-step>
+  <mat-step [completed]="upload.imageURLs.length != 0">
     <app-image-upload #upload [productId]="fooditem.id"></app-image-upload>
   </mat-step>
 
-  <mat-step>
+  <mat-step [completed]="form.productForm.status === 'VALID'">
     <app-product-form #form></app-product-form>
   </mat-step>
 
   <mat-step>
-    <app-place-autocomplete #place *ngIf="autoComplete"></app-place-autocomplete>
+    <app-place-autocomplete #autoComplete ></app-place-autocomplete>
   </mat-step>
 
   <mat-step>

@@ -1,16 +1,13 @@
 import { Injectable, Component } from '@angular/core';
 // Firebase imports
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
 // rxjs imports
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable, of } from 'rxjs';
 
 // local imports
 import { Fooditem } from './models';
 import { FOODITEMS } from './mock-data';
-// tslint:disable-next-line:import-blacklist
-import { of } from 'rxjs';
-import { AngularFireStorage } from 'angularfire2/storage';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
 
 @Injectable()

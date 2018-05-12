@@ -12,6 +12,7 @@ import { LocationService } from '../../../core/location.service';
 export class PlaceAutocompleteComponent implements OnInit {
 
   @ViewChild('addessSearch') searchElm: ElementRef;
+  place: google.maps.places.PlaceResult;
 
   constructor(
     private load: ScriptLoadService,
@@ -31,15 +32,16 @@ export class PlaceAutocompleteComponent implements OnInit {
       // Listen to inputs field and find the places
       autoComplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
-          const place = autoComplete.getPlace();
-          console.log('place autocomplete - Geolocation: ', place.geometry.location);
-          console.log('place autocomplete - Formatted Add: ', place.formatted_address);
-          console.log('place autocomplete - Adr Add: ', place.adr_address);
+          this.place = autoComplete.getPlace();
 
-          if (!place.geometry) {
+          if (!this.place.geometry) {
             console.log('Unable to find a place!');
             return;
           }
+
+          console.log('place autocomplete - Geolocation: ', this.place.geometry.location);
+          console.log('place autocomplete - Formatted Add: ', this.place.formatted_address);
+          console.log('place autocomplete - Adr Add: ', this.place.adr_address);
 
         });
       });

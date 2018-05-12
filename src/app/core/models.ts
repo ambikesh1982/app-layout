@@ -17,6 +17,21 @@ export interface Fooditem {
     createdBy?: string;
 }
 
+export interface AppUser {
+    uid: string;
+    name?: string;
+    location?: { '_lat': number, '_lng': number };
+    address?: string;
+    avatar?: string;
+    email?: string;
+    isSeller: boolean;
+    isBuyer: boolean;
+    hasOrders: boolean;
+    hasUploads: boolean;
+    hasLikes: boolean;
+    hasWishlisth: boolean;
+}
+
 export interface ILocation {
     userLocation?: {'_lat': number, '_lng': number};
 }

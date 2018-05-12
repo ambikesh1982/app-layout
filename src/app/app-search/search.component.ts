@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ProductService } from '../core/product.service';
 import { Fooditem, ILocation } from '../core/models';
-import { GoogleMapService } from '../core/google-map.service';
+import { LocationService } from '../core/location.service';
 import { ScriptLoadService } from '../core/script-load.service';
 
 import { } from 'googlemaps';
