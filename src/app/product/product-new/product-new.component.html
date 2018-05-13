@@ -1,25 +1,22 @@
 <mat-horizontal-stepper 
+  linear="true"
   style="padding: 0px" 
   (selectionChange)=prepareDataFromStepper($event)>
   
   <mat-step [completed]="upload.imageURLs.length != 0">
-    <app-image-upload #upload [productId]="fooditem.id"></app-image-upload>
+    <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
   </mat-step>
 
   <mat-step [completed]="form.productForm.status === 'VALID'">
     <app-product-form #form></app-product-form>
   </mat-step>
 
-  <mat-step>
+  <mat-step [completed]="autoComplete.address">
     <app-place-autocomplete #autoComplete ></app-place-autocomplete>
   </mat-step>
 
   <mat-step>
-    <mat-card>
-      <mat-card-title>
-        Preview your product and post!
-      </mat-card-title>
-    </mat-card>
+    <app-product-card [fooditem]="newFooditem"></app-product-card>
   </mat-step>
 
 </mat-horizontal-stepper>

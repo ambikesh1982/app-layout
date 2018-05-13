@@ -44,6 +44,23 @@ export class DataService {
     return of(FOODITEMS);
   }
 
+  async createProduct(fooditem: Fooditem) {
+    const promise = this.productlistRef.add(fooditem);
+
+    await promise.then(res => {
+      console.log('New fooditem created!!');
+    }, err => {
+      console.log('Error during create fooditem: ', err);
+    });
+
+  }
+
+  // File upload methods
+
+  getDownloadURL(imagePath: string) {
+    const storageRef = this.storage.ref(imagePath);
+  }
+
   updateProduct(productId: Fooditem): Promise<any> {
     const productPath = `${this.productlistPath}/${productId}`;
     return this.afs.doc<Fooditem>(productPath).update(productId);

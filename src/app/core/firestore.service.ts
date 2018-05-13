@@ -13,7 +13,7 @@ import { Fooditem, ILocation } from './models';
 export class FirestoreService {
   // products$: Observable<Fooditem[]>;
   products$: Observable<ILocation[]>;
-  geoLoc: ILocation;
+  geoLoc: ILocation = {};
   geoPointType: firebase.firestore.GeoPoint;
 
   constructor(private _afs: AngularFirestore) {
@@ -40,8 +40,9 @@ export class FirestoreService {
     // }
 
     const geopoint = new firebase.firestore.GeoPoint(lat, lng);
+    this.geoLoc.userLocation = geopoint;
     const geoCollection = this._afs.collection('geoLocationsTest');
-    geoCollection.add({ userLocation: geopoint });
+    geoCollection.add(this.geoLoc);
   }
 
 }
