@@ -13,6 +13,7 @@ export class PlaceAutocompleteComponent implements OnInit {
 
   @ViewChild('addessSearch') searchElm: ElementRef;
   place: google.maps.places.PlaceResult;
+  address: string;
 
   constructor(
     private load: ScriptLoadService,
@@ -34,14 +35,12 @@ export class PlaceAutocompleteComponent implements OnInit {
         this.ngZone.run(() => {
           this.place = autoComplete.getPlace();
 
-          if (!this.place.geometry) {
+          if (this.place.geometry) {
+            const loc = this.place.geometry.location;
+            this.address = this.place.formatted_address;
+          } else {
             console.log('Unable to find a place!');
-            return;
           }
-
-          console.log('place autocomplete - Geolocation: ', this.place.geometry.location);
-          console.log('place autocomplete - Formatted Add: ', this.place.formatted_address);
-          console.log('place autocomplete - Adr Add: ', this.place.adr_address);
 
         });
       });

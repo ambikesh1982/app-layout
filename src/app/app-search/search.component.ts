@@ -24,6 +24,8 @@ export class SearchComponent implements AfterViewInit, OnInit {
 
   mapType = 'terrain';
 
+  myLoc: ILocation;
+
   private map: google.maps.Map;
   private marker: google.maps.Marker;
   private center: google.maps.LatLng;
@@ -54,6 +56,10 @@ export class SearchComponent implements AfterViewInit, OnInit {
     });
 
     this.geoLocations$ = this.firestore.getProducts$(2);
+
+    // saveGeoCodes(lat: number, lng: number) {
+
+
     // this.firestore.saveGeoCodes(1.3522174, 103.87970299999999);
   }
 

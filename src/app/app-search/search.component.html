@@ -28,7 +28,11 @@
     </mat-grid-list>
   </mat-card>
 
-  <mat-card *ngFor="let loc of geoLocations$|async">{{loc.userLocation._lat}}</mat-card>
+  <mat-card *ngFor="let loc of geoLocations$|async">
+    <mat-card-title>{{loc.userLocation}}</mat-card-title>
+    <mat-card-subtitle>{{loc.userLocation.latitude}}</mat-card-subtitle>
+
+  </mat-card>
 
 
 </div>

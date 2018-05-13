@@ -1,3 +1,5 @@
+import * as firebase from 'firebase/app';
+
 export interface Fooditem {
     id?: string;
     title?: string;
@@ -11,8 +13,8 @@ export interface Fooditem {
     images?: string[];
     paymentOptions?: { cashOnDelivery?: boolean, onlinePayment?: boolean };
     deliveryOptions?: { takeAway?: boolean, homeDelivery?: boolean, dineIn?: boolean };
-    coordinates?: { '_lat': number, '_lng': number };
-    location?: {type: string, name: string};
+    coordinates?: firebase.firestore.GeoPoint;
+    address?: string;
     createdAt?: Date;
     createdBy?: string;
 }
@@ -33,6 +35,7 @@ export interface AppUser {
 }
 
 export interface ILocation {
-    userLocation?: {'_lat': number, '_lng': number};
+    // userLocation?: {'_lat': number, '_lng': number};
+    userLocation?: firebase.firestore.GeoPoint;
 }
 

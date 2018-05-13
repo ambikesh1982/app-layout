@@ -36,11 +36,15 @@ import { ProductListResolver } from './core/product-list.resolver';
 import { ProductResolver } from './core/product.resolver';
 import { ProductService } from './core/product.service';
 import { LocationService } from './core/location.service';
+import { TestnavComponent } from './testnav/testnav.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    TestnavComponent,
   ],
   imports: [
     // AgmCoreModule.forRoot({
@@ -60,7 +64,13 @@ import { LocationService } from './core/location.service';
     MaterialModule,
     ProductModule,
     SharedModule,
-    SignInModule
+    SignInModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule
   ],
   providers: [
     CanDeactivateGuard,

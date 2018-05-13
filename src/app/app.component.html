@@ -1,9 +1,10 @@
-<mat-sidenav-container>
+<mat-sidenav-container >
     
-    <mat-sidenav 
+    <mat-sidenav class="sidenav"
         #sidenav mode="over" 
         fixedInViewport="true" 
         style="width:300px">
+        <mat-toolbar color="primary">Menu</mat-toolbar>
 
         <mat-card  class="user-card" style="background-color: orange">
             <mat-card-title>Welcome Guest!</mat-card-title>
@@ -13,7 +14,7 @@
         </mat-card>
 
         <mat-nav-list class="nav-list">
-            <a 
+            <a   
                 mat-list-item 
                 *ngFor="let navItem of navList" 
                 [routerLink]="navItem.menuRoute" 

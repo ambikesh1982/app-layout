@@ -15,6 +15,8 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   @Input() productId: string;
 
+  completed: boolean;
+
   maxFileUploadCount: number;
   selectedFileCount: number;
 
@@ -31,7 +33,6 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   constructor( private dataService: DataService ) {
     this.storagePath = 'foodz9';
     this.imageURLs = [];
-    // this.fooditem.id = dataService.getFirebaseDocumentKey();
     this.maxFileUploadCount = 4;
     this.selectedFileCount = 0;
   }
