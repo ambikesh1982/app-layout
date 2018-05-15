@@ -30,7 +30,8 @@ const productRoutes: Routes = [
   { path: 'product/list',
     component: ProductListComponent,
     data: { title: 'PRODUCT_LIST_PAGE' },
-    resolve: { products: ProductListResolver} },
+    // resolve: { products: ProductListResolver}
+  },
   { path: 'product/detail/:id',
     component: ProductDetailComponent,
     data: { title: 'PRODUCT_DETAIL_PAGE' },

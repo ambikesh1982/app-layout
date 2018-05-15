@@ -12,13 +12,13 @@
       <mat-list-option [selected]="fi.paymentOptions.onlinePayment">
         Pay online
       </mat-list-option>
-      <mat-list-option selected>
+      <mat-list-option [selected]="fi.deliveryOptions.takeAway">
         Take away
       </mat-list-option>
-      <mat-list-option >
+      <mat-list-option [selected]="fi.deliveryOptions.homeDelivery">
         Home delivery
       </mat-list-option>
-      <mat-list-option selected>
+      <mat-list-option [selected]="fi.deliveryOptions.dineIn">
         Dine in
       </mat-list-option>
     </mat-selection-list>
