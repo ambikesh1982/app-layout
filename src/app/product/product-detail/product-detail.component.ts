@@ -21,6 +21,7 @@ export class ProductDetailComponent implements OnInit {
   fooditem$: Observable<Fooditem>;
   fooditems$: Observable<Fooditem[]>;
   fooditem: Fooditem;
+  userName: string;
 
   constructor(
     // private productService: ProductService,
@@ -34,7 +35,7 @@ export class ProductDetailComponent implements OnInit {
     this.fooditem = this.route.snapshot.data['product'];
     console.log('Fooditem from resolver: ', this.fooditem);
 
-    this.fooditems$ = this.dataService.getProductsByUser();
+    this.fooditems$ = this.dataService.getProductsByUser(this.userName);
   }
   canDeactivate(): MatDialogRef<DialogComponent> {
     return this.dialogService.openDialog('Discard changes for this Product?');

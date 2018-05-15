@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { ProductService } from '../core/product.service';
+import { DataService } from '../core/data.service';
 import { Fooditem, ILocation } from '../core/models';
 import { LocationService } from '../core/location.service';
 import { ScriptLoadService } from '../core/script-load.service';
@@ -36,7 +36,7 @@ export class SearchComponent implements AfterViewInit, OnInit {
   @ViewChild('mapElement') mapElm: ElementRef;
   geoLocations$: Observable<ILocation[]>;
 
-  constructor( private productService: ProductService,
+  constructor( private productService: DataService,
     private firestore: FirestoreService,
     private googleMapScript: ScriptLoadService) {
       this.cuisines = ['All Cuisines'];
@@ -46,7 +46,7 @@ export class SearchComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     // Get distinct cuisines
-    this.productService.getProducts().pipe(
+    this.productService.getProductList().pipe(
       flatMap( (fooditems: Fooditem[]) => fooditems),
       map( fooditem => fooditem.cuisine),
       distinct(),

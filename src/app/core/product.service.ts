@@ -10,7 +10,8 @@ export class ProductService {
 
   constructor() { }
 
-  getProducts(): Observable<Fooditem[]> {
+  /*
+  getProducts(): Observable<Fooditem> {
     return of(FOODITEMS);
   }
 
@@ -28,6 +29,6 @@ export class ProductService {
     return of(FOODITEMS[index]);
   }
 
-
+*/
 
 }

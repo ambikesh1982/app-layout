@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 
 // local imports
 import { Fooditem } from './models';
-import { FOODITEMS } from './mock-data';
+// import { FOODITEMS } from './mock-data';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
 
 @Injectable()
@@ -39,9 +39,11 @@ export class DataService {
     return this.afs.doc<Fooditem>(productPath).valueChanges();
   }
 
-  getProductsByUser(): Observable<Fooditem[]> {
+
+  getProductsByUser(productUser): Observable<Fooditem[]> {
     // TODO: Fetch the list of user uploads
-    return of(FOODITEMS);
+    const productPath = `${this.productlistPath}/${productUser}`;
+    return this.afs.doc<Fooditem[]>(productPath).valueChanges();
   }
 
   async createProduct(fooditem: Fooditem) {
