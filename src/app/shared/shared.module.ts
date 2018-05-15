@@ -10,12 +10,14 @@ import { FooterComponent } from './footer.component';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material';
+import { ShowGmapComponent } from './show-gmap/show-gmap.component';
 
 const SHARED_COMPONENTS = [
   AppToolbarComponent,
   FabActionComponent,
   FooterComponent,
-  ProductCardComponent
+  ProductCardComponent,
+  ShowGmapComponent,
 ];
 
 @NgModule({
@@ -26,7 +28,7 @@ const SHARED_COMPONENTS = [
     RouterModule,
     MatDialogModule
   ],
-  declarations: [AppToolbarComponent, FabActionComponent, FooterComponent, ProductCardComponent, DialogComponent],
+  declarations: [AppToolbarComponent, FabActionComponent, FooterComponent, ProductCardComponent, DialogComponent, ShowGmapComponent],
   exports: [
     SHARED_COMPONENTS
   ],

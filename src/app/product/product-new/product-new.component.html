@@ -1,7 +1,8 @@
+<div>
 <mat-horizontal-stepper 
-  linear="true"
+  [linear]="true"
   style="padding: 0px" 
-  (selectionChange)=prepareDataFromStepper($event)>
+  (selectionChange)=prepareDataFromStepper($event) #stepper>
   
   <mat-step [completed]="upload.imageURLs.length != 0">
     <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
@@ -11,12 +12,18 @@
     <app-product-form #form></app-product-form>
   </mat-step>
 
-  <mat-step [completed]="autoComplete.address">
+  <mat-step>
     <app-place-autocomplete #autoComplete ></app-place-autocomplete>
   </mat-step>
 
-  <mat-step>
-    <app-product-card [fooditem]="newFooditem"></app-product-card>
+  <mat-step >
+     <app-preview [fooditem]="newFooditem"></app-preview>
   </mat-step>
 
 </mat-horizontal-stepper>
+
+<button mat-fab style="position: fixed; bottom: 20px; right: 20px;" (click)="stepper.selectedIndex == 3 ?createFooditem(stepper):stepper.next()">
+  <mat-icon>{{stepper.selectedIndex == 3? 'done':'arrow_forward'}}</mat-icon>
+</button>
+
+</div>

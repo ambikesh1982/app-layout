@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Fooditem } from '../../core/models';
 import { ActivatedRoute } from '@angular/router';
+import { DataService } from '../../core/data.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -9,15 +11,16 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductListComponent implements OnInit {
 
-  fooditems: Fooditem[];
+  fooditems: Observable<Fooditem[]>;
 
-  constructor( private route: ActivatedRoute ) {
+  constructor( private dataService: DataService ) {
   }
 
   ngOnInit() {
     // Unwrapped fooditems coming directly from route resolver.
     // See product.module.ts file.
-    this.fooditems = this.route.snapshot.data['products'];
+    // this.fooditems = this.route.snapshot.data['products'];
+    this.fooditems = this.dataService.getProductList();
   }
 
 }
