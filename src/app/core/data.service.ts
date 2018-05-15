@@ -45,8 +45,8 @@ export class DataService {
   //   return of(Food);
   // }
 
-  async createProduct(fooditem: Fooditem) {
-    const promise = this.productlistRef.add(fooditem);
+  async createProduct(fooditem: Fooditem, docID: string) {
+    const promise = this.productlistRef.doc(docID).set(fooditem);
 
     await promise.then(res => {
       console.log('New fooditem created!!');

@@ -110,7 +110,7 @@ export class ProductNewComponent implements OnInit {
   }
 
   createFooditem(stepper) {
-    this.dataService.createProduct(this.newFooditem).then(
+    this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
       rep => {
         console.log('New fooditem created!');
       },
