@@ -34,15 +34,16 @@ export class DataService {
     return this.productlistRef.valueChanges();
   }
 
+
   getProductByID(productId: string): Observable<Fooditem> {
     const productPath = `${this.productlistPath}/${productId}`;
     return this.afs.doc<Fooditem>(productPath).valueChanges();
   }
 
-  getProductsByUser(): Observable<Fooditem[]> {
-    // TODO: Fetch the list of user uploads
-    return of(FOODITEMS);
-  }
+  // getProductsByUser(): Observable<Fooditem[]> {
+  //   // TODO: Fetch the list of user uploads
+  //   return of(Food);
+  // }
 
   async createProduct(fooditem: Fooditem) {
     const promise = this.productlistRef.add(fooditem);

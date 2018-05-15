@@ -33,7 +33,7 @@ export class FabActionComponent implements OnInit {
         this.onClick_DetailPage_Fab();
         break;
       case 'PRODUCT_NEW_PAGE':
-        this.onClick_NewPage_Fab();
+        // this.onClick_NewPage_Fab();
         break;
       case 'APP_CART_PAGE':
         this.onClick_CartPage_Fab();

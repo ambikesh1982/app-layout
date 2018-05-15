@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../core/product.service';
 import { Fooditem } from '../../core/models';
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs';
@@ -34,7 +33,7 @@ export class ProductDetailComponent implements OnInit {
     this.fooditem = this.route.snapshot.data['product'];
     console.log('Fooditem from resolver: ', this.fooditem);
 
-    this.fooditems$ = this.dataService.getProductsByUser();
+    // this.fooditems$ = this.dataService.getProductsByUser();
   }
   canDeactivate(): MatDialogRef<DialogComponent> {
     return this.dialogService.openDialog('Discard changes for this Product?');

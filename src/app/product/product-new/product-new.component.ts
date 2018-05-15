@@ -9,6 +9,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/material';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import * as firebase from 'firebase/app';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-new',
@@ -23,12 +24,18 @@ export class ProductNewComponent implements OnInit {
   @ViewChild('form') form;
   @ViewChild('autoComplete') autoComplete;
 
+  fab_icon = 'arrow_forward';
+
   newFooditem: Fooditem;
+
+  canNavigateAway: boolean;
 
   constructor(
     public dialogService: DialogService,
     private dataService: DataService,
+    private router: Router
   ) {
+    this.canNavigateAway = false;
     this.newFooditem = {}; // Create empty fooditem.
     this.newFooditem.images = [];
     this.newFooditem.paymentOptions = {};
@@ -83,8 +90,12 @@ export class ProductNewComponent implements OnInit {
 
 
 
-  canDeactivate(): MatDialogRef<DialogComponent> {
-    return this.dialogService.openDialog('Discard changes for this Product?');
+  canDeactivate(): boolean {
+    if (!this.canNavigateAway) {
+      // Run dialog service code here to set canNavigateAway to true or false
+    this.canNavigateAway = !!this.dialogService.openDialog('Discard changes for this Product?');
+    }
+    return this.canNavigateAway;
   }
 
   getImageUrls(event: any) {
@@ -96,6 +107,20 @@ export class ProductNewComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  createFooditem(stepper) {
+    this.dataService.createProduct(this.newFooditem).then(
+      rep => {
+        console.log('New fooditem created!');
+      },
+      error => {
+        console.log('error: Fooditem not created: ', error);
+      }
+    );
+    console.log('TODO: this.dataService.createProduct(this.newFooditem);', stepper.selectedIndex);
+    this.canNavigateAway = true;
+    this.router.navigate(['product/list']);
   }
 
 }

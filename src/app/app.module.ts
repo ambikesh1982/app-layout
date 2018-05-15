@@ -34,7 +34,6 @@ import { FirestoreService } from './core/firestore.service';
 import { LayoutService } from './core/layout.service';
 import { ProductListResolver } from './core/product-list.resolver';
 import { ProductResolver } from './core/product.resolver';
-import { ProductService } from './core/product.service';
 import { LocationService } from './core/location.service';
 import { TestnavComponent } from './testnav/testnav.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -80,7 +79,6 @@ import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, Mat
     LayoutService,
     ProductListResolver,
     ProductResolver,
-    ProductService,
     ScriptLoadService,
   ],
   bootstrap: [AppComponent]

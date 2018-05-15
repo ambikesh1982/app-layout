@@ -21,6 +21,7 @@ import { ImageUploadComponent } from './product-new/image-upload/image-upload.co
 import { ProductFormComponent } from './product-new/product-form/product-form.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PlaceAutocompleteComponent } from './product-new/place-autocomplete/place-autocomplete.component';
+import { PreviewComponent } from './product-new/preview/preview.component';
 
 
 // Product module router paths go here...
@@ -68,7 +69,8 @@ const productRoutes: Routes = [
     ProductModifyComponent,
     ImageUploadComponent,
     ProductFormComponent,
-    PlaceAutocompleteComponent
+    PlaceAutocompleteComponent,
+    PreviewComponent
   ]
 })
 export class ProductModule { }
