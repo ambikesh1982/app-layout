@@ -40,19 +40,10 @@ export class DataService {
     return this.afs.doc<Fooditem>(productPath).valueChanges();
   }
 
-<<<<<<< HEAD
-
-  getProductsByUser(productUser): Observable<Fooditem[]> {
-    // TODO: Fetch the list of user uploads
-    const productPath = `${this.productlistPath}/${productUser}`;
-    return this.afs.doc<Fooditem[]>(productPath).valueChanges();
-  }
-=======
   // getProductsByUser(): Observable<Fooditem[]> {
   //   // TODO: Fetch the list of user uploads
   //   return of(Food);
   // }
->>>>>>> accd71c67991292d46981e4dcb2d68e9a0902a65
 
   async createProduct(fooditem: Fooditem, docID: string) {
     const promise = this.productlistRef.doc(docID).set(fooditem);
