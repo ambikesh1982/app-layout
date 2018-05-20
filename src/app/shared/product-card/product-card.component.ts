@@ -5,11 +5,13 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.component.html',
-  styles: ['img { height: 33vh; margin-bottom: 0;}']
+  styles: []
 })
 export class ProductCardComponent implements OnInit {
 
   @Input() fooditem: Fooditem;
+  @Input() isDetailCard = false;
+  previewURL: string;
 
   constructor() { }
 

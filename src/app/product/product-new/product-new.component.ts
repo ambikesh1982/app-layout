@@ -76,9 +76,9 @@ export class ProductNewComponent implements OnInit {
           break;
         }
         case 2: {
-          const point = this.autoComplete.place.geometry.location;
-          this.newFooditem.coordinates = new firebase.firestore.GeoPoint(point.lat(), point.lng());
-          this.newFooditem.address = this.autoComplete.place.formatted_address;
+          const point = this.autoComplete.addressFromGooleMap;
+          this.newFooditem.coordinates = new firebase.firestore.GeoPoint(point.location.lat(), point.location.lng());
+          this.newFooditem.address = point.address;
           // this.dataService.createProduct(this.newFooditem);
           console.log('Completed Step 2: Added location data ', this.newFooditem);
           // this.product.createProduct(this.newFooditem);

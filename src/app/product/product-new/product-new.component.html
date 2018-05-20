@@ -1,29 +1,30 @@
+<!-- [linear]="true" -->
 <div>
-<mat-horizontal-stepper 
-  [linear]="true"
-  style="padding: 0px" 
-  (selectionChange)=prepareDataFromStepper($event) #stepper>
-  
-  <mat-step [completed]="upload.imageURLs.length != 0">
-    <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
-  </mat-step>
+  <mat-horizontal-stepper
+    [linear]="true"
+    style="padding: 0px" 
+    (selectionChange)=prepareDataFromStepper($event) 
+    #stepper>
 
-  <mat-step [completed]="form.productForm.status === 'VALID'">
-    <app-product-form #form></app-product-form>
-  </mat-step>
+    <mat-step [completed]="upload.imageURLs.length != 0">
+      <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
+    </mat-step>
 
-  <mat-step>
-    <app-place-autocomplete #autoComplete ></app-place-autocomplete>
-  </mat-step>
+    <mat-step [completed]="form.productForm.status === 'VALID'">
+      <app-product-form #form></app-product-form>
+    </mat-step>
 
-  <mat-step >
-     <app-preview [fooditem]="newFooditem"></app-preview>
-  </mat-step>
+    <mat-step>
+      <app-place-autocomplete #autoComplete></app-place-autocomplete>
+    </mat-step>
 
-</mat-horizontal-stepper>
+    <mat-step>
+      <app-preview *ngIf="newFooditem.coordinates" [fooditem]="newFooditem"></app-preview>
+    </mat-step>
 
-<button mat-fab style="position: fixed; bottom: 20px; right: 20px;" (click)="stepper.selectedIndex == 3 ?createFooditem(stepper):stepper.next()">
-  <mat-icon>{{stepper.selectedIndex == 3? 'done':'arrow_forward'}}</mat-icon>
-</button>
+  </mat-horizontal-stepper>
+
+  <app-fab-action [fabIcon]="stepper.selectedIndex == 3? 'done':'arrow_forward'" (click)="stepper.selectedIndex == 3 ?createFooditem(stepper):stepper.next()">
+  </app-fab-action>
 
 </div>

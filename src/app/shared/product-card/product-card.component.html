@@ -1,14 +1,24 @@
 <mat-card *ngIf="fooditem as fi" style="padding-bottom: 0">
 
-    <div>
-        <img mat-card-image [src]="fi.images[0]">
+    <div *ngIf="fi.images as images" >
+            <img mat-card-image [src]="previewURL||images[0]" style="height: 280px">
+
+            <mat-grid-list *ngIf="isDetailCard" cols="4">
+                <mat-grid-tile *ngFor="let img of fi.images">
+                    <img mat-card-image [src]="img" (click)="previewURL = img">
+                </mat-grid-tile>
+            </mat-grid-list>
     </div>
 
     <div fxLayout="row wrap">
         <h3 fxFlex="0 1 50" [style.color]="fi.isNonVeg? 'red':'green'">{{fi.title}}</h3>
         <span class="spacer"></span>
-        <h3> <mat-icon>schedule</mat-icon> </h3>
-        <h3> 40 mins </h3>
+
+        <!-- <h3>
+            <mat-icon>attach_money</mat-icon>
+        </h3> -->
+        <h3>SGD {{fi.price}}</h3>
+        
     </div>
 
     <mat-card-content>
@@ -21,8 +31,10 @@
 
         <span class="spacer"></span>
 
-        <h3><mat-icon>attach_money</mat-icon></h3>
-        <h3>{{fi.price}}</h3>
+        <h3>
+            <mat-icon>schedule</mat-icon>
+        </h3>
+        <h3> 40 mins </h3>
 
         <span class="spacer"></span>
 

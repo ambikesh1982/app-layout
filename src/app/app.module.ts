@@ -38,6 +38,7 @@ import { LocationService } from './core/location.service';
 import { TestnavComponent } from './testnav/testnav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
+import { AuthService } from './core/auth.service';
 
 
 @NgModule({
@@ -49,7 +50,7 @@ import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, Mat
     // AgmCoreModule.forRoot({
     //   apiKey: environment.googleMapsApiKey,
     //   libraries: ['places', 'geometry'] }),
-    // AgmCoreModule.forRoot({ apiKey: environment.googleMapsApiKey }),
+    // AgmCoreModule.forRoot({ apiKey: 'AIzaSyD2f1CqoyF3XhEuIPBXidqfXWTKPFyueIY' }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
@@ -58,7 +59,6 @@ import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, Mat
     AppSearchModule,
     BrowserAnimationsModule,
     BrowserModule,
-    AppRoutingModule,
     FlexLayoutModule,
     MaterialModule,
     ProductModule,
@@ -69,7 +69,8 @@ import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, Mat
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    AppRoutingModule,
   ],
   providers: [
     CanDeactivateGuard,
@@ -80,6 +81,7 @@ import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, Mat
     ProductListResolver,
     ProductResolver,
     ScriptLoadService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

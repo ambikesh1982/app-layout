@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-// tslint:disable-next-line:import-blacklist
-import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
 
 export interface AppToolbar {
@@ -13,10 +12,10 @@ export interface AppToolbar {
   showGoBackIcon?: boolean;
 }
 
-export interface FabButton {
-  fabPage: string;
-  fabIcon: string;
-}
+// export interface FabButton {
+//   fabPage: string;
+//   fabIcon: string;
+// }
 
 @Injectable()
 export class LayoutService {
@@ -34,7 +33,7 @@ export class LayoutService {
   };
 
   appToolBar$ = new BehaviorSubject<AppToolbar>(this.defaultToolbar);
-  fabButton$ = new BehaviorSubject<FabButton>(null);
+  // fabButton$ = new BehaviorSubject<FabButton>(null);
 
   constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
     _router.events.pipe(
@@ -57,17 +56,17 @@ export class LayoutService {
   setPageLayout(routerData: any) {
     switch (routerData.title) {
       case 'PRODUCT_LIST_PAGE':
-        this.fabButton$.next({
-          fabPage: routerData.title,
-          fabIcon: 'search'
-        });
+        // this.fabButton$.next({
+        //   fabPage: routerData.title,
+        //   fabIcon: 'search'
+        // });
         this.appToolBar$.next(this.defaultToolbar);
         break;
       case 'PRODUCT_DETAIL_PAGE':
-        this.fabButton$.next({
-          fabPage: routerData.title,
-          fabIcon: 'shopping_basket'
-        });
+        // this.fabButton$.next({
+        //   fabPage: routerData.title,
+        //   fabIcon: 'shopping_basket'
+        // });
         this.appToolBar$.next({
           pageTitle: routerData.product.title,
           showCancelIcon: true
@@ -84,16 +83,17 @@ export class LayoutService {
         });
         break;
       case 'APP_CART_PAGE':
-        this.fabButton$.next({
-          fabPage: routerData.title,
-          fabIcon: 'done' });
+        // this.fabButton$.next({
+        //   fabPage: routerData.title,
+        //   fabIcon: 'done'
+        // });
         this.appToolBar$.next(this.cancelToolbar);
         break;
       default:
-        this.fabButton$.next({
-          fabPage: routerData.title,
-          fabIcon: 'arrow_forward'
-        });
+        // this.fabButton$.next({
+        //   fabPage: routerData.title,
+        //   fabIcon: 'arrow_forward'
+        // });
         this.appToolBar$.next(this.defaultToolbar);
         break;
     }

@@ -37,10 +37,11 @@ Module and Components:
 
 #Issues:
 1. Sidenav not closing automatically, after clicking on sidenav list items.
+    Fix: (click)="sidenav.close() 
+
+Routes and links: 
+1. List -> Detail | Search 
 
 
-Firebase setup issues: 
-error: 
-a: Class 'FirebaseApp' incorrectly implements interface 'FirebaseApp'.
-  Property 'automaticDataCollectionEnabled' is missing in type 'FirebaseApp'.
+
 

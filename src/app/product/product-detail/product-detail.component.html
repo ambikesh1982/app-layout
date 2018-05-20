@@ -1,6 +1,6 @@
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" *ngIf="fooditem as fi">
 
-  <app-product-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="1" [fooditem]="fi"></app-product-card>
+  <app-product-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="1" [fooditem]="fi" isDetailCard="true"></app-product-card>
 
 
   <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="2">
@@ -49,5 +49,12 @@
     </mat-grid-list>
 
   </mat-card>
+
+  <app-fab-action fabIcon="shopping_basket"></app-fab-action>
+
+  <!-- <button mat-fab style="position: fixed; bottom: 20px; right: 20px;">
+    <mat-icon>shopping_basket</mat-icon>
+  </button> -->
+
 
 </div>

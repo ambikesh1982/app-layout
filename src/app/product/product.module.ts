@@ -5,7 +5,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { ProductNewComponent } from './product-new/product-new.component';
 import { ProductModifyComponent } from './product-modify/product-modify.component';
 import { MaterialModule } from '../material.module';
-import { RouterModule, Routes,  } from '@angular/router';
+import { RouterModule, Routes, } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from '../shared/shared.module';
 
@@ -22,29 +22,37 @@ import { ProductFormComponent } from './product-new/product-form/product-form.co
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PlaceAutocompleteComponent } from './product-new/place-autocomplete/place-autocomplete.component';
 import { PreviewComponent } from './product-new/preview/preview.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 // Product module router paths go here...
 const productRoutes: Routes = [
-  { path: '', redirectTo: '/product/list', pathMatch: 'full'},
-  { path: 'product/list',
+  { path: '', redirectTo: '/product/list', pathMatch: 'full' },
+  {
+    path: 'product/list',
     component: ProductListComponent,
     data: { title: 'PRODUCT_LIST_PAGE' },
     // resolve: { products: ProductListResolver}
   },
-  { path: 'product/detail/:id',
+  {
+    path: 'product/detail/:id',
     component: ProductDetailComponent,
     data: { title: 'PRODUCT_DETAIL_PAGE' },
-    canDeactivate: [CanDeactivateGuard] ,
-    resolve: { product: ProductResolver }},
-  { path: 'product/addnew',
+    canDeactivate: [CanDeactivateGuard],
+    resolve: { product: ProductResolver }
+  },
+  {
+    path: 'product/addnew',
     component: ProductNewComponent,
     data: { title: 'PRODUCT_NEW_PAGE' },
-    canDeactivate: [CanDeactivateGuard] },
-  { path: 'product/modify/:id',
+    canDeactivate: [CanDeactivateGuard]
+  },
+  {
+    path: 'product/modify/:id',
     component: ProductModifyComponent,
     data: { title: 'PRODUCT_MODIFY_PAGE' },
-    resolve: { product: ProductResolver } },
+    resolve: { product: ProductResolver }
+  },
 ];
 
 
@@ -54,6 +62,7 @@ const productRoutes: Routes = [
     AngularFireModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    AgmCoreModule,
     CommonModule,
     FlexLayoutModule,
     FormsModule,

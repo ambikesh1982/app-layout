@@ -35,7 +35,8 @@ export class ProductDetailComponent implements OnInit {
 
     // this.fooditems$ = this.dataService.getProductsByUser();
   }
-  canDeactivate(): MatDialogRef<DialogComponent> {
-    return this.dialogService.openDialog('Discard changes for this Product?');
+  canDeactivate(): boolean {
+    // return this.dialogService.openDialog('Discard changes for this Product?');
+    return true;
   }
 }

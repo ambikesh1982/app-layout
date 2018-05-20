@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
+import { AuthService } from './core/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit {
     { menuIcon: 'feedback', menuName: 'Feedback', menuRoute: './' },
   ];
 
-  constructor( private router: Router) {
+  constructor( private router: Router, private auth: AuthService) {
     this.loading = true;
     router.events.subscribe( routerEvent => {
       this.checkRouterEvent(routerEvent);
