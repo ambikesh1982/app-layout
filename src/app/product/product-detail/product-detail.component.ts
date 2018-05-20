@@ -20,6 +20,7 @@ export class ProductDetailComponent implements OnInit {
   fooditem$: Observable<Fooditem>;
   fooditems$: Observable<Fooditem[]>;
   fooditem: Fooditem;
+  userName: string;
 
   constructor(
     // private productService: ProductService,

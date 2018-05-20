@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 
 // local imports
 import { Fooditem } from './models';
-import { FOODITEMS } from './mock-data';
+// import { FOODITEMS } from './mock-data';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
 
 @Injectable()
