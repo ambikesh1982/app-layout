@@ -6,7 +6,7 @@ import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage'
 import { Observable, of } from 'rxjs';
 
 // local imports
-import { Fooditem } from './models';
+import { Fooditem, AppUser } from './models';
 // import { FOODITEMS } from './mock-data';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
 
@@ -79,5 +79,25 @@ export class DataService {
     return task.snapshotChanges();
   }
   // </Storage...>
+
+
+  // <AppUser...>
+
+  addUserDataToFirebase(user: AppUser) {
+  // TODO: Upon login, add new user data to firebase for future use.
+  console.log('AppUser data: ', user);
+  }
+
+  updateUserData (user: AppUser) {
+    // TODO: Update user data stored in firebase.
+    console.log('AppUser data: ', user);
+  }
+
+  deleteUser(uid: string) {
+    // TODO: Delete user from firebase database.
+    console.log('User deleted: ', uid);
+  }
+
+  // </AppUser...>
 
 }

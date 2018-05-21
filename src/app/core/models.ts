@@ -21,6 +21,7 @@ export interface Fooditem {
 
 export interface AppUser {
     uid: string;
+    isAnonymous?: boolean;
     name?: string;
     location?: { '_lat': number, '_lng': number };
     address?: string;
