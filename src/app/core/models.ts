@@ -44,3 +44,9 @@ export interface ILocation {
     userLocation?: firebase.firestore.GeoPoint;
 }
 
+export interface ChatMessage {
+    messageId?: string;
+    msgCreatedAt?: number | object;
+    createdByUserId?: string;
+    message?: string;
+}

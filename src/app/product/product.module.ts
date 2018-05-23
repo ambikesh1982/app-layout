@@ -23,6 +23,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PlaceAutocompleteComponent } from './product-new/place-autocomplete/place-autocomplete.component';
 import { PreviewComponent } from './product-new/preview/preview.component';
 import { AgmCoreModule } from '@agm/core';
+import { ChatComponent } from '../chat/chat/chat.component';
 
 
 // Product module router paths go here...
@@ -51,6 +52,12 @@ const productRoutes: Routes = [
     path: 'product/modify/:id',
     component: ProductModifyComponent,
     data: { title: 'PRODUCT_MODIFY_PAGE' },
+    resolve: { product: ProductResolver }
+  },
+  {
+    path: 'product/chat',
+    component: ChatComponent,
+    data: { title: 'CHAT_PAGE' },
     resolve: { product: ProductResolver }
   },
 ];

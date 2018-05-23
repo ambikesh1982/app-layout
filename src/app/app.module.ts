@@ -39,6 +39,7 @@ import { TestnavComponent } from './testnav/testnav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
 import { AuthService } from './core/auth.service';
+import { ChatModule } from './chat/chat.module';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { AuthService } from './core/auth.service';
     MatIconModule,
     MatListModule,
     AppRoutingModule,
+    ChatModule
   ],
   providers: [
     CanDeactivateGuard,
