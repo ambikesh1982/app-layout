@@ -1,6 +1,9 @@
 <!-- [linear]="true" -->
 <div>
-  <mat-horizontal-stepper style="padding: 0px" (selectionChange)=prepareDataFromStepper($event) #stepper>
+  <mat-horizontal-stepper
+    style="padding: 0px" 
+    (selectionChange)=prepareDataFromStepper($event) 
+    #stepper>
 
     <mat-step [completed]="upload.imageURLs.length != 0">
       <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
@@ -13,34 +16,25 @@
     <mat-step>
       <!-- <app-place-autocomplete #autoComplete></app-place-autocomplete> -->
       <form fxLayout="column" [formGroup]="productForm2">
-      <div>
+
         <h3>Order type</h3>
         <mat-radio-group fxLayout="row" fxLayoutAlign="space-between" formControlName="orderType">
           <mat-radio-button value="instant">Instant</mat-radio-button>
           <mat-radio-button value="preOrder">Pre-Order</mat-radio-button>
         </mat-radio-group>
+
         <br>
+        
+        <h3>Order before</h3>
+        <mat-slider style="width: 100%" >Delivery time</mat-slider>
+
+        <h3>Availability</h3>
         <mat-form-field>
           <mat-select placeholder="Days of Week" multiple>
             <mat-option *ngFor="let day of daysOfWeek" [value]="day">{{day}}</mat-option>
           </mat-select>
         </mat-form-field>
 
-        <!-- <mat-form-field>
-          <input matInput type="number" placeholder="Delivery time" required>
-        </mat-form-field> -->
-
-        <mat-slider style="width: 100%">Delivery time</mat-slider>
-
-      </div>
-
-      <!-- <div>
-        <h3>Payment options</h3>
-        
-          <div fxLayout="row" fxLayoutAlign="space-between">
-            <mat-checkbox formControlName="cashOnDelivery">Cash of delivery</mat-checkbox>
-            <mat-checkbox formControlName="onlinePayment">Pay online</mat-checkbox>
-          </div> -->
 
           <h3>Delivery options</h3>
           <mat-list>
@@ -55,24 +49,6 @@
           </mat-list-item>
           </mat-list>
 
-          <!-- <mat-selection-list > -->
-          <!-- <mat-list-option formControlName="cashOnDelivery">
-            Cash of delivery
-          </mat-list-option>
-          <mat-list-option formControlName="onlinePayment">
-            Pay online
-          </mat-list-option>
-          <mat-list-option formControlName="takeAway">
-            Take away
-          </mat-list-option>
-          <mat-list-option formControlName="homeDelivery">
-            Home delivery
-          </mat-list-option>
-          <mat-list-option formControlName="dineIn">
-            Dine in
-          </mat-list-option> -->
-          <!-- </mat-selection-list> -->
-        <!-- </div> -->
         </form>
     </mat-step>
 

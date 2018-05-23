@@ -45,18 +45,17 @@ export class ProductNewComponent implements OnInit {
     this.newFooditem.images = [];
     this.newFooditem.paymentOptions = {};
     this.newFooditem.deliveryOptions = {};
-    // this.newFooditem.coordinates = {0,0};
     this.newFooditem.id = dataService.getFirebaseDocumentKey();
-    // this.newFooditem.id = 'dummyIdToAvoidFirebaseCalls';
-    this.createForm();
     }
+
+  ngOnInit() {
+    this.createForm();
+  }
 
   createForm() {
     // User input values
     this.productForm2 = this.formBuilder.group({
       orderType: 'instant',
-      // cashOnDelivery: true,
-      // onlinePayment: false,
       takeAway: true,
       homeDelivery: false,
       dineIn: false,
@@ -96,16 +95,14 @@ export class ProductNewComponent implements OnInit {
           this.newFooditem.deliveryOptions.takeAway = this.productForm2.value.takeAway;
           this.newFooditem.deliveryOptions.homeDelivery = this.productForm2.value.homeDelivery;
           this.newFooditem.deliveryOptions.dineIn = this.productForm2.value.dineIn;
-          console.log('Completed Step 2: Added location data ', this.newFooditem);
+          console.log('Completed Step 2: Added form data ', this.newFooditem);
           break;
         }
         default: {
           const point = this.autoComplete.addressFromGooleMap;
           this.newFooditem.coordinates = new firebase.firestore.GeoPoint(point.location.lat(), point.location.lng());
           this.newFooditem.address = point.address;
-          // this.dataService.createProduct(this.newFooditem);
-          console.log('Completed Step 2: Added location data ', this.newFooditem);
-          // this.product.createProduct(this.newFooditem);
+          console.log('Completed Step 3: Added location data ', this.newFooditem);
           break;
         }
       }
@@ -120,17 +117,6 @@ export class ProductNewComponent implements OnInit {
     this.canNavigateAway = !!this.dialogService.openDialog('Discard changes for this Product?');
     }
     return this.canNavigateAway;
-  }
-
-  getImageUrls(event: any) {
-    console.log('Image Urls: ', event.data);
-  }
-
-  prepareProduct() {
-
-  }
-
-  ngOnInit() {
   }
 
   createFooditem(stepper) {

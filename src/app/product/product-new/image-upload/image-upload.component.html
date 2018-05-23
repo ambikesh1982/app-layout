@@ -4,9 +4,9 @@
     <mat-card-title>You can upload up to 4 photos.</mat-card-title>
   </div>
 
-  <div *ngIf="previewURL as url">
-    <img mat-card-image [src]="url">
-    <button class="top-right" mat-icon-button (click)="deleteImage(url)">
+  <div *ngIf="(downloadURL$|async) && previewURL">
+    <img mat-card-image [src]="previewURL">
+    <button class="top-right" mat-icon-button (click)="deleteImage(previewURL)">
       <mat-icon>cancel</mat-icon>
     </button>
   </div>
@@ -17,15 +17,11 @@
     </mat-grid-tile>
   </mat-grid-list>
 
-
   <div>
     <button mat-raised-button color="primary" style="float:initial; width: 100%" (click)="chooseFile.click()" [disabled]="selectedFileCount < maxFileUploadCount ? false: true ">
       <mat-icon>file_upload</mat-icon>
     </button>
     <input #chooseFile style="display:none;" type="file" accept="image/.*,capture=camera" (change)="fileController($event.target.files)">
   </div>
-  <div>
-    <button mat-button matStepperPrevious>Back</button>
-    <button mat-button matStepperNext>Next</button>
-  </div>
+  
 </mat-card>

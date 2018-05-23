@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Fooditem } from '../../core/models';
 import { Observable } from 'rxjs';
+import { AngularFireStorage } from 'angularfire2/storage';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-card',
@@ -13,7 +15,7 @@ export class ProductCardComponent implements OnInit {
   @Input() isDetailCard = false;
   previewURL: string;
 
-  constructor() { }
+  constructor( private storage: AngularFireStorage) { }
 
   ngOnInit() {
   }
