@@ -6,14 +6,17 @@ import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage'
 import { Observable, of } from 'rxjs';
 
 // local imports
-import { Fooditem } from './models';
+import { Fooditem, ChatMessage } from './models';
 // import { FOODITEMS } from './mock-data';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class DataService {
+  private chatroomPath: string;
   private productlistPath: string;
   private productlistRef: AngularFirestoreCollection<Fooditem>;
+  private chatRoomRef: AngularFirestoreCollection<ChatMessage>;
 
   constructor(
     private afs: AngularFirestore,
@@ -21,7 +24,9 @@ export class DataService {
   ) {
     afs.firestore.settings({ timestampsInSnapshots: true });
     this.productlistPath = 'foodListData';
+    this.chatroomPath = 'chat-data';
     this.productlistRef = this.afs.collection<Fooditem>(this.productlistPath);
+    this.chatRoomRef = this.afs.collection<ChatMessage>(this.chatroomPath);
   }
 
   // product methods
@@ -80,4 +85,39 @@ export class DataService {
   }
   // </Storage...>
 
+  gettimestamp() {
+    return firebase.firestore.FieldValue.serverTimestamp();
+  }
+
+// Chat Component Menthods Start
+
+  async createChatMessages(newMessage: ChatMessage): Promise<string> {
+
+    const newRoomId: string = this.afs.createId();
+    newMessage.messageId = newRoomId;
+    newMessage.msgCreatedAt = this.gettimestamp();
+    const promise = this.chatRoomRef.doc(`chat-room`).collection('Authid').doc<ChatMessage>(`${newRoomId}`).set(newMessage);
+    await promise
+      .then(
+      result => {
+        console.log('first time login, created new room', result);
+      },
+      err => console.error(err, 'You do not have access!')
+      );
+
+    return newRoomId;
+  }
+
+
+  getRoomMessages(): Observable<ChatMessage[]> {
+    return this.chatRoomRef.doc('chat-room').collection<ChatMessage>('Authid', ref => ref.orderBy('msgCreatedAt')).valueChanges();
+  }
+
+
+  removeRoom(chatroom: ChatMessage): Promise<any> {
+    const roomPath = `${this.chatroomPath}/${chatroom.createdByUserId}`;
+    return this.afs.doc<ChatMessage>(roomPath).delete();
+  }
+
+  // Chat Component Menthods Ends here
 }
