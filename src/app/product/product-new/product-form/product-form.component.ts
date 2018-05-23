@@ -32,9 +32,9 @@ export class ProductFormComponent implements OnInit {
       cuisine: '',
       cashOnDelivery: true,
       onlinePayment: false,
-      takeAway: true,
-      homeDelivery: false,
-      dineIn: false,
+      // takeAway: true,
+      // homeDelivery: false,
+      // dineIn: false,
     });
   }
 

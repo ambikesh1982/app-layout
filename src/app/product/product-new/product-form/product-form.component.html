@@ -1,46 +1,49 @@
 
   <form fxLayout="column" fxLayoutAlign="center stretch" [formGroup]="productForm">
+    
+    <mat-slide-toggle fxFlex="0 1 48" matInput formControlName="isNonVeg" required>Veg / Non-Veg</mat-slide-toggle>
+    
     <mat-form-field class="product-full-width" appearance="outline">
       <mat-label>Title</mat-label>
       <input matInput type="text" formControlName="title" required>
     </mat-form-field>
 
-    <mat-slide-toggle matInput formControlName="isNonVeg" required>Veg / Non-Veg</mat-slide-toggle>
+
+    <!-- <mat-slide-toggle matInput formControlName="orderType" required>PreOrder / Instant</mat-slide-toggle> -->
 
     <mat-form-field class="product-full-width" appearance="outline">
       <mat-label>Describe your food item here</mat-label>
       <input matInput type="textarea" formControlName="description">
     </mat-form-field>
 
-    <div fxLayout="row wrap" fxLayoutAlign="center stretch">
-
-    <mat-form-field>
+    <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
+    <mat-form-field fxFlex="0 1 48">
       <input matInput type="number" placeholder="Price" formControlName="price" required>
     </mat-form-field>
-    <span class="spacer"></span>
-    <mat-form-field>
+    <mat-form-field fxFlex="0 1 48">
       <mat-select placeholder="Serving" formControlName="serving" required>
         <mat-option *ngFor="let serving of foodServing" [value]="serving">{{serving}}</mat-option>
       </mat-select>
     </mat-form-field>
     </div>
 
-    <mat-form-field class="product-full-width">
+    <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
+    <mat-form-field fxFlex="0 1 48">
       <mat-select placeholder="Food Category" formControlName="category" required>
         <mat-option *ngFor="let category of foodCategories" [value]="category">
           {{category}}
         </mat-option>
       </mat-select>
     </mat-form-field>
-
-    <mat-form-field class="product-full-width">
-      <mat-select placeholder="Food Cuisine" formControlName="cuisine" required>
-        <mat-option>-Add New-</mat-option>
-        <mat-option *ngFor="let cuisine of foodCuisine" [value]="cuisine">
-          {{cuisine}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field fxFlex="0 1 48">
+        <mat-select placeholder="Food Cuisine" formControlName="cuisine" required>
+          <mat-option>-Add New-</mat-option>
+          <mat-option *ngFor="let cuisine of foodCuisine" [value]="cuisine">
+            {{cuisine}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  </div>
 
     <h3>Payment options</h3>
     <div fxLayout="row wrap" fxLayoutAlign="center stretch">
@@ -48,12 +51,12 @@
       <span class="spacer"></span>
       <mat-checkbox formControlName="onlinePayment">Online</mat-checkbox>
     </div>
-    <h3>Delivery options</h3>
+    <!-- <h3>Delivery options</h3>
     <div fxLayout="row wrap" fxLayoutAlign="start space-around">
       <mat-checkbox formControlName="takeAway">Take Away</mat-checkbox>
       <span class="spacer"></span>
       <mat-checkbox formControlName="homeDelivery">Home Delivery</mat-checkbox>
       <span class="spacer"></span>
       <mat-checkbox formControlName="dineIn">Dine In</mat-checkbox>
-    </div>
+    </div> -->
   </form>

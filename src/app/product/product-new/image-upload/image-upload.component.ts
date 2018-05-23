@@ -4,6 +4,8 @@ import { Fooditem } from '../../../core/models';
 // tslint:disable-next-line:import-blacklist
 import { Observable, Subscription, Subject } from 'rxjs';
 import { EventEmitter } from 'events';
+import { AngularFireStorage } from 'angularfire2/storage';
+import { finalize, map, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-image-upload',
@@ -23,16 +25,17 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   /** STORAGE **/
   storagePath: string;
   imageURLs: string[];
-  downloadURL$: Observable<string>;
+  images: string[];
   previewURL: string;
   uploadPercent$: Observable<number>;
+  downloadURL$: Observable<string>;
 
-  emitImageUrls = new Subject<string[]>();
   subscription: Subscription;
 
-  constructor( private dataService: DataService ) {
+  constructor(private dataService: DataService, private storage: AngularFireStorage ) {
     this.storagePath = 'foodz9';
     this.imageURLs = [];
+    this.images = [];
     this.maxFileUploadCount = 4;
     this.selectedFileCount = 0;
   }
@@ -41,33 +44,28 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   fileController(imageFiles: FileList) {
     if (imageFiles[0]) {
 
-      const file = imageFiles[0];
-      const storagePath = `${this.storagePath}/${this.productId}/${new Date().getTime()}_${file.name}`;
-      const uploadTask = this.dataService.uploadImage(file, storagePath);
+      const image = imageFiles[0];
+      const imagePath = `${this.storagePath}/${this.productId}/${new Date().getTime()}_${image.name}`;
+      const fileRef = this.storage.ref(imagePath);
+      const task = this.storage.upload(imagePath, image);
 
-      this.subscription = uploadTask.subscribe(
-        snapshot => {
-          console.log('uploadTask downloadURL: ', snapshot.downloadURL);
-          console.log('uploadTask uploadPercent: ', snapshot.bytesTransferred);
-          const url = snapshot.ref.getDownloadURL().then( u => {
-              console.log('u: ', u);
-          }
-          );
-          console.log('snapshot.ref.getDownloadURL', snapshot.ref.getDownloadURL());
-          if (snapshot.downloadURL) {
-            this.previewURL = snapshot.downloadURL;
-            console.log('uploadTask downloadURL: ', snapshot.downloadURL);
-          }
-        },
-        error => {
-          console.log('Error from uploadTask: ');
-        },
-        () => {
-          this.imageURLs.push(this.previewURL);
-          this.emitImageUrls.next(this.imageURLs);
+      // Watch file upload process...
+      this.uploadPercent$ = task.percentageChanges();
+
+      // Get download url
+      this.subscription = task.snapshotChanges().pipe(
+        finalize(() => this.downloadURL$ = fileRef.getDownloadURL() )
+      ).subscribe();
+
+      if (this.downloadURL$) {
+        this.downloadURL$.subscribe(url => {
+          this.previewURL = url;
+          this.imageURLs.push(url);
+          this.images.push(imagePath);
           this.manageFileCount(imageFiles.length);
-          console.log('uploadTask completed');
         });
+      }
+
     }
   }
 
