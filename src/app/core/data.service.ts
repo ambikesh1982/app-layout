@@ -6,11 +6,8 @@ import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage'
 import { Observable, of } from 'rxjs';
 
 // local imports
-<<<<<<< HEAD
-import { Fooditem, ChatMessage } from './models';
-=======
-import { Fooditem, AppUser } from './models';
->>>>>>> 9bd235067336fb4a9aa421691950b2e194473871
+
+import { Fooditem, AppUser, ChatMessage} from './models';
 // import { FOODITEMS } from './mock-data';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
 import * as firebase from 'firebase';
