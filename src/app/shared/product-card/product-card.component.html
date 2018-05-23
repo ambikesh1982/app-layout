@@ -1,7 +1,7 @@
-<mat-card *ngIf="fooditem as fi" style="padding-bottom: 0">
+<mat-card *ngIf="fooditem as fi" style="max-width:380px; padding-bottom: 0">
 
     <div *ngIf="fi.images as images" >
-            <img mat-card-image [src]="previewURL||images[0]" style="height: 280px">
+            <img mat-card-image [src]="previewURL||images[0]" style="height: 180px">
 
             <mat-grid-list *ngIf="isDetailCard" cols="4">
                 <mat-grid-tile *ngFor="let img of fi.images">
@@ -23,6 +23,9 @@
 
     <mat-card-content>
         <h3>[{{fi.category}}] . [{{fi.cuisine}}]</h3>
+        <h3>Pre Order: [ Fri/ Sat/ Sun ]</h3>
+        <!-- <h3>Available now</h3> -->
+
     </mat-card-content>
 
     <div fxLayout="row wrap">

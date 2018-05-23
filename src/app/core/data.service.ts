@@ -6,7 +6,11 @@ import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage'
 import { Observable, of } from 'rxjs';
 
 // local imports
+<<<<<<< HEAD
 import { Fooditem, ChatMessage } from './models';
+=======
+import { Fooditem, AppUser } from './models';
+>>>>>>> 9bd235067336fb4a9aa421691950b2e194473871
 // import { FOODITEMS } from './mock-data';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
 import * as firebase from 'firebase';
@@ -120,4 +124,24 @@ export class DataService {
   }
 
   // Chat Component Menthods Ends here
+
+  // <AppUser...>
+
+  addUserDataToFirebase(user: AppUser) {
+  // TODO: Upon login, add new user data to firebase for future use.
+  console.log('AppUser data: ', user);
+  }
+
+  updateUserData (user: AppUser) {
+    // TODO: Update user data stored in firebase.
+    console.log('AppUser data: ', user);
+  }
+
+  deleteUser(uid: string) {
+    // TODO: Delete user from firebase database.
+    console.log('User deleted: ', uid);
+  }
+
+  // </AppUser...>
+
 }

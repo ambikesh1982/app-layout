@@ -15,6 +15,7 @@ import {
   MatSidenavModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
+  MatRadioModule,
   MatSelectModule,
   MatStepperModule,
   MatToolbarModule,
@@ -41,6 +42,7 @@ import {
     MatSidenavModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatRadioModule,
     MatSelectModule,
     MatStepperModule,
     MatToolbarModule
