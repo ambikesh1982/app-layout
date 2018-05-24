@@ -92,12 +92,12 @@ export class DataService {
 
 // Chat Component Menthods Start
 
-  async createChatMessages(newMessage: ChatMessage): Promise<string> {
+  async createChatMessages(newMessage: ChatMessage, foodId: string): Promise<string> {
 
-    const newRoomId: string = this.afs.createId();
+    const newRoomId: string = currentUser(); // this.afs.createId(); buyer+Sellerid
     newMessage.messageId = newRoomId;
     newMessage.msgCreatedAt = this.gettimestamp();
-    const promise = this.chatRoomRef.doc(`chat-room`).collection('Authid').doc<ChatMessage>(`${newRoomId}`).set(newMessage);
+    const promise = this.chatRoomRef.doc(foodId).collection(`${newRoomId}`).doc<ChatMessage>().set(newMessage);
     await promise
       .then(
       result => {
