@@ -32,6 +32,7 @@ export class AuthService {
   constructor(private afAuth: AngularFireAuth) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
+        this._appUser = user;
         console.log('User loggedIn...', user.displayName);
       } else {
         console.log('User not logged in....');
@@ -55,6 +56,9 @@ export class AuthService {
             console.error('Error: loginAnonymously()...', e.message);
           }
         });
+  }
+  get currentUser(){
+    return this._appUser;
   }
 
   loginGogle() {}
