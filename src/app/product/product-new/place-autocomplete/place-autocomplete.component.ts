@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, AfterViewInit, Input } from '@angular/core';
 import { ScriptLoadService } from '../../../core/script-load.service';
 import { environment } from '../../../../environments/environment';
 import { LocationService } from '../../../core/location.service';
@@ -18,7 +18,7 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit {
   place: google.maps.places.PlaceResult;
   address: string;
 
-  addressForm: FormGroup;
+  @Input() productForm: FormGroup;
   mygeoLocation;
   radius;
   circle;
@@ -26,17 +26,7 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit {
   addressFromGooleMap: {address: string, location: any};
 
   constructor(
-    private locationService: LocationService,
-    private formBuilder: FormBuilder) {
-      this.createForm();
-   }
-
-   createForm() {
-     this.addressForm = this.formBuilder.group({
-       gmapAddress: '',
-       userAddress: 'userAddress'
-     });
-   }
+    private locationService: LocationService) { }
 
   ngOnInit() { }
 
@@ -53,7 +43,7 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit {
 
         this.locationService.addressFromAutoComplete$.subscribe(res => {
           if (res) {
-          console.log('addressFromAutoComplete$: ', res.loc.lat());
+          console.log('addressFromAutoComplete$: ', res);
           map.setCenter(res.loc);
           this.addressFromGooleMap = {address: res.address, location: res.loc};
           }

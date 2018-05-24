@@ -57,6 +57,8 @@ export class AuthService {
         });
   }
 
+  loginGogle() {}
+
   upgradeAnonymousUser() {
     // TODO: Upgrade anonymous user to google.
   }

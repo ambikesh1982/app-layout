@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DialogService } from '../../core/dialog.service';
-// tslint:disable-next-line:import-blacklist
 import { Observable, of } from 'rxjs';
 import { Fooditem } from '../../core/models';
 import { DataService } from '../../core/data.service';
@@ -10,6 +9,7 @@ import { MatDialogRef } from '@angular/material/material';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import * as firebase from 'firebase/app';
 import { ActivatedRoute, Router } from '@angular/router';
+import { debounce, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-new',
@@ -19,20 +19,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 export class ProductNewComponent implements OnInit {
 
-
+// Viewchild accessors to access properties and methods of child component directly from parent component.
   @ViewChild('upload') upload;
   @ViewChild('form') form;
   @ViewChild('autoComplete') autoComplete;
 
-  daysOfWeek = ['All days', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'];
-
-  productForm2: FormGroup;
-
-  fab_icon = 'arrow_forward';
-
   newFooditem: Fooditem;
 
+  daysOfWeek = ['All days', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'];
+
+  productForm: FormGroup;
   canNavigateAway: boolean;
+
 
   constructor(
     public dialogService: DialogService,
@@ -50,75 +48,53 @@ export class ProductNewComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-  }
-
-  createForm() {
-    // User input values
-    this.productForm2 = this.formBuilder.group({
-      orderType: 'instant',
-      takeAway: true,
-      homeDelivery: false,
-      dineIn: false,
+    this.productForm.valueChanges.pipe(
+      debounceTime(5000)
+    ).subscribe( value => {
+      console.log('productForm2 value: ', value);
     });
   }
 
-  prepareDataFromStepper(stepperEvent: any) {
-    console.log('stepperEvent: ', stepperEvent);
-    if (stepperEvent.previouslySelectedIndex < stepperEvent.selectedIndex) {
+  populateImageURLs(fooditem: Fooditem) {
+    fooditem.images = this.upload.images;
+  }
 
-      switch (stepperEvent.previouslySelectedIndex) {
-        case 0: {
-          // This executes when you move to step number 2.
-          this.newFooditem.images = this.upload.images;
-          console.log('Completed Step 0: Added image array', this.newFooditem);
-          break;
-        }
-        case 1: {
-          this.newFooditem.title = this.form.productForm.value.title;
-          this.newFooditem.description = this.form.productForm.value.description;
-          this.newFooditem.isNonVeg = this.form.productForm.value.isNonVeg;
-          this.newFooditem.price = this.form.productForm.value.price;
-          this.newFooditem.serving = this.form.productForm.value.serving;
-          this.newFooditem.category = this.form.productForm.value.category;
-          this.newFooditem.cuisine = this.form.productForm.value.cuisine;
-          this.newFooditem.paymentOptions.cashOnDelivery = this.form.productForm.value.cashOnDelivery;
-          this.newFooditem.paymentOptions.onlinePayment = this.form.productForm.value.onlinePayment;
-          // This executes when you move to step number 3.
-          console.log('Completed Step 1: Added form data ', this.newFooditem);
-
-          break;
-        }
-        case 2: {
-          this.newFooditem.orderType = this.productForm2.value.orderType;
-          // this.newFooditem.paymentOptions.cashOnDelivery = this.productForm2.value.cashOnDelivery;
-          // this.newFooditem.paymentOptions.onlinePayment = this.productForm2.value.onlinePayment;
-          this.newFooditem.deliveryOptions.takeAway = this.productForm2.value.takeAway;
-          this.newFooditem.deliveryOptions.homeDelivery = this.productForm2.value.homeDelivery;
-          this.newFooditem.deliveryOptions.dineIn = this.productForm2.value.dineIn;
-          console.log('Completed Step 2: Added form data ', this.newFooditem);
-          break;
-        }
-        default: {
-          const point = this.autoComplete.addressFromGooleMap;
-          this.newFooditem.coordinates = new firebase.firestore.GeoPoint(point.location.lat(), point.location.lng());
-          this.newFooditem.address = point.address;
-          console.log('Completed Step 3: Added location data ', this.newFooditem);
-          break;
-        }
-      }
-    } else { console.log('User moved back to previous step'); }
+  populateAddress(fooditem: Fooditem) {
+    const point = this.autoComplete.addressFromGooleMap;
+    fooditem.coordinates = new firebase.firestore.GeoPoint(point.location.lat(), point.location.lng());
+    fooditem.autoAddressFromMap = point.address;
   }
 
 
 
-  canDeactivate(): boolean {
-    if (!this.canNavigateAway) {
-      // Run dialog service code here to set canNavigateAway to true or false
-    this.canNavigateAway = !!this.dialogService.openDialog('Discard changes for this Product?');
-    }
-    return this.canNavigateAway;
+
+
+
+
+  createForm() {
+    // User input values
+    this.productForm = this.formBuilder.group({
+      title:          ['', Validators.required],
+      description:    '',
+      price:          [0.0, Validators.required],
+      serving:        [1, Validators.required],
+      isNonVeg:       true,
+      category:       '',
+      cuisine:        '',
+      cashOnDelivery: true,
+      onlinePayment:  false,
+      orderType:      'instant',
+      orderTime:      '',
+      availability:   'All Days',
+      takeAway:       true,
+      homeDelivery:   false,
+      dineIn:         false,
+      autoAddressFromMap: '',
+      addressFromUser: '',
+    });
   }
 
+// Save fooditem to firebase and navigate back to list page
   createFooditem(stepper) {
     this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
       rep => {
@@ -131,6 +107,15 @@ export class ProductNewComponent implements OnInit {
     console.log('TODO: this.dataService.createProduct(this.newFooditem);', stepper.selectedIndex);
     this.canNavigateAway = true;
     this.router.navigate(['product/list']);
+  }
+
+  // Stop user from accidently navigation away from this page.
+  canDeactivate(): boolean {
+    if (!this.canNavigateAway) {
+      // Run dialog service code here to set canNavigateAway to true or false
+      this.canNavigateAway = !!this.dialogService.openDialog('Discard changes for this Product?');
+    }
+    return this.canNavigateAway;
   }
 
 }

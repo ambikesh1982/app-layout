@@ -78,6 +78,7 @@ export class LocationService {
     autoComplete.addListener('place_changed', () => {
       this.ngZone.run(() => {
         const place = autoComplete.getPlace();
+        console.log('place ####: ', place);
 
         if (place.geometry) {
           const loc = place.geometry.location;

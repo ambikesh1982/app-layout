@@ -1,21 +1,20 @@
-<!-- [linear]="true" -->
+<!-- [linear]="true" (selectionChange)=prepareDataFromStepper($event) -->
 <div>
   <mat-horizontal-stepper
-    style="padding: 0px" 
-    (selectionChange)=prepareDataFromStepper($event) 
+    style="padding: 0px"  
     #stepper>
 
     <mat-step [completed]="upload.imageURLs.length != 0">
       <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
     </mat-step>
 
-    <mat-step [completed]="form.productForm.status === 'VALID'">
-      <app-product-form #form></app-product-form>
+    <mat-step>
+      <app-product-form #form [productForm]="productForm"></app-product-form>
     </mat-step>
 
     <mat-step>
       <!-- <app-place-autocomplete #autoComplete></app-place-autocomplete> -->
-      <form fxLayout="column" [formGroup]="productForm2">
+      <form fxLayout="column" [formGroup]="productForm">
 
         <h3>Order type</h3>
         <mat-radio-group fxLayout="row" fxLayoutAlign="space-between" formControlName="orderType">
@@ -26,7 +25,7 @@
         <br>
         
         <h3>Order before</h3>
-        <mat-slider style="width: 100%" >Delivery time</mat-slider>
+        <mat-slider style="width: 100%">Delivery time</mat-slider>
 
         <h3>Availability</h3>
         <mat-form-field>
@@ -34,7 +33,6 @@
             <mat-option *ngFor="let day of daysOfWeek" [value]="day">{{day}}</mat-option>
           </mat-select>
         </mat-form-field>
-
 
           <h3>Delivery options</h3>
           <mat-list>
@@ -53,7 +51,7 @@
     </mat-step>
 
     <mat-step>
-      <app-place-autocomplete #autoComplete></app-place-autocomplete>
+      <app-place-autocomplete #autoComplete [productForm]="productForm"></app-place-autocomplete>
       <!-- <app-preview *ngIf="newFooditem.coordinates" [fooditem]="newFooditem"></app-preview> -->
     </mat-step>
 
