@@ -43,10 +43,10 @@ export class AuthService {
   private _isSocialUser$ = new BehaviorSubject(false);
 
   isAnonymous: boolean;
-  currentUser: Observable<AppUser | null>;
+  currUser: Observable<AppUser | null>;
 
   constructor(private afAuth: AngularFireAuth, private dataService: DataService) {
-    this.currentUser = this.afAuth.authState.pipe(
+    this.currUser = this.afAuth.authState.pipe(
       switchMap( user => {
         if (user) {
           console.log('### Retrieving user from firestore ###');
@@ -76,6 +76,9 @@ export class AuthService {
           this.handleAuthErrors(e);
           // return of(null);
         });
+  }
+  get currentUser() {
+    return this._appUser;
   }
 
   loginGogle() {}
