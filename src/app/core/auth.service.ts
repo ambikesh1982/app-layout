@@ -45,7 +45,7 @@ export class AuthService {
   isAnonymous: boolean;
   currUser: Observable<AppUser | null>;
 
-  constructor(private afAuth: AngularFireAuth, private dataService: DataService) {
+  constructor(public afAuth: AngularFireAuth, private dataService: DataService) {
     this.currUser = this.afAuth.authState.pipe(
       switchMap( user => {
         if (user) {
