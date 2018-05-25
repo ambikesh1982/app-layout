@@ -26,18 +26,18 @@ export interface Fooditem {
 
 export interface AppUser {
     uid: string;
-    isAnonymous?: boolean;
-    name?: string;
+    isAnonymous: boolean;
+    displayName?: string;
     location?: { '_lat': number, '_lng': number };
     address?: string;
-    avatar?: string;
+    photoURL?: string;
     email?: string;
-    isSeller: boolean;
-    isBuyer: boolean;
-    hasOrders: boolean;
-    hasUploads: boolean;
-    hasLikes: boolean;
-    hasWishlisth: boolean;
+    isSeller?: boolean;
+    isBuyer?: boolean;
+    hasOrders?: boolean;
+    hasUploads?: boolean;
+    hasLikes?: boolean;
+    hasWishlisth?: boolean;
 }
 
 export interface ILocation {

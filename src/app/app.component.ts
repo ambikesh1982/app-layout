@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { AuthService } from './core/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = '';
   loading: boolean;
+  subscription: Subscription;
 
   navList = [
     { menuIcon: 'home', menuName: 'Home', menuRoute: 'list' },
@@ -24,7 +26,8 @@ export class AppComponent implements OnInit {
 
   constructor( private router: Router, private auth: AuthService) {
     this.loading = true;
-    router.events.subscribe( routerEvent => {
+
+    this.subscription = router.events.subscribe( routerEvent => {
       this.checkRouterEvent(routerEvent);
     });
    }
@@ -41,7 +44,23 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.loginAnonymously();
+    this.auth.signOut();
+    this.auth.currentUser.subscribe(
+      user => {
+        if (user != null) {
+          console.log('Current User: ', user);
+        } else {
+          console.log('### User not found - Creating new anonymous user ###');
+          this.auth.loginAnonymously();
+        }
+
+      }
+    );
+    // this.auth.loginAnonymously();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   }
