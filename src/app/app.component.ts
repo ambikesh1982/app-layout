@@ -45,7 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.auth.signOut();
-    this.auth.currentUser.subscribe(
+    this.auth.currUser.subscribe(
       user => {
         if (user != null) {
           console.log('Current User: ', user);
