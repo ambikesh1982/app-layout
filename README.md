@@ -45,3 +45,23 @@ Routes and links:
 
 
 
+Github issues: 
+error: You have not concluded your merge (MERGE_HEAD exists).
+hint: Please, commit your changes before merging.
+fatal: Exiting because of unfinished merge.
+
+To undo a merge:
+
+git merge --abort [Since git version 1.7.4]
+
+git reset --merge [prior git versions]
+
+Resolve the conflict.
+
+Don't forget to add and commit the merge.
+
+git pull now should work fine.
+
+
+
+

@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, RouterEvent } from '@angular/router';
 import { AuthService } from './core/auth.service';
+import { Subscription, Observable } from 'rxjs';
+import { AppUser } from './core/models';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = '';
   loading: boolean;
+  currentUser: Observable<AppUser>;
+  subscription: Subscription;
 
   navList = [
     { menuIcon: 'home', menuName: 'Home', menuRoute: 'list' },
@@ -22,12 +27,15 @@ export class AppComponent implements OnInit {
     { menuIcon: 'feedback', menuName: 'Feedback', menuRoute: './' },
   ];
 
-  constructor( private router: Router, private auth: AuthService) {
+  constructor(private router: Router, private auth: AuthService) {
     this.loading = true;
-    router.events.subscribe( routerEvent => {
+
+    this.auth.signOut();
+
+    this.subscription = router.events.subscribe(routerEvent => {
       this.checkRouterEvent(routerEvent);
     });
-   }
+  }
 
   checkRouterEvent(routerEvent: any): void {
     if (routerEvent instanceof NavigationStart) {
@@ -41,7 +49,28 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.currentUser = this.auth.currUser;
+    this.currentUser.pipe(
+      map(
+        user => {
+          if (user != null) {
+            console.log('Current User: ', user);
+          } else {
+            console.log('### User not found - Creating new anonymous user ###');
+            this.auth.loginAnonymously();
+          } // else
+        } // user
+      ) // map
+    ); // pipe
+  } // ngOnInit
+
+
+  loginAsGuest() {
     this.auth.loginAnonymously();
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
+
+}

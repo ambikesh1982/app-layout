@@ -9,45 +9,11 @@
     </mat-step>
 
     <mat-step>
-      <app-product-form #form [productForm]="productForm"></app-product-form>
+      <app-product-form1 [productForm]="productForm"></app-product-form1>
     </mat-step>
 
     <mat-step>
-      <!-- <app-place-autocomplete #autoComplete></app-place-autocomplete> -->
-      <form fxLayout="column" [formGroup]="productForm">
-
-        <h3>Order type</h3>
-        <mat-radio-group fxLayout="row" fxLayoutAlign="space-between" formControlName="orderType">
-          <mat-radio-button value="instant">Instant</mat-radio-button>
-          <mat-radio-button value="preOrder">Pre-Order</mat-radio-button>
-        </mat-radio-group>
-
-        <br>
-        
-        <h3>Order before</h3>
-        <mat-slider style="width: 100%">Delivery time</mat-slider>
-
-        <h3>Availability</h3>
-        <mat-form-field>
-          <mat-select placeholder="Days of Week" multiple>
-            <mat-option *ngFor="let day of daysOfWeek" [value]="day">{{day}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-          <h3>Delivery options</h3>
-          <mat-list>
-            <mat-list-item>
-          <mat-checkbox formControlName="takeAway">Take away</mat-checkbox>
-              </mat-list-item>
-              <mat-list-item>
-          <mat-checkbox formControlName="homeDelivery">Home delivery</mat-checkbox>
-                </mat-list-item>
-                <mat-list-item>
-          <mat-checkbox formControlName="dineIn">Dine in</mat-checkbox>
-          </mat-list-item>
-          </mat-list>
-
-        </form>
+       <app-product-form2 [productForm]="productForm"></app-product-form2>
     </mat-step>
 
     <mat-step>

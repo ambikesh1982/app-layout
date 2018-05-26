@@ -16,8 +16,10 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class DataService {
+  private appUserPath: string;
   private chatroomPath: string;
   private productlistPath: string;
+  private appUserRef: AngularFirestoreCollection<AppUser>;
   private productlistRef: AngularFirestoreCollection<Fooditem>;
   private chatRoomRef: AngularFirestoreCollection<ChatMessage>;
 
@@ -29,8 +31,10 @@ export class DataService {
     private authService: AuthService
   ) {
     afs.firestore.settings({ timestampsInSnapshots: true });
+    this.appUserPath = 'appUsers';
     this.productlistPath = 'foodListData';
     this.chatroomPath = 'chat-data';
+    this.appUserRef = this.afs.collection<AppUser>(this.appUserPath);
     this.productlistRef = this.afs.collection<Fooditem>(this.productlistPath);
     this.chatRoomRef = this.afs.collection<ChatMessage>(this.chatroomPath);
   }
@@ -129,10 +133,26 @@ export class DataService {
 
   // <AppUser...>
 
+<<<<<<< HEAD
 
   addUserDataToFirebase(user: AppUser) {
   // TODO: Upon login, add new user data to firebase for future use.
   console.log('AppUser data: ', user);
+=======
+  getUserFromFirestore(uid: string) {
+    const appUserPath = `${this.appUserPath}/${uid}`;
+    return this.afs.doc<AppUser>(appUserPath).valueChanges();
+  }
+
+  async saveUserDataToFirestore(user: AppUser) {
+    const promise = this.appUserRef.doc(user.uid).set(user);
+    await promise.then(res => {
+      console.log('saveUserDataToFirebase(user): ', user);
+      console.log('New User Saved!!');
+    }, err => {
+      console.log('Error during create User: ', err);
+    });
+>>>>>>> ce3aea2f2a9b31a1b3d47fba49709302f75f17cc
   }
 
   updateUserData (user: AppUser) {

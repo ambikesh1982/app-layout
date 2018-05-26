@@ -1,27 +1,40 @@
 // Common Error Codes
-// auth / app - deleted
-// auth / app - not - authorized
-// auth / argument - error
-// auth / invalid - api - key
-// auth / invalid - user - token
-// auth / network - request - failed
-// auth / operation - not - allowed
-// auth / requires - recent - login
-// auth / too - many - requests
-// auth / unauthorized - domain
-// auth / user - disabled
-// auth / user - token - expired
-// auth / web - storage - unsupported
+// auth/app-deleted
+// auth/app-not-authorized
+// auth/argument-error
+// auth/invalid-api-key
+// auth/invalid-user-token
+// auth/network-request-failed
+// auth/operation-not-allowed
+// auth/requires-recent-login
+// auth/too-many-requests
+// auth/unauthorized-domain
+// auth/user-disabled
+// auth/user-token-expired
+// auth/web-storage-unsupported
 
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable, BehaviorSubject } from 'rxjs';
-
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
+
+import { DataService } from './data.service';
+import { AppUser } from './models';
+
+interface User {
+  uid: string;
+  isAnonymous: boolean;
+  email?: string | null;
+  photoURL?: string;
+  displayName?: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
   private _user$: Observable<firebase.User>;
@@ -29,36 +42,48 @@ export class AuthService {
   private _isAnonymousUser$: Observable<boolean>;
   private _isSocialUser$ = new BehaviorSubject(false);
 
-  constructor(private afAuth: AngularFireAuth) {
-    this.afAuth.authState.subscribe(user => {
-      if (user) {
-        this._appUser = user;
-        console.log('User loggedIn...', user.displayName);
-      } else {
-        console.log('User not logged in....');
-      }
-    });
+  isAnonymous: boolean;
+  currUser: Observable<AppUser | null>;
+
+  constructor(public afAuth: AngularFireAuth, private dataService: DataService) {
+    this.currUser = this.afAuth.authState.pipe(
+      switchMap( user => {
+        if (user) {
+          console.log('### Retrieving user from firestore ###');
+          return this.dataService.getUserFromFirestore(user.uid);
+        } else {
+          return of(null);
+        }
+      })
+    );
   }
 
-  loginAnonymously() {
-    console.log('#Event: signInAnonymous()#');
-    this.afAuth.auth.signInAnonymously()
-      .then(user => {
-        console.log('loginAnonymously(): Sign in successfull...', user);
+  loginAnonymously(): Promise<void> {
+    console.log('#Event: loginAnonymously()#');
+    return this.afAuth.auth.signInAnonymously()
+      .then( user => {
+
+        const anomymousUser: AppUser = {
+          uid: user.uid,
+          isAnonymous: user.isAnonymous,
+        };
+        // Save user data to fireabase...
+        console.log('loginAnonymously(): Sign in successfull...');
+        return this.dataService.saveUserDataToFirestore(anomymousUser);
       })
       .catch(
-        (e: firebase.FirebaseError) => {
-          if (e.code === 'auth/operation-not-allowed') {
-            console.log('Error: loginAnonymously()...Anonymous auth not enabled in the Firebase Console.');
-
-          } else {
-            console.error('Error: loginAnonymously()...', e.code);
-            console.error('Error: loginAnonymously()...', e.message);
-          }
+        ( e: firebase.FirebaseError) => {
+          this.handleAuthErrors(e);
+          // return of(null);
         });
   }
+<<<<<<< HEAD
   get currentUser1() {
     return this._appUser.uid;
+=======
+  get currentUser() {
+    return this._appUser;
+>>>>>>> ce3aea2f2a9b31a1b3d47fba49709302f75f17cc
   }
 
   loginGogle() {}
@@ -69,6 +94,33 @@ export class AuthService {
 
   signOut() {
     this.afAuth.auth.signOut();
+}
+
+handleAuthErrors(e: firebase.FirebaseError) {
+// Firebase Auth Error Codes...
+  // auth/app-deleted
+  // auth/app-not-authorized
+  // auth/argument-error
+  // auth/invalid-api-key
+  // auth/invalid-user-token
+  // auth/network-request-failed
+  // auth/operation-not-allowed
+  // auth/requires-recent-login
+  // auth/too-many-requests
+  // auth/unauthorized-domain
+  // auth/user-disabled
+  // auth/user-token-expired
+  // auth/web-storage-unsupported
+  switch (e.code) {
+    case 'auth/operation-not-allowed':
+      console.log('Error: loginAnonymously()...Anonymous auth not enabled in the Firebase Console.');
+      break;
+    default:
+      console.error('Error: loginAnonymously()...', e.code);
+      console.error('Error: loginAnonymously()...', e.message);
+      break;
+  }
+
 }
 
 

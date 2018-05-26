@@ -1,29 +1,27 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MaterialModule } from '../material.module';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes, } from '@angular/router';
+import { SharedModule } from '../shared/shared.module';
+
+import { CanDeactivateGuard } from '../core/can-deactivate-guard';
+import { DialogService } from '../core/dialog.service';
+import { ProductResolver } from '../core/product.resolver';
+
+
+
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductNewComponent } from './product-new/product-new.component';
+  import { ImageUploadComponent } from './product-new/image-upload/image-upload.component';
+  import { ProductForm1Component } from './product-new/product-form/product-form1/product-form1.component';
+  import { ProductForm2Component } from './product-new/product-form/product-form2/product-form2.component';
+  import { PlaceAutocompleteComponent } from './product-new/place-autocomplete/place-autocomplete.component';
 import { ProductModifyComponent } from './product-modify/product-modify.component';
-import { MaterialModule } from '../material.module';
-import { RouterModule, Routes, } from '@angular/router';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { SharedModule } from '../shared/shared.module';
-
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage';
-import { environment } from '../../environments/environment';
-import { CanDeactivateGuard } from '../core/can-deactivate-guard';
-import { DialogService } from '../core/dialog.service';
-import { ProductListResolver } from '../core/product-list.resolver';
-import { ProductResolver } from '../core/product.resolver';
-import { ImageUploadComponent } from './product-new/image-upload/image-upload.component';
-import { ProductFormComponent } from './product-new/product-form/product-form.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { PlaceAutocompleteComponent } from './product-new/place-autocomplete/place-autocomplete.component';
-import { PreviewComponent } from './product-new/preview/preview.component';
-import { AgmCoreModule } from '@agm/core';
 import { ChatComponent } from '../chat/chat/chat.component';
+
 
 
 // Product module router paths go here...
@@ -65,29 +63,23 @@ const productRoutes: Routes = [
 
 @NgModule({
   imports: [
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireModule,
-    AngularFirestoreModule,
-    AngularFireStorageModule,
-    AgmCoreModule,
     CommonModule,
     FlexLayoutModule,
-    FormsModule,
     MaterialModule,
-    RouterModule.forChild(productRoutes),
     ReactiveFormsModule,
     SharedModule,
+    RouterModule.forChild(productRoutes),
   ],
   providers: [DialogService],
   declarations: [
     ProductListComponent,
     ProductDetailComponent,
     ProductNewComponent,
+      ImageUploadComponent,
+      ProductForm1Component,
+      ProductForm2Component,
+      PlaceAutocompleteComponent,
     ProductModifyComponent,
-    ImageUploadComponent,
-    ProductFormComponent,
-    PlaceAutocompleteComponent,
-    PreviewComponent
   ]
 })
 export class ProductModule { }
