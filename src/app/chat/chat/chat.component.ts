@@ -37,7 +37,7 @@ export class ChatComponent implements OnInit {
 
     this.chat.messageId = 'Authid';
     this.chat.message = this.inputMessageText;
-    this.dataService.createChatMessages(this.chat);
+    this.dataService.createChatMessages(this.chat, '1223');
     console.log('NewchatMessages', this.chat);
   }
 
@@ -46,7 +46,7 @@ export class ChatComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.chat.message = this.inputMessageText;
-    this.dataService.createChatMessages(this.chat);
+    this.dataService.createChatMessages(this.chat, '123');
    // this.dataService.insertRoomMessage(this.chatMessages);
 
     console.log('chat-message', this.chat.message);

@@ -33,11 +33,5 @@ const SHARED_COMPONENTS = [
     SHARED_COMPONENTS
   ],
   entryComponents: [DialogComponent]
-  /*providers: [MatDialog, {
-    provide: MatDialogRef,
-    useValue: {
-      close: (dialogResult: any) => { }
-    }
-  }]*/
 })
 export class SharedModule { }

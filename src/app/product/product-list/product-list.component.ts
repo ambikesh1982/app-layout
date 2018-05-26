@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Fooditem } from '../../core/models';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../core/data.service';
 import { Observable } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
@@ -14,7 +14,7 @@ export class ProductListComponent implements OnInit {
 
   fooditems: Observable<Fooditem[]>;
 
-  constructor( private dataService: DataService ) {
+  constructor( private dataService: DataService, private router: Router ) {
   }
 
   ngOnInit() {
@@ -22,5 +22,9 @@ export class ProductListComponent implements OnInit {
     // See product.module.ts file.
     // this.fooditems = this.route.snapshot.data['products'];
     this.fooditems = this.dataService.getProductList();
+  }
+
+  navigateToSearchPage() {
+    this.router.navigate(['search']);
   }
 }

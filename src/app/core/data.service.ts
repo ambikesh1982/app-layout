@@ -66,12 +66,6 @@ export class DataService {
 
   }
 
-  // File upload methods
-
-  getDownloadURL(imagePath: string) {
-    const storageRef = this.storage.ref(imagePath);
-  }
-
   updateProduct(productId: Fooditem): Promise<any> {
     const productPath = `${this.productlistPath}/${productId}`;
     return this.afs.doc<Fooditem>(productPath).update(productId);
@@ -88,6 +82,11 @@ export class DataService {
     const task = this.storage.upload(storagePath, imageFile);
     return task.snapshotChanges();
   }
+
+  getDownloadURL(imagePath: string) {
+    const storageRef = this.storage.ref(imagePath);
+  }
+
   // </Storage...>
 
   gettimestamp() {
@@ -96,21 +95,21 @@ export class DataService {
 
 // Chat Component Menthods Start
 
-  async createChatMessages(newMessage: ChatMessage, foodId: string): Promise<string> {
+  async createChatMessages(newMessage: ChatMessage, foodId: string) {
 
-    const newRoomId: string = currentUser(); // this.afs.createId(); buyer+Sellerid
-    newMessage.messageId = newRoomId;
-    newMessage.msgCreatedAt = this.gettimestamp();
-    const promise = this.chatRoomRef.doc(foodId).collection(`${newRoomId}`).doc<ChatMessage>().set(newMessage);
-    await promise
-      .then(
-      result => {
-        console.log('first time login, created new room', result);
-      },
-      err => console.error(err, 'You do not have access!')
-      );
+    // const newRoomId: string = currentUser(); // this.afs.createId(); buyer+Sellerid
+    // newMessage.messageId = newRoomId;
+    // newMessage.msgCreatedAt = this.gettimestamp();
+    // const promise = this.chatRoomRef.doc(foodId).collection(`${newRoomId}`).doc<ChatMessage>().set(newMessage);
+    // await promise
+    //   .then(
+    //   result => {
+    //     console.log('first time login, created new room', result);
+    //   },
+    //   err => console.error(err, 'You do not have access!')
+    //   );
 
-    return newRoomId;
+    // return newRoomId;
   }
 
 

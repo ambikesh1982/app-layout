@@ -17,8 +17,8 @@ export class AppComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   navList = [
-    { menuIcon: 'home', menuName: 'Home', menuRoute: 'list' },
-    { menuIcon: 'order', menuName: 'My Orders', menuRoute: 'addnew' },
+    { menuIcon: 'home', menuName: 'Home', menuRoute: './' },
+    { menuIcon: 'order', menuName: 'My Orders', menuRoute: 'product/addnew' },
     { menuIcon: 'cart', menuName: 'Cart', menuRoute: './' },
     { menuIcon: 'heart', menuName: 'Wish List', menuRoute: './' },
     { menuIcon: 'language', menuName: 'Language', menuRoute: './' },

@@ -5,6 +5,7 @@ import { DialogService } from '../../core/dialog.service';
 import { Fooditem } from '../../core/models';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import * as firebase from 'firebase/app';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-new',
@@ -123,12 +124,8 @@ export class ProductNewComponent implements OnInit {
   }
 
   // Stop user from accidently navigation away from this page.
-  canDeactivate(): boolean {
-    if (!this.canNavigateAway) {
-      // Run dialog service code here to set canNavigateAway to true or false
-      this.canNavigateAway = !!this.dialogService.openDialog('Discard changes for this Product?');
+  canDeactivate(): Observable<boolean> {
+      return this.dialogService.openDialog('Discard changes for this Product?');
     }
-    return this.canNavigateAway;
-  }
 
 }

@@ -1,28 +1,42 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Component, Inject, OnInit } from '@angular/core';
+
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss']
 })
+
+// 1) [mat-dialog-close]: Dialog open and close methonds are directly implemeted in template
+//  using [mat-dialog-close] directive
+// 2) User defined methods: Alternatively you can create dialogReg and implement
+// closeWithoutResponse() and
+// closeWithResponse() methods.
+
 export class DialogComponent implements OnInit {
 
-  dp: string;
-  constructor(private dialogRef: MatDialogRef<DialogComponent>) {}
+  dialogMessage: any;
 
-
-  onNoClick(): void {
-    this.dialogRef.close();
-    console.log('NO clicked');
+  constructor(
+    private dialogRef: MatDialogRef<DialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.dialogMessage = data.dialogMessage;
+    console.log('MAT_DIALOG_DATA from parent: ', data);
   }
 
-  onYesClick(): void {
-    this.dialogRef.close();
-    console.log('YES clicked');
-  }
 
   ngOnInit() {
   }
 
+  // 2) User defined methods
+
+  closeWithoutResponse() {
+    this.dialogRef.close(false);
+  }
+
+  closeWithResponse() {
+    this.dialogRef.close(true);
+  }
 }
