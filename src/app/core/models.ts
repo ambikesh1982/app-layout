@@ -12,7 +12,7 @@ export interface Fooditem {
     cuisine?: string;
     orderType?: string; // Pre-Order or Instant
     orderTime?: string; // 24 hours
-    avaibility?: string; // All days, Weekends Only, Fri/Sat/Sun
+    availability?: string[]; // All days, Weekends Only, Fri/Sat/Sun
     deliveryTime?: string;
     images?: string[];
     paymentOptions?: { cashOnDelivery?: boolean, onlinePayment?: boolean };

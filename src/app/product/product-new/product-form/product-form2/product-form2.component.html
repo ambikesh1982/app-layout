@@ -9,12 +9,13 @@
   <br>
 
   <h3>Order before</h3>
-  <mat-slider style="width: 100%">Delivery time</mat-slider>
+  <mat-slider style="width: 100%" formControlName="orderTime">Delivery time</mat-slider>
 
   <h3>Availability</h3>
   <mat-form-field>
-    <mat-select placeholder="Days of Week" multiple>
-      <mat-option *ngFor="let day of daysOfWeek" [value]="day">{{day}}</mat-option>
+    <mat-select placeholder="Days of Week" multiple formControlName="availability">
+      <mat-option 
+        *ngFor="let day of daysOfWeek; let i=index" [value]="day">{{day}}</mat-option>
     </mat-select>
   </mat-form-field>
 

@@ -10,7 +10,7 @@ export class ProductForm2Component implements OnInit {
 
   @Input() productForm: FormGroup;
 
-  daysOfWeek = ['All days', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'];
+  daysOfWeek = ['All Days', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'];
 
   constructor() { }
 

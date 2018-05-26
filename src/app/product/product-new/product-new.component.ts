@@ -5,7 +5,8 @@ import { DialogService } from '../../core/dialog.service';
 import { Fooditem } from '../../core/models';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import * as firebase from 'firebase/app';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-new',
@@ -37,6 +38,7 @@ export class ProductNewComponent implements OnInit {
     this.newFooditem = {
       id: firebaseDocKey,
       images: [],
+      availability: [],
       paymentOptions: {},
       deliveryOptions: {}
     };
@@ -45,11 +47,11 @@ export class ProductNewComponent implements OnInit {
   ngOnInit() {
     this.createForm();
 
-    // this.productForm.valueChanges.pipe(
-    //   debounceTime(5000)
-    // ).subscribe( value => {
-    //   console.log('productForm2 value: ', value);
-    // });
+    this.productForm.valueChanges.pipe(
+      debounceTime(5000)
+    ).subscribe( value => {
+      console.log('productForm2 value: ', value);
+    });
   }
 
   createForm() {
@@ -66,7 +68,7 @@ export class ProductNewComponent implements OnInit {
       onlinePayment: false,
       orderType: 'instant',
       orderTime: '',
-      availability: 'All Days',
+      availability: [['All Days'], Validators.required],
       takeAway: true,
       homeDelivery: false,
       dineIn: false,
@@ -76,6 +78,7 @@ export class ProductNewComponent implements OnInit {
   }
 
   prepareFooditem(fooditemForm: FormGroup) {
+    console.log('Images: ', this.upload.images);
     console.log('Extracting values from fooditem form:', fooditemForm.value);
 
     // User input: urls from image upload component
@@ -93,7 +96,7 @@ export class ProductNewComponent implements OnInit {
     this.newFooditem.paymentOptions.onlinePayment = fooditemForm.value.onlinePayment;
     this.newFooditem.orderType = fooditemForm.value.orderType;
     this.newFooditem.orderTime = fooditemForm.value.orderTime; // not hooked up yet: slider
-    this.newFooditem.avaibility = fooditemForm.value.avaibility; // not hooked up yet: multiselect
+    this.newFooditem.availability = fooditemForm.value.availability; // not hooked up yet: multiselect
     this.newFooditem.deliveryOptions.takeAway = fooditemForm.value.takeAway;
     this.newFooditem.deliveryOptions.homeDelivery = fooditemForm.value.homeDelivery;
     this.newFooditem.deliveryOptions.dineIn = fooditemForm.value.dineIn;
@@ -109,27 +112,28 @@ export class ProductNewComponent implements OnInit {
   // Save fooditem to firebase and navigate back to list page
   createFooditem(stepper) {
     this.prepareFooditem(this.productForm);
+
     console.log('Fooditem to be saved: ', this.newFooditem);
-    // this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
-    //   rep => {
-    //     console.log('New fooditem created!');
-    //   },
-    //   error => {
-    //     console.log('error: Fooditem not created: ', error);
-    //   }
-    // );
-    console.log('TODO: this.dataService.createProduct(this.newFooditem);', stepper.selectedIndex);
+    this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
+      rep => {
+        console.log('New fooditem created!');
+      },
+      error => {
+        console.log('error: Fooditem not created: ', error);
+      }
+    );
+
     this.canNavigateAway = true;
     this.router.navigate(['product/list']);
     console.log('Newfooditem: ', this.newFooditem);
   }
 
   // Stop user from accidently navigation away from this page.
-  canDeactivate(): Observable<boolean> {
+  canDeactivate(): Observable<boolean>| boolean {
     if ( !this.canNavigateAway ) {
       return this.dialogService.openDialog('Discard changes for this Product?');
     }
-    return of(this.canNavigateAway);
+    return this.canNavigateAway;
     }
 
 }
