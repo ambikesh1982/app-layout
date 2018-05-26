@@ -69,6 +69,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.auth.loginAnonymously();
   }
 
+  loginGoogle() {
+    this.auth.loginGogle();
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

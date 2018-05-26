@@ -81,7 +81,9 @@ export class AuthService {
     return this._appUser;
   }
 
-  loginGogle() {}
+  loginGogle() {
+    console.log('TODO: Setup up a google login method...');
+  }
 
   upgradeAnonymousUser() {
     // TODO: Upgrade anonymous user to google.

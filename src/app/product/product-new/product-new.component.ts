@@ -5,7 +5,7 @@ import { DialogService } from '../../core/dialog.service';
 import { Fooditem } from '../../core/models';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import * as firebase from 'firebase/app';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-product-new',
@@ -109,14 +109,15 @@ export class ProductNewComponent implements OnInit {
   // Save fooditem to firebase and navigate back to list page
   createFooditem(stepper) {
     this.prepareFooditem(this.productForm);
-    this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
-      rep => {
-        console.log('New fooditem created!');
-      },
-      error => {
-        console.log('error: Fooditem not created: ', error);
-      }
-    );
+    console.log('Fooditem to be saved: ', this.newFooditem);
+    // this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
+    //   rep => {
+    //     console.log('New fooditem created!');
+    //   },
+    //   error => {
+    //     console.log('error: Fooditem not created: ', error);
+    //   }
+    // );
     console.log('TODO: this.dataService.createProduct(this.newFooditem);', stepper.selectedIndex);
     this.canNavigateAway = true;
     this.router.navigate(['product/list']);
@@ -125,7 +126,10 @@ export class ProductNewComponent implements OnInit {
 
   // Stop user from accidently navigation away from this page.
   canDeactivate(): Observable<boolean> {
+    if ( !this.canNavigateAway ) {
       return this.dialogService.openDialog('Discard changes for this Product?');
+    }
+    return of(this.canNavigateAway);
     }
 
 }
