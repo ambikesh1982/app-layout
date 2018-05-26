@@ -7,10 +7,12 @@ import { Observable, of } from 'rxjs';
 
 // local imports
 
-import { Fooditem, AppUser, ChatMessage} from './models';
+import { Fooditem, ChatMessage, AppUser } from './models';
+
 // import { FOODITEMS } from './mock-data';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
 import * as firebase from 'firebase';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class DataService {
@@ -19,9 +21,12 @@ export class DataService {
   private productlistRef: AngularFirestoreCollection<Fooditem>;
   private chatRoomRef: AngularFirestoreCollection<ChatMessage>;
 
+  private cuurentUser: firebase.User;
+
   constructor(
     private afs: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private authService: AuthService
   ) {
     afs.firestore.settings({ timestampsInSnapshots: true });
     this.productlistPath = 'foodListData';
@@ -92,12 +97,12 @@ export class DataService {
 
 // Chat Component Menthods Start
 
-  async createChatMessages(newMessage: ChatMessage): Promise<string> {
+  async createChatMessages(newMessage: ChatMessage, foodId: string): Promise<string> {
 
-    const newRoomId: string = this.afs.createId();
+    const newRoomId  =  this.authService.currentUser1(); // this.afs.createId(); buyer+Sellerid
     newMessage.messageId = newRoomId;
     newMessage.msgCreatedAt = this.gettimestamp();
-    const promise = this.chatRoomRef.doc(`chat-room`).collection('Authid').doc<ChatMessage>(`${newRoomId}`).set(newMessage);
+    const promise = this.chatRoomRef.doc(`${foodId}`).collection(`${newRoomId}`).doc<ChatMessage>().set(newMessage);
     await promise
       .then(
       result => {
@@ -123,6 +128,7 @@ export class DataService {
   // Chat Component Menthods Ends here
 
   // <AppUser...>
+
 
   addUserDataToFirebase(user: AppUser) {
   // TODO: Upon login, add new user data to firebase for future use.

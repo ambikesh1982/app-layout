@@ -5,7 +5,7 @@ import { Fooditem } from '../../../core/models';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { EventEmitter } from 'events';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { finalize, map, catchError } from 'rxjs/operators';
+import { finalize, map, catchError, mergeMap, combineLatest } from 'rxjs/operators';
 
 @Component({
   selector: 'app-image-upload',
@@ -29,6 +29,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   previewURL: string;
   uploadPercent$: Observable<number>;
   downloadURL$: Observable<string>;
+  downloadURLs: Observable<string>[];
 
   subscription: Subscription;
 
@@ -38,6 +39,8 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this.images = [];
     this.maxFileUploadCount = 4;
     this.selectedFileCount = 0;
+    this.downloadURL$ = null;
+    this.downloadURLs = [];
   }
 
   // <Storage...>
@@ -54,18 +57,19 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
       // Get download url
       this.subscription = task.snapshotChanges().pipe(
-        finalize(() => this.downloadURL$ = fileRef.getDownloadURL() )
+        finalize(() => {
+          this.downloadURL$ = fileRef.getDownloadURL().pipe(
+            map(url => {
+              console.log('From downLoadURL.pipe', url);
+              this.previewURL = url;
+              this.imageURLs.push(url);
+              this.images.push(url);
+              this.manageFileCount(imageFiles.length);
+              return url;
+            })
+          );
+        })
       ).subscribe();
-
-      if (this.downloadURL$) {
-        this.downloadURL$.subscribe(url => {
-          this.previewURL = url;
-          this.imageURLs.push(url);
-          this.images.push(imagePath);
-          this.manageFileCount(imageFiles.length);
-        });
-      }
-
     }
   }
 

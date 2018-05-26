@@ -32,6 +32,7 @@ export class AuthService {
   constructor(private afAuth: AngularFireAuth) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
+        this._appUser = user;
         console.log('User loggedIn...', user.displayName);
       } else {
         console.log('User not logged in....');
@@ -56,6 +57,11 @@ export class AuthService {
           }
         });
   }
+  get currentUser1() {
+    return this._appUser.uid;
+  }
+
+  loginGogle() {}
 
   upgradeAnonymousUser() {
     // TODO: Upgrade anonymous user to google.

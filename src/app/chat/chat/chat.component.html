@@ -15,10 +15,14 @@
 
 
 <div class="bottom" id="bottom" *ngIf="true" fxLayout="row" fxLayoutAlign="start center">
-  <textarea class="input" id="message-text-input" fxFlex title="New message text" [(ngModel)]="inputMessageText" (keydown.enter)="sendRoomMessage($event)">
+  <textarea class="input" 
+            id="message-text-input" 
+            fxFlex title="New message text" 
+            [(ngModel)]="inputMessageText" 
+            (keydown.enter)="sendRoomMessage($event)">
       </textarea>
 
-  <button mat-icon-button class="send" [disabled]="!value" (click)="sendRoomMessage($event)">
+  <button mat-icon-button class="send" [disabled]="!inputMessageText" (click)="sendRoomMessage($event)">
       <mat-icon>send</mat-icon>
     </button>
 </div>

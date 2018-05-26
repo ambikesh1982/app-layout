@@ -31,13 +31,15 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  createNewChatRoom(ev) {}
+
   createNewchatMessages($event) {
     event.preventDefault();
     event.stopPropagation();
 
     this.chat.messageId = 'Authid';
     this.chat.message = this.inputMessageText;
-    this.dataService.createChatMessages(this.chat);
+    this.dataService.createChatMessages(this.chat, '123food');
     console.log('NewchatMessages', this.chat);
   }
 
@@ -46,8 +48,7 @@ export class ChatComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.chat.message = this.inputMessageText;
-    this.dataService.createChatMessages(this.chat);
-   // this.dataService.insertRoomMessage(this.chatMessages);
+    this.dataService.createChatMessages(this.chat, 'food1');
 
     console.log('chat-message', this.chat.message);
     this.chat = {};

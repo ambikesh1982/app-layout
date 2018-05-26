@@ -11,14 +11,15 @@ export interface Fooditem {
     category?: string;
     cuisine?: string;
     orderType?: string; // Pre-Order or Instant
-    preOrder?: string; // 24 hours
+    orderTime?: string; // 24 hours
     avaibility?: string; // All days, Weekends Only, Fri/Sat/Sun
     deliveryTime?: string;
     images?: string[];
     paymentOptions?: { cashOnDelivery?: boolean, onlinePayment?: boolean };
     deliveryOptions?: { takeAway?: boolean, homeDelivery?: boolean, dineIn?: boolean };
     coordinates?: firebase.firestore.GeoPoint;
-    address?: string;
+    autoAddressFromMap?: string;
+    addressFromUser?: string;
     createdAt?: Date;
     createdBy?: string;
 }

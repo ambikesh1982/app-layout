@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { RESOURCE_CACHE_PROVIDER } from '@angular/platform-browser-dynamic';
 
@@ -9,7 +9,7 @@ import { RESOURCE_CACHE_PROVIDER } from '@angular/platform-browser-dynamic';
 })
 export class ProductFormComponent implements OnInit {
 
-  productForm: FormGroup;
+  @Input() productForm: FormGroup;
 
   // Metadata...
   foodCategories = ['Main Course', 'Starter', 'Breakfast', 'Snacks', 'Dessert/Sweet', 'Roti/Bread', 'Rice', 'Salad', 'Soup', 'Bakery'];
@@ -17,26 +17,26 @@ export class ProductFormComponent implements OnInit {
   foodServing = [1, 2, 3, 4, 'More'];
 
   constructor(private formBuilder: FormBuilder) {
-    this.createForm();
+    // this.createForm();
   }
 
-  createForm() {
-    // User input values
-    this.productForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      description: '',
-      price: [, Validators.required],
-      serving: [1, Validators.required],
-      isNonVeg: true,
-      category: '',
-      cuisine: '',
-      cashOnDelivery: true,
-      onlinePayment: false,
-      // takeAway: true,
-      // homeDelivery: false,
-      // dineIn: false,
-    });
-  }
+  // createForm() {
+  //   // User input values
+  //   this.productForm = this.formBuilder.group({
+  //     title: ['', Validators.required],
+  //     description: '',
+  //     price: [, Validators.required],
+  //     serving: [1, Validators.required],
+  //     isNonVeg: true,
+  //     category: '',
+  //     cuisine: '',
+  //     cashOnDelivery: true,
+  //     onlinePayment: false,
+  //     // takeAway: true,
+  //     // homeDelivery: false,
+  //     // dineIn: false,
+  //   });
+  // }
 
 
   ngOnInit() {
