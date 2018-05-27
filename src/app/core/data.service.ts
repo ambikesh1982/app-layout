@@ -78,14 +78,6 @@ export class DataService {
 
   // <Storage...>
 
-  uploadImage(imageFile: File, storagePath: string): Observable<UploadTaskSnapshot> {
-    const task = this.storage.upload(storagePath, imageFile);
-    return task.snapshotChanges();
-  }
-
-  getDownloadURL(imagePath: string) {
-    const storageRef = this.storage.ref(imagePath);
-  }
 
   // </Storage...>
 
