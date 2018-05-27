@@ -21,6 +21,7 @@ import { ProductNewComponent } from './product-new/product-new.component';
   import { PlaceAutocompleteComponent } from './product-new/place-autocomplete/place-autocomplete.component';
 import { ProductModifyComponent } from './product-modify/product-modify.component';
 import { ChatComponent } from '../chat/chat/chat.component';
+import { AuthGuard } from '../core/auth.guard';
 
 
 
@@ -44,13 +45,15 @@ const productRoutes: Routes = [
     path: 'product/addnew',
     component: ProductNewComponent,
     data: { title: 'PRODUCT_NEW_PAGE' },
-    canDeactivate: [CanDeactivateGuard]
+    canDeactivate: [CanDeactivateGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'product/modify/:id',
     component: ProductModifyComponent,
     data: { title: 'PRODUCT_MODIFY_PAGE' },
-    resolve: { product: ProductResolver }
+    resolve: { product: ProductResolver },
+    canActivate: [AuthGuard]
   },
   {
     path: 'product/chat',

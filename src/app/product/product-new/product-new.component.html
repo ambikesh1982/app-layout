@@ -24,7 +24,9 @@
 
   </mat-horizontal-stepper>
 
-  <app-fab-action [fabIcon]="stepper.selectedIndex == 3? 'done':'arrow_forward'" (click)="stepper.selectedIndex == 3 ?createFooditem(stepper):stepper.next()">
+  <app-fab-action 
+    [fabIcon]="stepper.selectedIndex == 3? 'done':'arrow_forward'" 
+    (click)="stepper.selectedIndex == 3 ?createFooditem(stepper):stepper.next()">
   </app-fab-action>
 
 </div>

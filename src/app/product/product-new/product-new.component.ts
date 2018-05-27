@@ -37,6 +37,7 @@ export class ProductNewComponent implements OnInit {
     // Initialize newFooditem
     this.newFooditem = {
       id: firebaseDocKey,
+      // createdBy: ,
       images: [],
       availability: [],
       paymentOptions: {},

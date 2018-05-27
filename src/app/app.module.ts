@@ -40,12 +40,15 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
 import { AuthService } from './core/auth.service';
 import { ChatModule } from './chat/chat.module';
+import { AuthGuard } from './core/auth.guard';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     TestnavComponent,
+    HomeComponent,
   ],
   imports: [
     // AgmCoreModule.forRoot({
@@ -76,6 +79,7 @@ import { ChatModule } from './chat/chat.module';
   ],
   providers: [
     CanDeactivateGuard,
+    AuthGuard,
     DataService,
     FirestoreService,
     LocationService,

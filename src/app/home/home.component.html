@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-title>Hungry?</mat-card-title>
+  <h2>
+    Find the food served by home chefs in our neighbourhood!
+  </h2>
+  <ol>
+    <h3>1. Tell us your location!</h3>
+    <h3>2. Browse the list of dishes waiting for you!</h3>
+
+  </ol>
+  <mat-form-field style="width: 80%">
+    <input matInput type="text" placeholder="Enter your current location!" />
+    <button mat-icon-button matSuffix mat-icon-button (click)="value=''">
+      <mat-icon style="font-size: 24px">add_location</mat-icon>
+    </button>
+  </mat-form-field>
+</mat-card>
