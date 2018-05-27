@@ -7,8 +7,13 @@ import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: `
+    <div *ngIf="loading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <router-outlet></router-outlet>
+  `,
+  styles: []
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = '';
@@ -16,21 +21,8 @@ export class AppComponent implements OnInit, OnDestroy {
   currentUser: Observable<AppUser>;
   subscription: Subscription;
 
-  navList = [
-    { menuIcon: 'home', menuName: 'Home', menuRoute: './' },
-    { menuIcon: 'order', menuName: 'My Orders', menuRoute: 'product/addnew' },
-    { menuIcon: 'cart', menuName: 'Cart', menuRoute: './' },
-    { menuIcon: 'heart', menuName: 'Wish List', menuRoute: './' },
-    { menuIcon: 'language', menuName: 'Language', menuRoute: './' },
-    { menuIcon: 'download', menuName: 'Download App', menuRoute: './' },
-    { menuIcon: 'help', menuName: 'Help', menuRoute: './' },
-    { menuIcon: 'feedback', menuName: 'Feedback', menuRoute: './' },
-  ];
-
-  constructor(private router: Router, private auth: AuthService) {
+  constructor(private router: Router) {
     this.loading = true;
-
-    this.auth.signOut();
 
     this.subscription = router.events.subscribe(routerEvent => {
       this.checkRouterEvent(routerEvent);
@@ -49,29 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentUser = this.auth.currUser;
-    this.currentUser.pipe(
-      map(
-        user => {
-          if (user != null) {
-            console.log('Current User: ', user);
-          } else {
-            console.log('### User not found - Creating new anonymous user ###');
-            this.auth.loginAnonymously();
-          } // else
-        } // user
-      ) // map
-    ); // pipe
   } // ngOnInit
-
-
-  loginAsGuest() {
-    this.auth.loginAnonymously();
-  }
-
-  loginGoogle() {
-    this.auth.loginGogle();
-  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

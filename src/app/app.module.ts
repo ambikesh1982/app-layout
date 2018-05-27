@@ -42,6 +42,8 @@ import { AuthService } from './core/auth.service';
 import { ChatModule } from './chat/chat.module';
 import { AuthGuard } from './core/auth.guard';
 import { HomeComponent } from './home/home.component';
+import { AppShellComponent } from './app-shell.component';
+import { PageNotFoundComponent } from './page-not-found.component';
 
 
 @NgModule({
@@ -49,6 +51,8 @@ import { HomeComponent } from './home/home.component';
     AppComponent,
     TestnavComponent,
     HomeComponent,
+    AppShellComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     // AgmCoreModule.forRoot({
@@ -59,23 +63,22 @@ import { HomeComponent } from './home/home.component';
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
-    AppCartModule,
+    // AppCartModule,
     AppSearchModule,
     BrowserAnimationsModule,
     BrowserModule,
     FlexLayoutModule,
     MaterialModule,
-    ProductModule,
     SharedModule,
-    SignInModule,
-    LayoutModule,
+    // SignInModule,
+    // LayoutModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    // ChatModule,
     AppRoutingModule,
-    ChatModule
   ],
   providers: [
     CanDeactivateGuard,

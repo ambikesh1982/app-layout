@@ -6,7 +6,7 @@ import { MaterialModule } from '../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 const appCartRoutes: Routes = [
-  { path: 'cart', component: AppCartComponent, data: {title: 'APP_CART_PAGE'} },
+  { path: '', component: AppCartComponent, data: {title: 'APP_CART_PAGE'} },
   ];
 
 @NgModule({

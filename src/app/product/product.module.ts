@@ -22,14 +22,15 @@ import { ProductNewComponent } from './product-new/product-new.component';
 import { ProductModifyComponent } from './product-modify/product-modify.component';
 import { ChatComponent } from '../chat/chat/chat.component';
 import { AuthGuard } from '../core/auth.guard';
+import { ChatModule } from '../chat/chat.module';
 
 
 
 // Product module router paths go here...
 const productRoutes: Routes = [
-  { path: '', redirectTo: '/product/list', pathMatch: 'full' },
+  // { path: '', redirectTo: '/product/list', pathMatch: 'full' },
   {
-    path: 'product/list',
+    path: 'list',
     component: ProductListComponent,
     data: { title: 'PRODUCT_LIST_PAGE' },
     // resolve: { products: ProductListResolver}
@@ -42,21 +43,21 @@ const productRoutes: Routes = [
     resolve: { product: ProductResolver }
   },
   {
-    path: 'product/addnew',
+    path: 'addnew',
     component: ProductNewComponent,
     data: { title: 'PRODUCT_NEW_PAGE' },
     canDeactivate: [CanDeactivateGuard],
     canActivate: [AuthGuard]
   },
   {
-    path: 'product/modify/:id',
+    path: 'modify/:id',
     component: ProductModifyComponent,
     data: { title: 'PRODUCT_MODIFY_PAGE' },
     resolve: { product: ProductResolver },
     canActivate: [AuthGuard]
   },
   {
-    path: 'product/chat',
+    path: 'chat',
     component: ChatComponent,
     data: { title: 'CHAT_PAGE' },
     resolve: { product: ProductResolver }
@@ -71,6 +72,7 @@ const productRoutes: Routes = [
     MaterialModule,
     ReactiveFormsModule,
     SharedModule,
+    ChatModule,
     RouterModule.forChild(productRoutes),
   ],
   providers: [DialogService],

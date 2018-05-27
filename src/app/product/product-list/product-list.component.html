@@ -5,5 +5,5 @@
         [fooditem]="fooditem" 
         routerLink="/product/detail/{{fooditem.id}}">
     </app-product-card>
-    <app-fab-action fabIcon="search" (click)="navigateToSearchPage()"></app-fab-action>
+    <app-fab-action fabIcon="search" (click)="navigateToSearchPage()" style="z-index: 99"></app-fab-action>
 </div>

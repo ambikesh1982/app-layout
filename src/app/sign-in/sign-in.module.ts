@@ -6,7 +6,7 @@ import { MaterialModule } from '../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 const signInRoutes: Routes = [
-  { path: 'sign-in', component: SignInComponent }
+  { path: '', component: SignInComponent }
 ];
 
 @NgModule({
