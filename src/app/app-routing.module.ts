@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppShellComponent } from './app-shell.component';
 import { enableLogging } from '@firebase/database-types';
 import { PageNotFoundComponent } from './page-not-found.component';
+import { HomeComponent } from './home/home.component';
 // import { ProductListComponent } from './product/product-list/product-list.component';
 // import { ProductModule } from './product/product.module';
 
@@ -14,6 +15,7 @@ const routes: Routes = [
       { path: 'app-cart', loadChildren: './app-cart/app-cart.module#AppCartModule' },
     ]
   },
+  { path: 'home', component: HomeComponent },
   { path: 'sign-in', loadChildren: './sign-in/sign-in.module#SignInModule' },
   { path: '**', component: PageNotFoundComponent }
 ];

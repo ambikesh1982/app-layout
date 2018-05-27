@@ -3,9 +3,13 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-page-not-found',
   template: `
-    <p>
-      page-not-found works!
-    </p>
+    <div fxLayout="row wrap" fxLayout.xs="column">
+      <mat-card>
+        <mat-card-title> You landed up at unknown territori :(</mat-card-title>
+        <br>
+        <mat-card-title> Click <a routerLink="/product/list">here</a> to reach home :)</mat-card-title>
+      </mat-card>
+    </div>
   `,
   styles: []
 })
