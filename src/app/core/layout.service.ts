@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { filter, map, mergeMap } from 'rxjs/operators';
+import { filter, map, mergeMap, tap } from 'rxjs/operators';
 
 export interface AppToolbar {
   pageTitle?: string;
@@ -36,21 +36,44 @@ export class LayoutService {
   // fabButton$ = new BehaviorSubject<FabButton>(null);
 
   constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
-    _router.events.pipe(
+
+    this._router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
-      map(() => this.activatedRoute),
-      map((route) => {
-        if (route.firstChild) {
-          route = route.firstChild;
-        }
-        return route;
-      }),
-      filter((route) => route.outlet === 'primary'),
-      mergeMap((route) => route.data)
-    ).subscribe((route_data) => {
-      console.log('Router data: ', route_data);
-      this.setPageLayout(route_data);
+      map(() => this._router),
+    ).subscribe(res => {
+      console.log('res.url: ', res.url);
+      console.log(this.getAbsolutePath(res.url));
     });
+
+    // _router.events.pipe(
+    //   filter((event) => event instanceof NavigationEnd),
+    //   map(() => this.activatedRoute),
+    //   // map(route => {
+    //   //     while (route.firstChild) {
+    //   //       route = route.firstChild;
+    //   //       return route;
+    //   //     }
+    //   //   }),
+    //   filter((route) => route.outlet === 'primary'),
+    //   mergeMap((route) => route.data),
+    //   mergeMap(data => data.title)
+    // ).subscribe((route_data) => {
+    //   console.log('Router data: ', route_data);
+    //   this.setPageLayout(route_data);
+    // });
+  }
+
+  getAbsolutePath(url: string): string {
+    const idx = url.indexOf('/', 2);
+    console.log('idx: ', idx);
+    console.log(url.indexOf('/', 1));
+    console.log(url.indexOf('/', 2));
+    console.log(url.indexOf('/', 3));
+    if (idx !== -1) {
+      return url.slice(0, idx);
+    } else {
+      return url;
+    }
   }
 
   setPageLayout(routerData: any) {

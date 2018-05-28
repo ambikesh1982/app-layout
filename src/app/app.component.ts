@@ -4,6 +4,7 @@ import { AuthService } from './core/auth.service';
 import { Subscription, Observable } from 'rxjs';
 import { AppUser } from './core/models';
 import { map } from 'rxjs/operators';
+import { LayoutService } from './core/layout.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
   currentUser: Observable<AppUser>;
   subscription: Subscription;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private layoutService: LayoutService) {
     this.loading = true;
 
     this.subscription = router.events.subscribe(routerEvent => {
