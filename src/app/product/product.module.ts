@@ -22,7 +22,6 @@ import { ProductNewComponent } from './product-new/product-new.component';
 import { ProductModifyComponent } from './product-modify/product-modify.component';
 import { ChatComponent } from '../chat/chat/chat.component';
 import { AuthGuard } from '../core/auth.guard';
-import { ChatModule } from '../chat/chat.module';
 
 
 
@@ -55,13 +54,7 @@ const productRoutes: Routes = [
     data: { title: 'PRODUCT_MODIFY_PAGE' },
     resolve: { product: ProductResolver },
     canActivate: [AuthGuard]
-  },
-  {
-    path: 'chat',
-    component: ChatComponent,
-    data: { title: 'CHAT_PAGE' },
-    resolve: { product: ProductResolver }
-  },
+  }
 ];
 
 
@@ -72,7 +65,6 @@ const productRoutes: Routes = [
     MaterialModule,
     ReactiveFormsModule,
     SharedModule,
-    ChatModule,
     RouterModule.forChild(productRoutes),
   ],
   providers: [DialogService],

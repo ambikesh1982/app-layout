@@ -9,7 +9,7 @@ import { ChatResolver } from '../core/chat.resolver';
 
 const chatRoute: Routes = [
   {
-    path: 'product/chat/:fid',
+    path: 'chat/:fid',
     component: ChatComponent,
     data: { title: 'CHAT_PAGE' },
     resolve: { chat: ChatResolver }

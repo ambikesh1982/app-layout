@@ -13,6 +13,7 @@ const routes: Routes = [
     children: [
       { path: 'product', loadChildren: './product/product.module#ProductModule' },
       { path: 'app-cart', loadChildren: './app-cart/app-cart.module#AppCartModule' },
+      { path: 'product', loadChildren: './chat/chat.module#ChatModule' }
     ]
   },
   { path: 'home', component: HomeComponent },
