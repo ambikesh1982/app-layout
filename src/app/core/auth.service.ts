@@ -86,11 +86,19 @@ export class AuthService {
       return this.oAuthLogin(provider);
   }
 
-  private oAuthLogin(provider) {
+  private oAuthLogin(provider): Promise<void>  {
     return this.afAuth.auth.signInWithPopup(provider)
-      .then((credential) => {
-        this.dataService.saveUserDataToFirestore(credential.user);
-        console.log(' a google login method...',credential.user);
+      .then((user) => {
+        console.log(' google login userid...', user);
+        const googleuser: AppUser = {
+          uid: user.user.uid,
+          displayName: user.user.displayName,
+          isAnonymous: user.user.isAnonymous,
+        };
+        console.log(' google login user data...', googleuser);
+
+        this.dataService.saveUserDataToFirestore(googleuser);
+       // console.log(' a google login method...',user);
 
       })
   }

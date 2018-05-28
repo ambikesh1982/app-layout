@@ -24,7 +24,8 @@ export class SignInComponent implements OnInit {
   }
 
   loginGoogle() {
-    console.log('TODO: Setup google login.');
+    this.auth.loginGogle();
+   // console.log('TODO: Setup google login.');
   }
 
   loginAsGuest() {

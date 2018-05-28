@@ -135,6 +135,7 @@ export class DataService {
   }
 
   async saveUserDataToFirestore(user: AppUser) {
+    console.log('User dataservice: ', user);
     const promise = this.appUserRef.doc(user.uid).set(user);
     await promise.then(res => {
       console.log('saveUserDataToFirebase(user): ', user);
@@ -144,10 +145,11 @@ export class DataService {
     });
   }
 
-  updateUserData (user: AppUser) {
-    // TODO: Update user data stored in firebase.
-    console.log('AppUser data: ', user);
+   updateUserData(user) {
+    // Sets user data to firestore on login
+    
   }
+
 
   deleteUser(uid: string) {
     // TODO: Delete user from firebase database.
