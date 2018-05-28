@@ -27,13 +27,12 @@ export class AppShellComponent implements OnInit {
   ];
 
   constructor( private auth: AuthService ) {
-    this.auth.signOut();
   }
 
 
 
   ngOnInit() {
-    this.currentUser = this.auth.currUser;
+    this.currentUser = this.auth.currUser$;
     this.currentUser.pipe(
       map(
         user => {

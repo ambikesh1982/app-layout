@@ -99,7 +99,7 @@ export class DataService {
         newMessage.msgCreatedAt = this.gettimestamp();
         console.log('in-dataservice-chatMessaage', newMessage);
 
-        this.chatRoomRef.doc(`${fooditemId}`).collection(`${sellerId}`).add(newMessage)
+        this.chatRoomRef.doc(`${fooditemId}`).collection(`${buyerId}`).add(newMessage)
           .then(
           result => {
             console.log('first time login, created new room', result);
@@ -110,11 +110,11 @@ export class DataService {
   }
 
 
-  getRoomMessages(fooditem: Fooditem): Observable<ChatMessage[]> {
+  getRoomMessages(fooditem: Fooditem, buyerId): Observable<ChatMessage[]> {
     const sellerId = 'sellerid-dummy';
     const fooditemId = fooditem.id;
     console.log('getroommessage data', fooditem);
-    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${buyerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
     //  return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
 
   }

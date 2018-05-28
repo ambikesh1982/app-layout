@@ -6,13 +6,15 @@ import { MaterialModule } from '../material.module';
 import { ChatComponent } from './chat/chat.component';
 import { Routes, RouterModule } from '@angular/router';
 import { ChatResolver } from '../core/chat.resolver';
+import { AuthGuard } from "../core/auth.guard";
 
 const chatRoute: Routes = [
   {
     path: 'chat/:fid',
     component: ChatComponent,
     data: { title: 'CHAT_PAGE' },
-    resolve: { chat: ChatResolver }
+    resolve: { chat: ChatResolver },
+    canActivate: [AuthGuard]
   },
 ];
 

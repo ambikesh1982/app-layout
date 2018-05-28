@@ -1,8 +1,10 @@
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" *ngIf="fooditem as fi">
 
   <app-product-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="1" [fooditem]="fi" isDetailCard="true"></app-product-card>
-  <a routerLink="/product/chat/{{fooditem.id}}">Livechat</a>
-
+  <div><button mat-raised-button  
+        routerLink="/product/chat/{{fooditem.id}}">LiveChat
+      </button>
+  </div>
 
   <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="2">
     <h3>Payment and delivery options</h3>
@@ -38,7 +40,7 @@
     <mat-card-header>
       <div mat-card-avatar [style.background-image]="'url('+ fi.images[0] +')'" [style.background-size]="'cover'"></div>
       <mat-card-title>Ambikesh</mat-card-title>
-      <mat-card-subtitle>{{fi.address.address}}</mat-card-subtitle>
+      <mat-card-subtitle>{{fi.autoAddressFromMap}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>Hello food lover! Serving you authentic north indian food. Please check my other food posts as well.</mat-card-content>
     <h3>More from Ambikesh</h3>

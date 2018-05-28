@@ -43,13 +43,15 @@ export class AuthService {
   private _isSocialUser$ = new BehaviorSubject(false);
 
   isAnonymous: boolean;
-  currUser: Observable<AppUser | null>;
+  currUser$: Observable<AppUser | null>;
+  currUserID: string;
 
   constructor(public afAuth: AngularFireAuth, private dataService: DataService) {
-    this.currUser = this.afAuth.authState.pipe(
+    this.currUser$ = this.afAuth.authState.pipe(
       switchMap( user => {
         if (user) {
           console.log('### Retrieving user from firestore ###');
+          this.currUserID = user.uid;
           return this.dataService.getUserFromFirestore(user.uid);
         } else {
           return of(null);
@@ -61,11 +63,11 @@ export class AuthService {
   loginAnonymously(): Promise<void> {
     console.log('#Event: loginAnonymously()#');
     return this.afAuth.auth.signInAnonymously()
-      .then( user => {
-
+      .then( resp => {
+          console.log(resp);
         const anomymousUser: AppUser = {
-          uid: user.uid,
-          isAnonymous: user.isAnonymous,
+          uid: resp.user.uid,
+          isAnonymous: resp.user.isAnonymous,
         };
         // Save user data to fireabase...
         console.log('loginAnonymously(): Sign in successfull...');
@@ -108,6 +110,7 @@ export class AuthService {
   }
 
   signOut() {
+    console.log('User log-out successfull');
     this.afAuth.auth.signOut();
 }
 
@@ -131,7 +134,7 @@ handleAuthErrors(e: firebase.FirebaseError) {
       console.log('Error: loginAnonymously()...Anonymous auth not enabled in the Firebase Console.');
       break;
     default:
-      console.error('Error: loginAnonymously()...', e.code);
+       console.error('Error: loginAnonymously()...', e.code);
       console.error('Error: loginAnonymously()...', e.message);
       break;
   }

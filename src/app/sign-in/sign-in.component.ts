@@ -20,22 +20,26 @@ export class SignInComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   ) {
-    this.currentUser = this.auth.currUser;
+    this.currentUser = this.auth.currUser$;
   }
 
   loginGoogle() {
     this.auth.loginGogle();
    // console.log('TODO: Setup google login.');
+    this.router.navigate(['product/list']);
+
   }
 
   loginAsGuest() {
     this.auth.loginAnonymously().then( res => {
-    this.router.navigateByUrl(this.returnURL);
+    //this.router.navigateByUrl(this.returnURL);
+      this.router.navigate(['product/list']);
+
     });
   }
 
   ngOnInit() {
-    this.returnURL = this.route.snapshot.queryParams['returnUrl'] || '/';
+    //this.returnURL = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
 }

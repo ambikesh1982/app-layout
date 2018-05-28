@@ -43,11 +43,11 @@ export class ChatComponent implements OnInit {
 
     this.chat.message = this.inputMessageText;
 
-    this.authService.currUser.subscribe(user => {
-    const buyerid = user.uid;
+    
+    const buyerid = this.authService.currUserID;
     this.dataService.createChatMessages(this.chat, this.fooditem, buyerid);
-    });
-
+  
+    console.log('chat-message buyer id', buyerid);
     console.log('chat-message', this.chat.message);
     this.chat = {};
     this.inputMessageText = '';
@@ -55,7 +55,8 @@ export class ChatComponent implements OnInit {
   }
 
   getChatbyQuery() {
-    this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem);
+    const buyerid = this.authService.currUserID;
+    this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem, buyerid);
     this.chatMessages$.subscribe(messages => {
       console.log('observable', messages);
       this.chatMessage = messages;
