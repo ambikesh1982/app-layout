@@ -82,7 +82,17 @@ export class AuthService {
   }
 
   loginGogle() {
-    console.log('TODO: Setup up a google login method...');
+      const provider = new firebase.auth.GoogleAuthProvider();
+      return this.oAuthLogin(provider);
+  }
+
+  private oAuthLogin(provider) {
+    return this.afAuth.auth.signInWithPopup(provider)
+      .then((credential) => {
+        this.dataService.saveUserDataToFirestore(credential.user);
+        console.log(' a google login method...',credential.user);
+
+      })
   }
 
   upgradeAnonymousUser() {

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatMessage } from '../../core/models';
+import { ChatMessage, Fooditem } from '../../core/models';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../core/data.service';
+import { AuthService } from "../../core/auth.service";
 
 @Component({
   selector: 'app-chat',
@@ -13,9 +14,12 @@ export class ChatComponent implements OnInit {
 
   private chat: ChatMessage;
   private chatMessages$: Observable<ChatMessage[]>;
-          chatMessage: ChatMessage[];
+  chatMessage: ChatMessage[];
+  private fooditem: Fooditem;
   constructor(private route: ActivatedRoute,
-    private dataService: DataService
+    private dataService: DataService,
+    private authService: AuthService
+
   ) {
     this.chat = {};
     // this.roomMessages = [];
@@ -31,23 +35,18 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  createNewchatMessages($event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.chat.messageId = 'Authid';
-    this.chat.message = this.inputMessageText;
-    this.dataService.createChatMessages(this.chat, '1223');
-    console.log('NewchatMessages', this.chat);
-  }
-
   sendRoomMessage($event) {
+
     // this.dataService.createchatMessages()
     event.preventDefault();
     event.stopPropagation();
+
     this.chat.message = this.inputMessageText;
-    this.dataService.createChatMessages(this.chat, '123');
-   // this.dataService.insertRoomMessage(this.chatMessages);
+
+    this.authService.currUser.subscribe(user => {
+    const buyerid = user.uid;
+    this.dataService.createChatMessages(this.chat, this.fooditem, buyerid);
+    });
 
     console.log('chat-message', this.chat.message);
     this.chat = {};
@@ -56,25 +55,26 @@ export class ChatComponent implements OnInit {
   }
 
   getChatbyQuery() {
-    this.chatMessages$ = this.dataService.getRoomMessages();
+    this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem);
     this.chatMessages$.subscribe(messages => {
       console.log('observable', messages);
       this.chatMessage = messages;
     });
 
-    /*{
-    if (messages) {
-      this.roomMessages = messages;
-      console.log('room messages', this.roomMessages);
-    }
-  });*/
+   
 
   }
   ngOnInit() {
-    console.log('Chat-Room', this.route);
+    console.log('Chat-Room route', this.route);
     console.log('input=', this.inputMessageText);
+    // this.getChatbyQuery();
+    // this.scrollToBottom();
+    this.fooditem = this.route.snapshot.data['chat'];
+    console.log('chatdata from Router=', this.fooditem);
+
     this.getChatbyQuery();
-    this.scrollToBottom();
+    // console.log('chatdata from Router=', this.fooditem);
+
   }
 
 }

@@ -44,6 +44,7 @@ import { AuthGuard } from './core/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { AppShellComponent } from './app-shell.component';
 import { PageNotFoundComponent } from './page-not-found.component';
+import { ChatResolver } from "./core/chat.resolver";
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { PageNotFoundComponent } from './page-not-found.component';
     MatListModule,
     // ChatModule,
     AppRoutingModule,
+    ChatModule
   ],
   providers: [
     CanDeactivateGuard,
@@ -90,7 +92,8 @@ import { PageNotFoundComponent } from './page-not-found.component';
     ProductListResolver,
     ProductResolver,
     ScriptLoadService,
-    AuthService
+    AuthService,
+    ChatResolver
   ],
   bootstrap: [AppComponent]
 })

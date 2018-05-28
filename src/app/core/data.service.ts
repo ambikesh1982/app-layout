@@ -23,7 +23,7 @@ export class DataService {
 
   constructor(
     private afs: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
   ) {
     afs.firestore.settings({ timestampsInSnapshots: true });
     this.appUserPath = 'appUsers';
@@ -78,14 +78,14 @@ export class DataService {
 
   // <Storage...>
 
-  uploadImage(imageFile: File, storagePath: string): Observable<UploadTaskSnapshot> {
-    const task = this.storage.upload(storagePath, imageFile);
-    return task.snapshotChanges();
-  }
+  // uploadImage(imageFile: File, storagePath: string): Observable<UploadTaskSnapshot> {
+  //   const task = this.storage.upload(storagePath, imageFile);
+  //   return task.snapshotChanges();
+  // }
 
-  getDownloadURL(imagePath: string) {
-    const storageRef = this.storage.ref(imagePath);
-  }
+  // getDownloadURL(imagePath: string) {
+  //   const storageRef = this.storage.ref(imagePath);
+  // }
 
   // </Storage...>
 
@@ -95,26 +95,36 @@ export class DataService {
 
 // Chat Component Menthods Start
 
-  async createChatMessages(newMessage: ChatMessage, foodId: string) {
+  // Chat Component Menthods Start
 
-    // const newRoomId: string = currentUser(); // this.afs.createId(); buyer+Sellerid
-    // newMessage.messageId = newRoomId;
-    // newMessage.msgCreatedAt = this.gettimestamp();
-    // const promise = this.chatRoomRef.doc(foodId).collection(`${newRoomId}`).doc<ChatMessage>().set(newMessage);
-    // await promise
-    //   .then(
-    //   result => {
-    //     console.log('first time login, created new room', result);
-    //   },
-    //   err => console.error(err, 'You do not have access!')
-    //   );
+  async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, buyerId: string) {
 
-    // return newRoomId;
+        console.log('buyerId',buyerId);
+
+        const sellerId = 'sellerid-dummy'; // fooditem.createdBy;
+        const fooditemId = fooditem.id;
+        // newMessage.messageId = newRoomId;
+        newMessage.msgCreatedAt = this.gettimestamp();
+        console.log('in-dataservice-chatMessaage', newMessage);
+
+        this.chatRoomRef.doc(`${fooditemId}`).collection(`${sellerId}`).add(newMessage)
+          .then(
+          result => {
+            console.log('first time login, created new room', result);
+          },
+          err => console.error(err, 'You do not have access!')
+          );
+      
   }
 
 
-  getRoomMessages(): Observable<ChatMessage[]> {
-    return this.chatRoomRef.doc('chat-room').collection<ChatMessage>('Authid', ref => ref.orderBy('msgCreatedAt')).valueChanges();
+  getRoomMessages(fooditem: Fooditem): Observable<ChatMessage[]> {
+    const sellerId = 'sellerid-dummy';
+    const fooditemId = fooditem.id;
+    console.log('getroommessage data', fooditem);
+    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+    //  return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+
   }
 
 
