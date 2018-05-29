@@ -20,7 +20,7 @@ export class AuthService {
   private _appUser: firebase.User;
   currUser: firebase.User;
 
-  currUser$: Observable<AppUser | null>;
+  currUser$: Observable<AppUser | null>; // Use this in other component't template.
   currUserID: string;
 
   constructor(public afAuth: AngularFireAuth, private dataService: DataService) {
@@ -41,11 +41,11 @@ export class AuthService {
   loginAnonymously(): Promise<void> {
     console.log('#Event: loginAnonymously()#');
     return this.afAuth.auth.signInAnonymously()
-      .then( resp => {
-          console.log(resp);
+      .then((credential: firebase.auth.UserCredential) => {
+        console.log(credential);
         const anomymousUser: AppUser = {
-          uid: resp.uid,
-          isAnonymous: resp.isAnonymous,
+          uid:          credential.user.uid,
+          isAnonymous:  credential.user.isAnonymous,
         };
 
         // Save user data to fireabase...
@@ -73,13 +73,13 @@ export class AuthService {
       .then((credential: firebase.auth.UserCredential) => {
         console.log(' google login userid...', credential);
         const googleuser: AppUser = {
-          uid: credential.user.uid,
-          isAnonymous: credential.user.isAnonymous,
-          displayName: credential.user.displayName,
-          email: credential.user.email,
-          photoURL: credential.user.photoURL,
-          providerId: credential.user.providerId,
-          phoneNumber: credential.user.phoneNumber,
+          uid:          credential.user.uid,
+          isAnonymous:  credential.user.isAnonymous,
+          displayName:  credential.user.displayName,
+          email:        credential.user.email,
+          photoURL:     credential.user.photoURL,
+          providerId:   credential.user.providerId,
+          phoneNumber:  credential.user.phoneNumber,
         };
         console.log(' google login user data...', googleuser);
 

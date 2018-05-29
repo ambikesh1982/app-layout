@@ -35,7 +35,7 @@ export class AppShellComponent implements OnInit {
             return user;
           } else {
             console.log('### User not found - Creating new anonymous user ###');
-            this.auth.loginAnonymously();
+            // this.auth.loginAnonymously();
           }  // else
         }  // user
       )  // map

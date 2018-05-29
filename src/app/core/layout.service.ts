@@ -31,44 +31,40 @@ export class LayoutService {
 
   constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
 
-    this._router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      map(() => this._router),
-    ).subscribe(res => {
-      console.log('res.url: ', res.url);
-      console.log(this.getAbsolutePath(res.url));
-    });
-
-    // _router.events.pipe(
+    // this._router.events.pipe(
     //   filter((event) => event instanceof NavigationEnd),
-    //   map(() => this.activatedRoute),
-    //   // map(route => {
-    //   //     while (route.firstChild) {
-    //   //       route = route.firstChild;
-    //   //       return route;
-    //   //     }
-    //   //   }),
-    //   filter((route) => route.outlet === 'primary'),
-    //   mergeMap((route) => route.data),
-    //   mergeMap(data => data.title)
-    // ).subscribe((route_data) => {
-    //   console.log('Router data: ', route_data);
-    //   this.setPageLayout(route_data);
+    //   map(() => this._router),
+    // ).subscribe(res => {
+    //   console.log('res.url: ', res.url);
+    //   console.log(this.getAbsolutePath(res.url));
     // });
+
+    _router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      // map(route => {
+      //     while (route.firstChild) {
+      //       route = route.firstChild;
+      //       return route;
+      //     }
+      //   }),
+      // filter((route) => route.outlet === 'primary'),
+      // mergeMap((route) => route.data),
+      // mergeMap(data => data.title)
+    ).subscribe((route_data) => {
+      console.log('Router data: ', route_data);
+      this.setPageLayout(route_data);
+    });
   }
 
-  getAbsolutePath(url: string): string {
-    const idx = url.indexOf('/', 2);
-    console.log('idx: ', idx);
-    console.log(url.indexOf('/', 1));
-    console.log(url.indexOf('/', 2));
-    console.log(url.indexOf('/', 3));
-    if (idx !== -1) {
-      return url.slice(0, idx);
-    } else {
-      return url;
-    }
-  }
+  // getAbsolutePath(url: string): string {
+  //   const idx = url.lastIndexOf('/');
+  //   if (idx !== -1) {
+  //     return url.slice(0, idx);
+  //   } else {
+  //     return url;
+  //   }
+  // }
 
   setPageLayout(routerData: any) {
     switch (routerData.title) {
