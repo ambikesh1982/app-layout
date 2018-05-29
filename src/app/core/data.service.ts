@@ -142,7 +142,7 @@ export class DataService {
     const sellerId = 'sellerid-dummy';
     const fooditemId = fooditem.id;
     console.log('getroommessage data', fooditem);
-    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage[]>().valueChanges();
+    return this.chatRoomRef.doc<ChatMessage[]>(`${fooditemId}`).valueChanges();
     //  return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
 
   }
