@@ -4,6 +4,7 @@ import { AuthService } from '../core/auth.service';
 import { AppUser } from '../core/models';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class SignInComponent implements OnInit {
 
-  currentUser: Observable<AppUser>;
+  currentUser$: Observable<AppUser>;
   returnURL: string;
 
   constructor(
@@ -20,7 +21,19 @@ export class SignInComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   ) {
-    this.currentUser = this.auth.currUser$;
+    this.currentUser$ = this.auth.currUser$.pipe(
+      map(
+        user => {
+          if (user != null) {
+            console.log('Current User Logged-in user >>>> ', user);
+            return user;
+          } else {
+            console.log('### User not found - Creating new anonymous user ###');
+            this.auth.loginAnonymously();
+          }  // else
+        }  // user
+      )  // map
+    ); // pipe
   }
 
   loginGoogle() {
@@ -32,14 +45,18 @@ export class SignInComponent implements OnInit {
 
   loginAsGuest() {
     this.auth.loginAnonymously().then( res => {
-    //this.router.navigateByUrl(this.returnURL);
-      this.router.navigate(['product/list']);
+    this.router.navigateByUrl(this.returnURL);
+      // this.router.navigate(['product/list']);
 
     });
   }
 
+  signOut() {
+    this.auth.signOut();
+  }
+
   ngOnInit() {
-    //this.returnURL = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnURL = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
 }

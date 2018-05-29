@@ -7,6 +7,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-product-new',
@@ -28,21 +29,27 @@ export class ProductNewComponent implements OnInit {
     public dialogService: DialogService,
     private dataService: DataService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private auth: AuthService
   ) {
     this.canNavigateAway = false;
+    console.log('Current application User >>>> ', this.auth.currUser.uid);
 
     const firebaseDocKey = dataService.getFirebaseDocumentKey();
+    const crrentAppUserID = this.auth.currUser.uid;
 
-    // Initialize newFooditem
+    // Initialize New Fooditem with some default values
     this.newFooditem = {
       id: firebaseDocKey,
-      // createdBy: ,
+      createdBy: crrentAppUserID,
       images: [],
       availability: [],
       paymentOptions: {},
-      deliveryOptions: {}
+      deliveryOptions: {},
+      createdAt: new Date()
     };
+
+    console.log('Newly initialize fooditem >>>>', this.newFooditem);
   }
 
   ngOnInit() {
@@ -74,7 +81,7 @@ export class ProductNewComponent implements OnInit {
       homeDelivery: false,
       dineIn: false,
       autoAddressFromMap: 'Ambikapur, Chhattisgarh, India',
-      addressFromUser: '',
+      addressFromUser: ['', Validators.required],
     });
   }
 
@@ -108,19 +115,22 @@ export class ProductNewComponent implements OnInit {
     const point = this.autoComplete.addressFromGooleMap;
     this.newFooditem.coordinates = new firebase.firestore.GeoPoint(point.location.lat(), point.location.lng());
 
+    // Add a timestamp
+    this.newFooditem.createdAt = new Date();
+
   }
 
   // Save fooditem to firebase and navigate back to list page
   createFooditem(stepper) {
     this.prepareFooditem(this.productForm);
 
-    console.log('Fooditem to be saved: ', this.newFooditem);
+    console.log('Fooditem to be saved >>>> ', this.newFooditem);
     this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
       rep => {
-        console.log('New fooditem created!');
+        console.log('#### New fooditem created ####');
       },
       error => {
-        console.log('error: Fooditem not created: ', error);
+        console.log('error: Fooditem not created >>>> ', error);
       }
     );
 

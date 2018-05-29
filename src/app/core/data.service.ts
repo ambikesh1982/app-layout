@@ -91,7 +91,7 @@ export class DataService {
 
   async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, buyerId: string) {
 
-        console.log('buyerId',buyerId);
+        console.log('buyerId', buyerId);
 
         const sellerId = 'sellerid-dummy'; // fooditem.createdBy;
         const fooditemId = fooditem.id;
@@ -106,7 +106,6 @@ export class DataService {
           },
           err => console.error(err, 'You do not have access!')
           );
-      
   }
 
 
@@ -147,7 +146,6 @@ export class DataService {
 
    updateUserData(user) {
     // Sets user data to firestore on login
-    
   }
 
 

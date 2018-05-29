@@ -1,18 +1,3 @@
-// Common Error Codes
-// auth/app-deleted
-// auth/app-not-authorized
-// auth/argument-error
-// auth/invalid-api-key
-// auth/invalid-user-token
-// auth/network-request-failed
-// auth/operation-not-allowed
-// auth/requires-recent-login
-// auth/too-many-requests
-// auth/unauthorized-domain
-// auth/user-disabled
-// auth/user-token-expired
-// auth/web-storage-unsupported
-
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable, of, BehaviorSubject } from 'rxjs';
@@ -21,14 +6,8 @@ import * as firebase from 'firebase/app';
 
 import { DataService } from './data.service';
 import { AppUser } from './models';
+import { FirebaseError } from 'firebase/app';
 
-interface User {
-  uid: string;
-  isAnonymous: boolean;
-  email?: string | null;
-  photoURL?: string;
-  displayName?: string;
-}
 
 
 @Injectable({
@@ -37,12 +16,10 @@ interface User {
 
 export class AuthService {
 
-  private _user$: Observable<firebase.User>;
+  private _appUser$: Observable<firebase.User>;
   private _appUser: firebase.User;
-  private _isAnonymousUser$: Observable<boolean>;
-  private _isSocialUser$ = new BehaviorSubject(false);
+  currUser: firebase.User;
 
-  isAnonymous: boolean;
   currUser$: Observable<AppUser | null>;
   currUserID: string;
 
@@ -52,6 +29,7 @@ export class AuthService {
         if (user) {
           console.log('### Retrieving user from firestore ###');
           this.currUserID = user.uid;
+          this.currUser = user;
           return this.dataService.getUserFromFirestore(user.uid);
         } else {
           return of(null);
@@ -66,21 +44,23 @@ export class AuthService {
       .then( resp => {
           console.log(resp);
         const anomymousUser: AppUser = {
-          uid: resp.user.uid,
-          isAnonymous: resp.user.isAnonymous,
+          uid: resp.uid,
+          isAnonymous: resp.isAnonymous,
         };
+
         // Save user data to fireabase...
         console.log('loginAnonymously(): Sign in successfull...');
         return this.dataService.saveUserDataToFirestore(anomymousUser);
+
       })
       .catch(
         ( e: firebase.FirebaseError) => {
           this.handleAuthErrors(e);
-          // return of(null);
         });
   }
+
   get currentUser() {
-    return this._appUser;
+    return this.currUser;
   }
 
   loginGogle() {
@@ -90,19 +70,25 @@ export class AuthService {
 
   private oAuthLogin(provider): Promise<void>  {
     return this.afAuth.auth.signInWithPopup(provider)
-      .then((user) => {
-        console.log(' google login userid...', user);
+      .then((credential: firebase.auth.UserCredential) => {
+        console.log(' google login userid...', credential);
         const googleuser: AppUser = {
-          uid: user.user.uid,
-          displayName: user.user.displayName,
-          isAnonymous: user.user.isAnonymous,
+          uid: credential.user.uid,
+          isAnonymous: credential.user.isAnonymous,
+          displayName: credential.user.displayName,
+          email: credential.user.email,
+          photoURL: credential.user.photoURL,
+          providerId: credential.user.providerId,
+          phoneNumber: credential.user.phoneNumber,
         };
         console.log(' google login user data...', googleuser);
 
         this.dataService.saveUserDataToFirestore(googleuser);
        // console.log(' a google login method...',user);
 
-      })
+      }).catch((e: FirebaseError) => {
+        this.handleAuthErrors(e);
+      });
   }
 
   upgradeAnonymousUser() {

@@ -12,11 +12,6 @@ export interface AppToolbar {
   showGoBackIcon?: boolean;
 }
 
-// export interface FabButton {
-//   fabPage: string;
-//   fabIcon: string;
-// }
-
 @Injectable()
 export class LayoutService {
 
@@ -33,7 +28,6 @@ export class LayoutService {
   };
 
   appToolBar$ = new BehaviorSubject<AppToolbar>(this.defaultToolbar);
-  // fabButton$ = new BehaviorSubject<FabButton>(null);
 
   constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
 

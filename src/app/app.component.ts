@@ -23,7 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(private router: Router, private layoutService: LayoutService, private auth: AuthService) {
-    this.auth.signOut();
+    // this.auth.signOut();
     this.loading = true;
 
     this.subscription = router.events.subscribe(routerEvent => {

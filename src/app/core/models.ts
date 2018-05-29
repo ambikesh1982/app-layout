@@ -32,7 +32,7 @@ export interface AppUser {
     address?: string;
     photoURL?: string;
     email?: string;
-    phoneNumber?: number;
+    phoneNumber?: string;
     providerId?: string;
     isSeller?: boolean;
     isBuyer?: boolean;

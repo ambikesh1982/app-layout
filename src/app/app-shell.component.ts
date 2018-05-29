@@ -12,7 +12,7 @@ import { AppUser } from './core/models';
 export class AppShellComponent implements OnInit {
 
   title = '';
-  currentUser: Observable<AppUser>;
+  currentUser$: Observable<AppUser>;
 
 
   navList = [
@@ -27,24 +27,25 @@ export class AppShellComponent implements OnInit {
   ];
 
   constructor( private auth: AuthService ) {
-  }
+    this.currentUser$ = this.auth.currUser$.pipe(
+      map(
+        user => {
+          if (user != null) {
+            console.log('Current User Logged-in user >>>> ', user);
+            return user;
+          } else {
+            console.log('### User not found - Creating new anonymous user ###');
+            this.auth.loginAnonymously();
+          }  // else
+        }  // user
+      )  // map
+    ); // pipe
+  }  // constructor
 
 
 
   ngOnInit() {
-    this.currentUser = this.auth.currUser$;
-    this.currentUser.pipe(
-      map(
-        user => {
-          if (user != null) {
-            console.log('Current User: ', user);
-          } else {
-            console.log('### User not found - Creating new anonymous user ###');
-            this.auth.loginAnonymously();
-          } // else
-        } // user
-      ) // map
-    ); // pipe
+
   } // ngOnInit
 
 
@@ -54,6 +55,10 @@ export class AppShellComponent implements OnInit {
 
   loginGoogle() {
     this.auth.loginGogle();
+  }
+
+  signOut() {
+    this.auth.signOut();
   }
 
 }
