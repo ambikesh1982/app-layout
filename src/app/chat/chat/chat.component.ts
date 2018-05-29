@@ -45,7 +45,11 @@ export class ChatComponent implements OnInit {
 
     
     const buyerid = this.authService.currUserID;
-    this.dataService.createChatMessages(this.chat, this.fooditem, buyerid);
+    const sellerid = this.fooditem.createdBy;
+    const chatroomName = buyerid+sellerid;
+    console.log('chat-message buyer + seller id', chatroomName);
+
+    this.dataService.createChatMessages(this.chat, this.fooditem, chatroomName);
   
     console.log('chat-message buyer id', buyerid);
     console.log('chat-message', this.chat.message);
@@ -56,7 +60,14 @@ export class ChatComponent implements OnInit {
 
   getChatbyQuery() {
     const buyerid = this.authService.currUserID;
-    this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem, buyerid);
+    const sellerid = this.fooditem.createdBy;
+    const chatroomName = buyerid + sellerid;
+    console.log('chat-message buyer + seller id', chatroomName);
+    this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem, chatroomName);
+   // this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
+
+    
+
     this.chatMessages$.subscribe(messages => {
       console.log('observable', messages);
       this.chatMessage = messages;
