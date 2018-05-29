@@ -1,3 +1,19 @@
-<p>
-  admin works!
-</p>
+<mat-card>
+  <mat-card-title>
+    Firebase Modules ....
+  </mat-card-title>
+  <mat-selection-list #shoes>
+    <mat-list-option *ngFor="let module of firebaseModules">
+      {{module}}
+    </mat-list-option>
+  </mat-selection-list>
+  
+  <p>
+    Options selected: {{shoes.selectedOptions.selected.length}}
+  </p>
+
+  <mat-list>
+    <mat-list-item *ngFor="let col of usersCollection|async">{{col|json}}</mat-list-item>
+  </mat-list>
+
+</mat-card>

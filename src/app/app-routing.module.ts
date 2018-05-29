@@ -4,11 +4,9 @@ import { AppShellComponent } from './app-shell.component';
 import { enableLogging } from '@firebase/database-types';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { HomeComponent } from './home/home.component';
-// import { ProductListComponent } from './product/product-list/product-list.component';
-// import { ProductModule } from './product/product.module';
+
 
 const routes: Routes = [
-  { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: '', component: AppShellComponent,
     children: [
       { path: 'product', loadChildren: './product/product.module#ProductModule' },
@@ -18,6 +16,8 @@ const routes: Routes = [
   },
   { path: 'home', component: HomeComponent },
   { path: 'sign-in', loadChildren: './sign-in/sign-in.module#SignInModule' },
+  { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
+  { path: '', redirectTo: '', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 

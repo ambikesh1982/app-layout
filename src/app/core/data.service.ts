@@ -1,44 +1,66 @@
-import { Injectable, Component } from '@angular/core';
+import { Injectable } from '@angular/core';
+
 // Firebase imports
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
+import { UploadTaskSnapshot } from '@firebase/storage-types';
+import * as firebase from 'firebase/app';
+
 // rxjs imports
 import { Observable, of } from 'rxjs';
 
 // local imports
 import { Fooditem, ChatMessage, AppUser } from './models';
 
-// import { FOODITEMS } from './mock-data';
-import { UploadTaskSnapshot } from '@firebase/storage-types';
-import * as firebase from 'firebase';
+
+const APP_ROOT_COLLECTIONS = {
+  'PRODUCTS': 'foodListData',
+  'USERS': 'appUsers',
+  'CHATS': 'chat-data',
+};
 
 @Injectable()
 export class DataService {
-  private appUserPath: string;
-  private chatroomPath: string;
+  private appUserPath:     string;
+  private chatroomPath:    string;
   private productlistPath: string;
-  private appUserRef: AngularFirestoreCollection<AppUser>;
+  private appUserRef:     AngularFirestoreCollection<AppUser>;
   private productlistRef: AngularFirestoreCollection<Fooditem>;
-  private chatRoomRef: AngularFirestoreCollection<ChatMessage>;
+  private chatRoomRef:    AngularFirestoreCollection<ChatMessage>;
 
   constructor(
     private afs: AngularFirestore,
     private storage: AngularFireStorage,
   ) {
     afs.firestore.settings({ timestampsInSnapshots: true });
-    this.appUserPath = 'appUsers';
-    this.productlistPath = 'foodListData';
-    this.chatroomPath = 'chat-data';
-    this.appUserRef = this.afs.collection<AppUser>(this.appUserPath);
-    this.productlistRef = this.afs.collection<Fooditem>(this.productlistPath);
-    this.chatRoomRef = this.afs.collection<ChatMessage>(this.chatroomPath);
+
+    this.appUserPath = APP_ROOT_COLLECTIONS['USERS'];
+    this.productlistPath = APP_ROOT_COLLECTIONS['PRODUCTS'];
+    this.chatroomPath = APP_ROOT_COLLECTIONS['CHATS'];
+
+    this.appUserRef = this.createFirestoreCollectionRef(APP_ROOT_COLLECTIONS['USERS']);
+    this.productlistRef = this.createFirestoreCollectionRef(APP_ROOT_COLLECTIONS['PRODUCTS']);
+    this.chatRoomRef = this.createFirestoreCollectionRef(APP_ROOT_COLLECTIONS['CHATS']);
+
   }
 
-  // product methods
+  // #### Generic method to create Collection references. ####
+
+  createFirestoreCollectionRef(collectionPath: string): AngularFirestoreCollection<any> {
+    return this.afs.collection<any>(collectionPath);
+  }  // createFirestoreCollectionRef
 
   getFirebaseDocumentKey(): string {
     return this.afs.createId();
   }
+
+  get serverTimestampFromFirestore() {
+    return firebase.firestore.FieldValue.serverTimestamp();
+  }
+
+  // #### product methods ####
+
+
 
   getProductList(): Observable<Fooditem[]> {
     return this.productlistRef.valueChanges();
@@ -81,9 +103,7 @@ export class DataService {
 
   // </Storage...>
 
-  gettimestamp() {
-    return firebase.firestore.FieldValue.serverTimestamp();
-  }
+
 
 // Chat Component Menthods Start
 
@@ -96,7 +116,7 @@ export class DataService {
         const sellerId = 'sellerid-dummy'; // fooditem.createdBy;
         const fooditemId = fooditem.id;
         // newMessage.messageId = newRoomId;
-        newMessage.msgCreatedAt = this.gettimestamp();
+    newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
         console.log('in-dataservice-chatMessaage', newMessage);
 
         this.chatRoomRef.doc(`${fooditemId}`).collection(`${buyerId}`).add(newMessage)
