@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd, ChildActivationEnd, RouterEvent } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { filter, map, mergeMap, tap } from 'rxjs/operators';
+import { filter, map, mergeMap, tap, take } from 'rxjs/operators';
 
 export interface AppToolbar {
   pageTitle?: string;
@@ -31,82 +31,84 @@ export class LayoutService {
 
   constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
 
-    // this._router.events.pipe(
-    //   filter((event) => event instanceof NavigationEnd),
-    //   map(() => this._router),
-    // ).subscribe(res => {
-    //   console.log('res.url: ', res.url);
-    //   console.log(this.getAbsolutePath(res.url));
-    // });
+    this._router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      map(() => {
+        let route = this.activatedRoute.firstChild;
+        let child = route;
 
-    _router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      map(() => this.activatedRoute),
-      // map(route => {
-      //     while (route.firstChild) {
-      //       route = route.firstChild;
-      //       return route;
-      //     }
-      //   }),
-      // filter((route) => route.outlet === 'primary'),
-      // mergeMap((route) => route.data),
-      // mergeMap(data => data.title)
-    ).subscribe((route_data) => {
-      console.log('Router data: ', route_data);
-      this.setPageLayout(route_data);
+        while (child) {
+          if (child.firstChild) {
+            child = child.firstChild;
+            route = child;
+          } else {
+            child = null;
+          }
+        }
+
+        return route;
+      }),
+      mergeMap(route => route.data)
+    ).subscribe(routerData => {
+      console.log('Router data: ', routerData);
+      this.setPageLayout(routerData);
     });
-  }
 
-  // getAbsolutePath(url: string): string {
-  //   const idx = url.lastIndexOf('/');
-  //   if (idx !== -1) {
-  //     return url.slice(0, idx);
-  //   } else {
-  //     return url;
-  //   }
-  // }
+
+    // _router.events.pipe(
+    //   filter((event) => event instanceof NavigationEnd),
+    //   map(() => this.activatedRoute),
+    //   // map(route => {
+    //   //     while (route.firstChild) {
+    //   //       route = route.firstChild;
+    //   //       return route;
+    //   //     }
+    //   //   }),
+    //   // filter((route) => route.outlet === 'primary'),
+    //   // mergeMap((route) => route.data),
+    //   // mergeMap(data => data.title)
+    // ).subscribe((route_data) => {
+    //   console.log('Router data: ', route_data);
+    //   this.setPageLayout(route_data);
+    // });
+  }
 
   setPageLayout(routerData: any) {
     switch (routerData.title) {
       case 'PRODUCT_LIST_PAGE':
-        // this.fabButton$.next({
-        //   fabPage: routerData.title,
-        //   fabIcon: 'search'
-        // });
         this.appToolBar$.next(this.defaultToolbar);
         break;
       case 'PRODUCT_DETAIL_PAGE':
-        // this.fabButton$.next({
-        //   fabPage: routerData.title,
-        //   fabIcon: 'shopping_basket'
-        // });
         this.appToolBar$.next({
           pageTitle: routerData.product.title,
           showCancelIcon: true
         });
         break;
       case 'PRODUCT_NEW_PAGE':
-        // this.fabButton$.next({
-        //   fabPage: routerData.title,
-        //   fabIcon: 'arrow_forward'
-        // });
         this.appToolBar$.next({
           pageTitle: 'New fooditem',
           showCancelIcon: true
         });
         break;
       case 'APP_CART_PAGE':
-        // this.fabButton$.next({
-        //   fabPage: routerData.title,
-        //   fabIcon: 'done'
-        // });
-        this.appToolBar$.next(this.cancelToolbar);
+        this.appToolBar$.next({
+          pageTitle: 'Cart',
+          showCancelIcon: true
+        });
+        break;
+      case 'APP_SEARCH_PAGE':
+        this.appToolBar$.next({
+          pageTitle: 'Search',
+          showCancelIcon: true
+        });
+        break;
+      case 'CHAT_PAGE':
+        this.appToolBar$.next({
+          pageTitle: 'Search',
+          showGoBackIcon: true
+        });
         break;
       default:
-        // this.fabButton$.next({
-        //   fabPage: routerData.title,
-        //   fabIcon: 'arrow_forward'
-        // });
         this.appToolBar$.next(this.defaultToolbar);
         break;
     }

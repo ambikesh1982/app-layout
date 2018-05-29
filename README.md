@@ -63,5 +63,38 @@ Don't forget to add and commit the merge.
 git pull now should work fine.
 
 
+Application-chats:
 
+Collection | Document | Collection | Document
+AllChats -> FoodID -> BuyerId/SellerID -> uniqueID -> {authot: buyerID, Hi, 8AM}
 
+chat {
+    sender: string,
+    message: string,
+    createdAt: new Date()
+}
+
+ChatRoomsTest { // collection
+    docID { // document
+        buyer: string;
+        seller: string;
+        messages {
+            docID { // document
+                sender: buyerName,
+                message: hi,
+                createdAt: 8PM
+            }
+            docID { // document
+                sender: buyerName,
+                message: Hello,
+                createdAt: 8:05 PM
+            }
+            docID { // document
+                sender: sellerName,
+                message: Hello,
+                createdAt: 8:10 PM
+            }    
+        }
+    }
+    
+}

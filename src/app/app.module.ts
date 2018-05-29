@@ -44,7 +44,7 @@ import { AuthGuard } from './core/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { AppShellComponent } from './app-shell.component';
 import { PageNotFoundComponent } from './page-not-found.component';
-import { ChatResolver } from "./core/chat.resolver";
+import { ChatResolver } from './core/chat.resolver';
 
 
 @NgModule({
@@ -64,23 +64,17 @@ import { ChatResolver } from "./core/chat.resolver";
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
-    // AppCartModule,
-    AppSearchModule,
     BrowserAnimationsModule,
     BrowserModule,
     FlexLayoutModule,
     MaterialModule,
     SharedModule,
-    // SignInModule,
-    // LayoutModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    // ChatModule,
     AppRoutingModule,
-    ChatModule
   ],
   providers: [
     CanDeactivateGuard,

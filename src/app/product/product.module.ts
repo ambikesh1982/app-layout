@@ -29,20 +29,7 @@ import { AuthGuard } from '../core/auth.guard';
 const productRoutes: Routes = [
   // { path: '', redirectTo: '/product/list', pathMatch: 'full' },
   {
-    path: 'list',
-    component: ProductListComponent,
-    data: { title: 'PRODUCT_LIST_PAGE' },
-    // resolve: { products: ProductListResolver}
-  },
-  {
-    path: 'detail/:id',
-    component: ProductDetailComponent,
-    data: { title: 'PRODUCT_DETAIL_PAGE' },
-    canDeactivate: [CanDeactivateGuard],
-    resolve: { product: ProductResolver }
-  },
-  {
-    path: 'addnew',
+    path: 'add-new',
     component: ProductNewComponent,
     data: { title: 'PRODUCT_NEW_PAGE' },
     canDeactivate: [CanDeactivateGuard],
@@ -54,7 +41,20 @@ const productRoutes: Routes = [
     data: { title: 'PRODUCT_MODIFY_PAGE' },
     resolve: { product: ProductResolver },
     canActivate: [AuthGuard]
-  }
+  },
+  {
+    path: 'detail/:id',
+    component: ProductDetailComponent,
+    data: { title: 'PRODUCT_DETAIL_PAGE' },
+    canDeactivate: [CanDeactivateGuard],
+    resolve: { product: ProductResolver }
+  },
+  {
+    path: '',
+    component: ProductListComponent,
+    data: { title: 'PRODUCT_LIST_PAGE' },
+    // resolve: { products: ProductListResolver}
+  },
 ];
 
 

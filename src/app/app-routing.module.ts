@@ -7,18 +7,20 @@ import { HomeComponent } from './home/home.component';
 
 
 const routes: Routes = [
-  { path: '', component: AppShellComponent,
+  {
+    path: '', component: AppShellComponent, data: { title: 'APP_SHELL_PAGE' },
     children: [
-      { path: 'product', loadChildren: './product/product.module#ProductModule' },
       { path: 'app-cart', loadChildren: './app-cart/app-cart.module#AppCartModule' },
-      { path: 'product', loadChildren: './chat/chat.module#ChatModule' }
+      { path: 'product', loadChildren: './chat/chat.module#ChatModule' },
+      { path: 'search', loadChildren: './app-search/app-search.module#AppSearchModule' },
+      { path: '', loadChildren: './product/product.module#ProductModule' },
     ]
   },
-  { path: 'home', component: HomeComponent },
-  { path: 'sign-in', loadChildren: './sign-in/sign-in.module#SignInModule' },
   { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
+  { path: 'home', component: HomeComponent, data: { title: 'APP_HOME_PAGE' } },
+  { path: 'sign-in', loadChildren: './sign-in/sign-in.module#SignInModule' },
   { path: '', redirectTo: '', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent, data: { title: 'PAGE_NOT_FOUND_PAGE' } }
 ];
 
 @NgModule({
