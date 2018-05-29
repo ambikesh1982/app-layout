@@ -109,11 +109,20 @@ export class DataService {
   }
 
 
-  getRoomMessages(fooditem: Fooditem, buyerId): Observable<ChatMessage[]> {
+  getRoomMessages(fooditem: Fooditem, chatRoom): Observable<ChatMessage[]> {
     const sellerId = 'sellerid-dummy';
     const fooditemId = fooditem.id;
     console.log('getroommessage data', fooditem);
-    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${buyerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${chatRoom}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+
+  }
+
+
+  getSellerMessages(fooditem: Fooditem): Observable<ChatMessage[]> {
+    const sellerId = 'sellerid-dummy';
+    const fooditemId = fooditem.id;
+    console.log('getroommessage data', fooditem);
+    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage[]>().valueChanges();
     //  return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
 
   }
