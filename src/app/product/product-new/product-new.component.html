@@ -5,7 +5,7 @@
     style="padding: 0px"  
     #stepper>
 
-    <mat-step [completed]="upload.imageURLs.length != 0">
+    <mat-step [completed]="upload.images.length != 0">
       <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
     </mat-step>
 

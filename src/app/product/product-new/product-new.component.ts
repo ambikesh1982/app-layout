@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../../core/data.service';
 import { DialogService } from '../../core/dialog.service';
@@ -8,6 +8,7 @@ import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from '../../core/auth.service';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 @Component({
   selector: 'app-product-new',
@@ -15,7 +16,7 @@ import { AuthService } from '../../core/auth.service';
   styleUrls: ['./product-new.component.scss']
 })
 
-export class ProductNewComponent implements OnInit {
+export class ProductNewComponent implements OnInit, OnDestroy {
 
   newFooditem: Fooditem;
   productForm: FormGroup;
@@ -30,7 +31,8 @@ export class ProductNewComponent implements OnInit {
     private dataService: DataService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private auth: AuthService
+    private auth: AuthService,
+    private storage: AngularFireStorage
   ) {
     this.canNavigateAway = false;
     console.log('Current application User >>>> ', this.auth.currUser.uid);
@@ -127,16 +129,22 @@ export class ProductNewComponent implements OnInit {
     console.log('Fooditem to be saved >>>> ', this.newFooditem);
     this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
       rep => {
-        console.log('#### New fooditem created ####');
+        console.log('#### New fooditem created #### :', this.newFooditem);
+        this.canNavigateAway = true;
+        console.log('New Fooditme after upload: ', this.newFooditem);
+        this.router.navigate(['/']);
       },
       error => {
         console.log('error: Fooditem not created >>>> ', error);
       }
     );
+  }
 
-    this.canNavigateAway = true;
-    this.router.navigate(['/']);
-    console.log('Newfooditem: ', this.newFooditem);
+  cleanupOnCancel() {
+      this.upload.images.forEach( image => {
+        this.storage.ref(image).delete();
+        console.log('Cleanup: Delete the image from fb: ', image);
+      });
   }
 
   // Stop user from accidently navigation away from this page.
@@ -146,5 +154,12 @@ export class ProductNewComponent implements OnInit {
     }
     return this.canNavigateAway;
     }
+
+  ngOnDestroy() {
+    console.log('#### From ngOnDestroy ####');
+    if (!this.canNavigateAway) {
+      this.cleanupOnCancel();
+    }
+  }
 
 }

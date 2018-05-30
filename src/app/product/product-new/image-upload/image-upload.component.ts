@@ -1,11 +1,10 @@
 import { Component, OnInit, Input, OnDestroy, } from '@angular/core';
 import { DataService } from '../../../core/data.service';
 import { Fooditem } from '../../../core/models';
-// tslint:disable-next-line:import-blacklist
-import { Observable, Subscription, Subject } from 'rxjs';
-import { EventEmitter } from 'events';
+import { Observable, Subscription } from 'rxjs';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { finalize, map, catchError, mergeMap, combineLatest } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-image-upload',
@@ -17,34 +16,29 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   @Input() productId: string;
 
-  completed: boolean;
-
   maxFileUploadCount: number;
   selectedFileCount: number;
 
   /** STORAGE **/
   storagePath: string;
-  imageURLs: string[];
   images: string[];
-  previewURL: string;
   uploadPercent$: Observable<number>;
-  downloadURL$: Observable<string>;
-  downloadURLs: Observable<string>[];
+  downloadURL$: Observable<string>[];
+  previewURL$: Observable<string>;
 
   subscription: Subscription;
 
   constructor(private dataService: DataService, private storage: AngularFireStorage ) {
     this.storagePath = 'foodz9';
-    this.imageURLs = [];
     this.images = [];
     this.maxFileUploadCount = 4;
     this.selectedFileCount = 0;
-    this.downloadURL$ = null;
-    this.downloadURLs = [];
+    this.downloadURL$ = [];
   }
 
   // <Storage...>
   fileController(imageFiles: FileList) {
+    console.log('From fileController');
     if (imageFiles[0]) {
 
       const image = imageFiles[0];
@@ -58,26 +52,22 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       // Get download url
       this.subscription = task.snapshotChanges().pipe(
         finalize(() => {
-          this.downloadURL$ = fileRef.getDownloadURL().pipe(
-            map(url => {
-              console.log('From downLoadURL.pipe', url);
-              this.previewURL = url;
-              this.imageURLs.push(url);
-              this.images.push(url);
-              this.manageFileCount(imageFiles.length);
-              return url;
+          this.images.push(imagePath);
+          this.previewURL$ = fileRef.getDownloadURL();
+          this.downloadURL$.push(this.previewURL$);
+          this.manageFileCount(imageFiles.length);
             })
-          );
-        })
       ).subscribe();
     }
   }
 
-  deleteImage(img) {
-    const index = this.imageURLs.indexOf(img);
+  deleteImage(img: Observable<string>) {
+    const index = this.downloadURL$.indexOf(img);
     if (index !== -1) {
-      this.imageURLs.splice(index, 1);
-      this.previewURL = this.imageURLs[0];
+      this.downloadURL$.splice(index, 1);
+      this.previewURL$ = this.downloadURL$[0];
+      this.storage.ref(this.images[index]).delete();
+      this.images.splice(index, 1);
       this.manageFileCount(-1);
     }
   }
