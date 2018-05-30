@@ -29,10 +29,6 @@ export class SignInComponent implements OnInit {
             return user;
           } else {
             console.log('### User not found - Creating new anonymous user ###');
-<<<<<<< HEAD
-            return;
-=======
->>>>>>> 8f8b0a89ac623be9c72ea28a4185937a8e1f39b7
             // this.auth.loginAnonymously();
           }  // else
         }  // user
@@ -41,22 +37,11 @@ export class SignInComponent implements OnInit {
   }
 
   loginGoogle() {
-<<<<<<< HEAD
-    this.auth.loginGogle().then(resp =>{
-
-      this.router.navigateByUrl(this.returnURL);
-
-    });
-   // console.log('TODO: Setup google login.');
-    // this.router.navigate(['product/list']);
-
-=======
     this.auth.loginGogle().then(
       res => {
         this.router.navigateByUrl(this.returnURL);
       }
     );
->>>>>>> 8f8b0a89ac623be9c72ea28a4185937a8e1f39b7
   }
 
   loginAsGuest() {

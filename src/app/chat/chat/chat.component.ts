@@ -42,15 +42,12 @@ export class ChatComponent implements OnInit {
     event.stopPropagation();
 
     this.chat.message = this.inputMessageText;
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 8f8b0a89ac623be9c72ea28a4185937a8e1f39b7
     const buyerid = this.authService.currUserID;
-    // const sellerid = this.fooditem.createdBy;
-    // const chatroomName = buyerid+sellerid;
+    const sellerid = this.fooditem.createdBy;
     const chatroomName = buyerid;
+    // const chatroomName = buyerid;
     console.log('chat-message buyer + seller id', chatroomName);
 
     this.dataService.createChatMessages(this.chat, this.fooditem, chatroomName);
@@ -65,7 +62,7 @@ export class ChatComponent implements OnInit {
   getChatbyQuery() {
     const buyerid = this.authService.currUserID;
     const sellerid = this.fooditem.createdBy;
-    const chatroomName = buyerid + sellerid;
+    const chatroomName = buyerid;
     console.log('chat-message buyer + seller id', chatroomName);
     this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem, chatroomName);
    // this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
