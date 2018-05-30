@@ -64,7 +64,9 @@ export class DataService {
 
 
   getProductList(): Observable<Fooditem[]> {
-    return this.productlistRef.valueChanges();
+    this.productlistRef.ref.orderBy('createdAt', 'desc');
+    return this.afs.collection<Fooditem>
+    ('foodListData', ref => ref.orderBy('createdAt', 'desc')).valueChanges();
   }
 
 

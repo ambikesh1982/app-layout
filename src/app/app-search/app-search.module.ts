@@ -9,7 +9,7 @@ import { AgmCoreModule } from '@agm/core';
 import { SharedModule } from '../shared/shared.module';
 
 const appSearchRoutes: Routes = [
-  { path: 'search', component: SearchComponent, data: {title: 'APP_SEARCH_PAGE'} }
+  { path: '', component: SearchComponent, data: {title: 'APP_SEARCH_PAGE'} }
 ];
 
 @NgModule({

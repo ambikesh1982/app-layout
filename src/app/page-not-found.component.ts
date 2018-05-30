@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
       <mat-card>
         <mat-card-title> You landed up at unknown territori :(</mat-card-title>
         <br>
-        <mat-card-title> Click <a routerLink="/product/list">here</a> to reach home :)</mat-card-title>
+        <mat-card-title> Click <a routerLink="/">here</a> to reach home :)</mat-card-title>
       </mat-card>
     </div>
   `,

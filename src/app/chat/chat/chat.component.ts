@@ -3,7 +3,7 @@ import { ChatMessage, Fooditem } from '../../core/models';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../core/data.service';
-import { AuthService } from "../../core/auth.service";
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-chat',
@@ -42,8 +42,11 @@ export class ChatComponent implements OnInit {
     event.stopPropagation();
 
     this.chat.message = this.inputMessageText;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 8f8b0a89ac623be9c72ea28a4185937a8e1f39b7
     const buyerid = this.authService.currUserID;
     // const sellerid = this.fooditem.createdBy;
     // const chatroomName = buyerid+sellerid;
