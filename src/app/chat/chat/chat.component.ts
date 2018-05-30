@@ -42,13 +42,16 @@ export class ChatComponent implements OnInit {
     event.stopPropagation();
 
     this.chat.message = this.inputMessageText;
+
+
     const buyerid = this.authService.currUserID;
     const sellerid = this.fooditem.createdBy;
-    const chatroomName = buyerid+sellerid;
+    const chatroomName = buyerid;
+    // const chatroomName = buyerid;
     console.log('chat-message buyer + seller id', chatroomName);
 
     this.dataService.createChatMessages(this.chat, this.fooditem, chatroomName);
-  
+
     console.log('chat-message buyer id', buyerid);
     console.log('chat-message', this.chat.message);
     this.chat = {};
@@ -59,19 +62,17 @@ export class ChatComponent implements OnInit {
   getChatbyQuery() {
     const buyerid = this.authService.currUserID;
     const sellerid = this.fooditem.createdBy;
-    const chatroomName = buyerid + sellerid;
+    const chatroomName = buyerid;
     console.log('chat-message buyer + seller id', chatroomName);
     this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem, chatroomName);
    // this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
 
-    
-
     this.chatMessages$.subscribe(messages => {
-      console.log('observable', messages);
+      console.log('observable chat messages', messages);
       this.chatMessage = messages;
     });
 
-   
+
 
   }
   ngOnInit() {

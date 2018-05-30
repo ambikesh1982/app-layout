@@ -111,18 +111,22 @@ export class DataService {
 
   // Chat Component Menthods Start
 
-  async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, buyerId: string) {
+  async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, chatRoomName: string) {
 
-        console.log('buyerId', buyerId);
 
-        const sellerId = 'sellerid-dummy'; // fooditem.createdBy;
+        const sellerId = fooditem.createdBy; // fooditem.createdBy;
         const fooditemId = fooditem.id;
-        // newMessage.messageId = newRoomId;
-    newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
-        console.log('in-dataservice-chatMessaage', newMessage);
+        newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
+        newMessage.createdByUserId = chatRoomName;
 
-        this.chatRoomRef.doc(`${fooditemId}`).collection(`${buyerId}`).add(newMessage)
-          .then(
+        console.log('From Chat seller-id', sellerId);
+        console.log('From Chat buyer-id', chatRoomName);
+
+       // this.chatRoomRef.doc(`${fooditemId}`).set({ buyerid: `${buyerId}`, sellerid: `${sellerId}`}, {merge: false});
+
+      //  this.chatRoomRef.doc(`${fooditemId}`).collection('conversation').add(newMessage)
+        this.chatRoomRef.doc(`${fooditemId}`).collection(`${chatRoomName}`).add(newMessage)
+        .then(
           result => {
             console.log('first time login, created new room', result);
           },
@@ -131,11 +135,14 @@ export class DataService {
   }
 
 
-  getRoomMessages(fooditem: Fooditem, chatRoom): Observable<ChatMessage[]> {
+  getRoomMessages(fooditem: Fooditem, chatRoomName): Observable<ChatMessage[]> {
     const sellerId = 'sellerid-dummy';
     const fooditemId = fooditem.id;
     console.log('getroommessage data', fooditem);
-    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${chatRoom}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+    // tslint:disable-next-line:max-line-length
+    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${chatRoomName}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+   // tslint:disable-next-line:max-line-length
+   // return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
 
   }
 
