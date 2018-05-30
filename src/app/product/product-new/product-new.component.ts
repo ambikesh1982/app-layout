@@ -135,7 +135,7 @@ export class ProductNewComponent implements OnInit {
     );
 
     this.canNavigateAway = true;
-    this.router.navigate(['product/list']);
+    this.router.navigate(['/']);
     console.log('Newfooditem: ', this.newFooditem);
   }
 

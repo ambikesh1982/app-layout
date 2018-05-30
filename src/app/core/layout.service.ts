@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd, ChildActivationEnd, RouterEvent } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd, RouterEvent } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map, mergeMap, tap, take } from 'rxjs/operators';
 
@@ -32,7 +32,7 @@ export class LayoutService {
   constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
 
     this._router.events.pipe(
-      filter(e => e instanceof NavigationEnd),
+      filter( e => e instanceof NavigationEnd ),
       map(() => {
         let route = this.activatedRoute.firstChild;
         let child = route;
@@ -45,11 +45,9 @@ export class LayoutService {
             child = null;
           }
         }
-
         return route;
       }),
-      mergeMap(route => route.data)
-    ).subscribe(routerData => {
+      mergeMap(route => route.data)).subscribe( routerData => {
       console.log('Router data: ', routerData);
       this.setPageLayout(routerData);
     });
@@ -79,34 +77,19 @@ export class LayoutService {
         this.appToolBar$.next(this.defaultToolbar);
         break;
       case 'PRODUCT_DETAIL_PAGE':
-        this.appToolBar$.next({
-          pageTitle: routerData.product.title,
-          showCancelIcon: true
-        });
+        this.appToolBar$.next({ pageTitle: routerData.product.title, showCancelIcon: true });
         break;
       case 'PRODUCT_NEW_PAGE':
-        this.appToolBar$.next({
-          pageTitle: 'New fooditem',
-          showCancelIcon: true
-        });
+        this.appToolBar$.next({ pageTitle: 'New fooditem', showCancelIcon: true });
         break;
       case 'APP_CART_PAGE':
-        this.appToolBar$.next({
-          pageTitle: 'Cart',
-          showCancelIcon: true
-        });
+        this.appToolBar$.next({ pageTitle: 'Cart', showCancelIcon: true });
         break;
       case 'APP_SEARCH_PAGE':
-        this.appToolBar$.next({
-          pageTitle: 'Search',
-          showCancelIcon: true
-        });
+        this.appToolBar$.next({ pageTitle: 'Search', showCancelIcon: true });
         break;
       case 'CHAT_PAGE':
-        this.appToolBar$.next({
-          pageTitle: 'Search',
-          showGoBackIcon: true
-        });
+        this.appToolBar$.next({ pageTitle: 'Search', showGoBackIcon: true });
         break;
       default:
         this.appToolBar$.next(this.defaultToolbar);
