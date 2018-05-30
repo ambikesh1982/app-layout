@@ -16,7 +16,8 @@ import { Fooditem, ChatMessage, AppUser } from './models';
 const APP_ROOT_COLLECTIONS = {
   'PRODUCTS': 'foodListData',
   'USERS': 'appUsers',
-  'CHATS': 'chat-data',
+  // 'CHATS': 'chat-data',
+  'CHATS': 'ChatRoomsTest'
 };
 
 @Injectable()
@@ -113,13 +114,18 @@ export class DataService {
 
         console.log('buyerId', buyerId);
 
-        const sellerId = 'sellerid-dummy'; // fooditem.createdBy;
+        const sellerId = fooditem.createdBy; // fooditem.createdBy;
         const fooditemId = fooditem.id;
         // newMessage.messageId = newRoomId;
-    newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
-        console.log('in-dataservice-chatMessaage', newMessage);
+        newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
+        console.log('seller-id', sellerId);
+        console.log('buyer-id', buyerId);
 
-        this.chatRoomRef.doc(`${fooditemId}`).collection(`${buyerId}`).add(newMessage)
+
+       // this.chatRoomRef.doc(`${fooditemId}`).collection(`${buyerId}`).add(newMessage)
+        this.chatRoomRef.doc(`${fooditemId}`).set({ buyerid: `${buyerId}`, sellerid: `${sellerId}`}, {merge: true});
+
+        this.chatRoomRef.doc(`${fooditemId}`).collection('conversation').add(newMessage)
           .then(
           result => {
             console.log('first time login, created new room', result);
@@ -133,7 +139,8 @@ export class DataService {
     const sellerId = 'sellerid-dummy';
     const fooditemId = fooditem.id;
     console.log('getroommessage data', fooditem);
-    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${chatRoom}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+   // return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${chatRoom}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
 
   }
 

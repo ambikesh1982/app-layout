@@ -44,8 +44,8 @@ export class AuthService {
       .then( resp => {
           console.log(resp);
         const anomymousUser: AppUser = {
-          uid: resp.uid,
-          isAnonymous: resp.isAnonymous,
+          uid: resp.user.uid,
+          isAnonymous: resp.user.isAnonymous,
         };
 
         // Save user data to fireabase...

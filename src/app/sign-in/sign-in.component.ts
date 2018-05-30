@@ -29,7 +29,8 @@ export class SignInComponent implements OnInit {
             return user;
           } else {
             console.log('### User not found - Creating new anonymous user ###');
-            this.auth.loginAnonymously();
+            return;
+            // this.auth.loginAnonymously();
           }  // else
         }  // user
       )  // map
@@ -37,9 +38,13 @@ export class SignInComponent implements OnInit {
   }
 
   loginGoogle() {
-    this.auth.loginGogle();
+    this.auth.loginGogle().then(resp =>{
+
+      this.router.navigateByUrl(this.returnURL);
+
+    });
    // console.log('TODO: Setup google login.');
-    this.router.navigate(['product/list']);
+    // this.router.navigate(['product/list']);
 
   }
 
