@@ -7,8 +7,8 @@ import { UploadTaskSnapshot } from '@firebase/storage-types';
 import * as firebase from 'firebase/app';
 
 // rxjs imports
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 // local imports
 import { Fooditem, ChatMessage, AppUser } from './models';
@@ -25,17 +25,19 @@ export class DataService {
   private appUserPath:     string;
   private chatroomPath:    string;
   private productlistPath: string;
-  private chatMessages: ChatMessage[];
+  private chatMessages: Observable<ChatMessage[]>;
   private chat: ChatMessage;
   private appUserRef:     AngularFirestoreCollection<AppUser>;
   private productlistRef: AngularFirestoreCollection<Fooditem>;
   private chatRoomRef:    AngularFirestoreCollection<ChatMessage>;
- 
+  FooditemID$: BehaviorSubject<string>;
+
   constructor(
     private afs: AngularFirestore,
     private storage: AngularFireStorage,
   ) {
     afs.firestore.settings({ timestampsInSnapshots: true });
+    this.FooditemID$ = new BehaviorSubject(null);
 
     this.appUserPath = APP_ROOT_COLLECTIONS['USERS'];
     this.productlistPath = APP_ROOT_COLLECTIONS['PRODUCTS'];
@@ -160,24 +162,28 @@ export class DataService {
     const fooditemId = fooditem.id;
     console.log('seller room data', fooditem);
 
-    this.chatRoomRef.snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as ChatMessage;
-        const chatRoomName = a.payload.doc.id;
-        console.log('seller document data', chatRoomName);
-        // tslint:disable-next-line:max-line-length
-        return this.chatRoomRef.doc(`${chatRoomName}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
+   this.chatRoomRef = this.afs.collection<ChatMessage>('chat-data', ref => ref.where('fooditemID', '==', fooditemId));
+   this.chatRoomRef.valueChanges().subscribe( docData => {
+      console.log('docData', docData);
+      return docData;
+   });
 
-       // return { id, data };
-      }))
-    ).subscribe();
+  
 
-    // ( docs => {
-    //     console.log('seller document', docs);
-    //     console.log('seller document', docs);
+    // this.chatRoomRef.snapshotChanges().pipe(
+    //   map(actions => actions.map(a => {
+    //     const data = a.payload.doc.data() as ChatMessage;
+    //     const chatRoomName = a.payload.doc.id;
+    //     console.log('seller document data', chatRoomName);
+    //     // tslint:disable-next-line:max-line-length
+    //     console.log('chat-observable', this.chatRoomRef.doc(`${chatRoomName}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges());
 
-    // });
-    return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+    //     return { chatRoomName, data };
+    //   }))
+    // ).subscribe();
+
+    return this.chatRoomRef.valueChanges();
+   // return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
 
   }
 

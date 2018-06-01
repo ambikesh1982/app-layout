@@ -67,7 +67,7 @@ export class ChatComponent implements OnInit {
    // this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem, chatroomName);
      this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
 
-    this.chatMessages$.subscribe(messages => {
+     this.chatMessages$.subscribe(messages => {
       console.log('observable chat messages', messages);
       this.chatMessage = messages;
     });
