@@ -1,14 +1,18 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { DataService } from '../../core/data.service';
-import { DialogService } from '../../core/dialog.service';
-import { Fooditem } from '../../core/models';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import * as firebase from 'firebase/app';
+import { AngularFireStorage } from 'angularfire2/storage';
+
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+
 import { AuthService } from '../../core/auth.service';
-import { AngularFireStorage } from 'angularfire2/storage';
+import { DialogService } from '../../core/dialog.service';
+import { DataService } from '../../core/data.service';
+
+import { Fooditem } from '../../core/models';
 
 @Component({
   selector: 'app-product-new',
@@ -35,22 +39,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     private storage: AngularFireStorage
   ) {
     this.canNavigateAway = false;
-    console.log('Current application User >>>> ', this.auth.currUser.uid);
-
-    const firebaseDocKey = dataService.getFirebaseDocumentKey();
-    const crrentAppUserID = this.auth.currUser.uid;
-
-    // Initialize New Fooditem with some default values
-    this.newFooditem = {
-      id: firebaseDocKey,
-      createdBy: crrentAppUserID,
-      images: [],
-      availability: [],
-      paymentOptions: {},
-      deliveryOptions: {},
-      createdAt: new Date()
-    };
-
+    this.newFooditem = this.intializeNewFooditem(); // Initialize New Fooditem with default values
     console.log('Newly initialize fooditem >>>>', this.newFooditem);
   }
 
@@ -62,6 +51,18 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     ).subscribe( value => {
       console.log('productForm2 value: ', value);
     });
+  }
+
+  intializeNewFooditem(): Fooditem {
+    return {
+      id: this.dataService.getFirebaseDocumentKey(),
+      createdBy: this.auth.currUser.uid,
+      images: [],
+      availability: [],
+      paymentOptions: {},
+      deliveryOptions: {},
+      createdAt: new Date()
+    };
   }
 
   createForm() {
@@ -88,9 +89,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   }
 
   prepareFooditem(fooditemForm: FormGroup) {
-    console.log('Images: ', this.upload.images);
-    console.log('Extracting values from fooditem form:', fooditemForm.value);
-
     // User input: urls from image upload component
     this.newFooditem.images = this.upload.images;
 
@@ -123,7 +121,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   }
 
   // Save fooditem to firebase and navigate back to list page
-  createFooditem(stepper) {
+  createFooditem() {
     this.prepareFooditem(this.productForm);
 
     console.log('Fooditem to be saved >>>> ', this.newFooditem);

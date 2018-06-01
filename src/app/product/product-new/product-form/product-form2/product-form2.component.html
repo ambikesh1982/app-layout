@@ -1,15 +1,32 @@
 <form fxLayout="column" [formGroup]="productForm">
 
   <h3>Order type</h3>
-  <mat-radio-group fxLayout="row" fxLayoutAlign="space-between" formControlName="orderType">
+  <mat-radio-group 
+    fxLayout="row" 
+    fxLayoutAlign="space-between" 
+    (change)="setOrderBeforeRange($event.value)"
+    formControlName="orderType">
     <mat-radio-button value="instant">Instant</mat-radio-button>
     <mat-radio-button value="preOrder">Pre-Order</mat-radio-button>
   </mat-radio-group>
 
   <br>
-
-  <h3>Order before</h3>
-  <mat-slider style="width: 100%" formControlName="orderTime">Delivery time</mat-slider>
+<div>
+  <mat-slider 
+    style="width: 100%" 
+    formControlName="orderTime"
+    [max]="orderTimeSliderRange"
+    [step]="orderTimeSliderStep"
+    [tickInterval]="orderTimeSliderStep"
+    [(ngModel)]="orderTimeSliderValue"
+    thumbLabel=true>
+    Delivery time
+  </mat-slider>
+  <h3>
+    Order before: 
+    <span style="color: teal">[ {{orderTimeSliderValue}}/{{orderTimeUnit}} ]</span>
+  </h3>
+  </div>
 
   <h3>Availability</h3>
   <mat-form-field>

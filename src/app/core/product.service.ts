@@ -1,34 +1,44 @@
 import { Injectable } from '@angular/core';
 // tslint:disable-next-line:import-blacklist
-import { Observable ,  of } from 'rxjs';
+import { Observable ,  of, BehaviorSubject, combineLatest } from 'rxjs';
 
 import { Fooditem } from './models';
-import { FOODITEMS } from './mock-data';
+import { switchMap } from 'rxjs/operators';
+import { AngularFirestore } from 'angularfire2/firestore';
+import * as firebase from 'firebase/app';
 
 @Injectable()
 export class ProductService {
 
-  constructor() { }
+  products$: Observable<Fooditem[]>;
+  // Filters....
+  vegNonvetFilter$: BehaviorSubject<boolean|null>;
+  cuisineFilter$: BehaviorSubject<string|null>;
+  distanceFilter$: BehaviorSubject<number| null>;
 
-  /*
-  getProducts(): Observable<Fooditem> {
-    return of(FOODITEMS);
-  }
+  constructor( private firestore: AngularFirestore) {
+    this.vegNonvetFilter$.next(null);
+    this.cuisineFilter$.next(null);
+    this.distanceFilter$.next(null);
+    this.getProducts();
+   }
 
-  getProductsByUser(): Observable<Fooditem[]> {
-    // TODO: Fetch the list of user uploads
-    return of(FOODITEMS);
-  }
+   getProducts() {
+     this.products$ = combineLatest(
+       this.distanceFilter$
+     ).pipe(
+       switchMap(distance =>
+        this.firestore.collection('collection_path', ref => {
+          let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+          if (distance) { query = query.where('distance', '==', distance); }
+          return query;
+        }).valueChanges()
+       )
+     );
+   }
 
-  getProductsByCart(): Observable<Fooditem[]> {
-    // TODO: Get the product ids form user cart and return the list of products.
-    return of(FOODITEMS);
-  }
-
-  getProductByID(index: number): Observable<Fooditem> {
-    return of(FOODITEMS[index]);
-  }
-
-*/
+   filterByDistance(distance: number|null) {
+    this.distanceFilter$.next(distance);
+   }
 
 }

@@ -3,7 +3,7 @@ import { DataService } from '../../../core/data.service';
 import { Fooditem } from '../../../core/models';
 import { Observable, Subscription } from 'rxjs';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { finalize } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 
 
 @Component({
@@ -43,19 +43,23 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
       const image = imageFiles[0];
       const imagePath = `${this.storagePath}/${this.productId}/${new Date().getTime()}_${image.name}`;
-      const fileRef = this.storage.ref(imagePath);
-      const task = this.storage.upload(imagePath, image);
+      const storageRef = this.storage.ref(imagePath);
+      const uploadTask = this.storage.upload(imagePath, image);
 
       // Watch file upload process...
-      this.uploadPercent$ = task.percentageChanges();
+      this.uploadPercent$ = uploadTask.percentageChanges();
 
       // Get download url
-      this.subscription = task.snapshotChanges().pipe(
+      this.subscription = uploadTask.snapshotChanges().pipe(
+        tap( snap => {
+          if (snap.bytesTransferred === snap.totalBytes) {
+            this.images.push(imagePath);
+            this.manageFileCount(imageFiles.length);
+          }
+        }),
         finalize(() => {
-          this.images.push(imagePath);
-          this.previewURL$ = fileRef.getDownloadURL();
+          this.previewURL$ = storageRef.getDownloadURL();
           this.downloadURL$.push(this.previewURL$);
-          this.manageFileCount(imageFiles.length);
             })
       ).subscribe();
     }
