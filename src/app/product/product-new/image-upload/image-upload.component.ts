@@ -1,11 +1,10 @@
 import { Component, OnInit, Input, OnDestroy, } from '@angular/core';
 import { DataService } from '../../../core/data.service';
 import { Fooditem } from '../../../core/models';
-// tslint:disable-next-line:import-blacklist
-import { Observable, Subscription, Subject } from 'rxjs';
-import { EventEmitter } from 'events';
+import { Observable, Subscription } from 'rxjs';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { finalize, map, catchError, mergeMap, combineLatest } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-image-upload',
@@ -17,67 +16,62 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   @Input() productId: string;
 
-  completed: boolean;
-
   maxFileUploadCount: number;
   selectedFileCount: number;
 
   /** STORAGE **/
   storagePath: string;
-  imageURLs: string[];
   images: string[];
-  previewURL: string;
   uploadPercent$: Observable<number>;
-  downloadURL$: Observable<string>;
-  downloadURLs: Observable<string>[];
+  downloadURL$: Observable<string>[];
+  previewURL$: Observable<string>;
 
   subscription: Subscription;
 
   constructor(private dataService: DataService, private storage: AngularFireStorage ) {
     this.storagePath = 'foodz9';
-    this.imageURLs = [];
     this.images = [];
     this.maxFileUploadCount = 4;
     this.selectedFileCount = 0;
-    this.downloadURL$ = null;
-    this.downloadURLs = [];
+    this.downloadURL$ = [];
   }
 
   // <Storage...>
   fileController(imageFiles: FileList) {
+    console.log('From fileController');
     if (imageFiles[0]) {
 
       const image = imageFiles[0];
       const imagePath = `${this.storagePath}/${this.productId}/${new Date().getTime()}_${image.name}`;
-      const fileRef = this.storage.ref(imagePath);
-      const task = this.storage.upload(imagePath, image);
+      const storageRef = this.storage.ref(imagePath);
+      const uploadTask = this.storage.upload(imagePath, image);
 
       // Watch file upload process...
-      this.uploadPercent$ = task.percentageChanges();
+      this.uploadPercent$ = uploadTask.percentageChanges();
 
       // Get download url
-      this.subscription = task.snapshotChanges().pipe(
+      this.subscription = uploadTask.snapshotChanges().pipe(
+        tap( snap => {
+          if (snap.bytesTransferred === snap.totalBytes) {
+            this.images.push(imagePath);
+            this.manageFileCount(imageFiles.length);
+          }
+        }),
         finalize(() => {
-          this.downloadURL$ = fileRef.getDownloadURL().pipe(
-            map(url => {
-              console.log('From downLoadURL.pipe', url);
-              this.previewURL = url;
-              this.imageURLs.push(url);
-              this.images.push(url);
-              this.manageFileCount(imageFiles.length);
-              return url;
+          this.previewURL$ = storageRef.getDownloadURL();
+          this.downloadURL$.push(this.previewURL$);
             })
-          );
-        })
       ).subscribe();
     }
   }
 
-  deleteImage(img) {
-    const index = this.imageURLs.indexOf(img);
+  deleteImage(img: Observable<string>) {
+    const index = this.downloadURL$.indexOf(img);
     if (index !== -1) {
-      this.imageURLs.splice(index, 1);
-      this.previewURL = this.imageURLs[0];
+      this.downloadURL$.splice(index, 1);
+      this.previewURL$ = this.downloadURL$[0];
+      this.storage.ref(this.images[index]).delete();
+      this.images.splice(index, 1);
       this.manageFileCount(-1);
     }
   }

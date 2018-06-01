@@ -5,7 +5,7 @@
     style="padding: 0px"  
     #stepper>
 
-    <mat-step [completed]="upload.imageURLs.length != 0">
+    <mat-step [completed]="upload.images.length != 0">
       <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
     </mat-step>
 
@@ -26,7 +26,7 @@
 
   <app-fab-action 
     [fabIcon]="stepper.selectedIndex == 3? 'done':'arrow_forward'" 
-    (click)="stepper.selectedIndex == 3 ?createFooditem(stepper):stepper.next()">
+    (click)="stepper.selectedIndex == 3 ?createFooditem():stepper.next()">
   </app-fab-action>
 
 </div>

@@ -1,11 +1,11 @@
 <mat-card *ngIf="fooditem as fi" style="max-width:380px; padding-bottom: 0">
 
-    <div *ngIf="fi.images as images" >
-            <img mat-card-image [src]="images[0]||previewURL" style="height: 180px">
+    <div *ngIf="preveiwUrl$|async as previewURL" >
+            <img mat-card-image [src]="previewURL" style="height: 180px">
 
             <mat-grid-list *ngIf="isDetailCard" cols="4">
-                <mat-grid-tile *ngFor="let img of fi.images">
-                    <img mat-card-image [src]="img" (click)="previewURL = img">
+                <mat-grid-tile *ngFor="let img of imageUrls$">
+                    <img mat-card-image [src]="img|async" (click)="preveiwUrl$ = img">
                 </mat-grid-tile>
             </mat-grid-list>
     </div>
