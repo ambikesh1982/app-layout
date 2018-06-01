@@ -45,6 +45,7 @@ import { HomeComponent } from './home/home.component';
 import { AppShellComponent } from './app-shell.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { ChatResolver } from './core/chat.resolver';
+import { AppUserModule } from './app-user/app-user.module';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { ChatResolver } from './core/chat.resolver';
     MatIconModule,
     MatListModule,
     AppRoutingModule,
+    AppUserModule
   ],
   providers: [
     CanDeactivateGuard,

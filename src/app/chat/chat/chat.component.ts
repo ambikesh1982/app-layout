@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../core/data.service';
 import { AuthService } from '../../core/auth.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -46,11 +47,11 @@ export class ChatComponent implements OnInit {
 
     const buyerid = this.authService.currUserID;
     const sellerid = this.fooditem.createdBy;
-    const chatroomName = buyerid;
+    const chatroomName = sellerid + buyerid + this.fooditem.id;
     // const chatroomName = buyerid;
     console.log('chat-message buyer + seller id', chatroomName);
 
-    this.dataService.createChatMessages(this.chat, this.fooditem, chatroomName);
+    this.dataService.createChatMessages(this.chat, this.fooditem, buyerid, chatroomName);
 
     console.log('chat-message buyer id', buyerid);
     console.log('chat-message', this.chat.message);
@@ -62,10 +63,9 @@ export class ChatComponent implements OnInit {
   getChatbyQuery() {
     const buyerid = this.authService.currUserID;
     const sellerid = this.fooditem.createdBy;
-    const chatroomName = buyerid;
-    console.log('chat-message buyer + seller id', chatroomName);
-    this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem, chatroomName);
-   // this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
+    const chatroomName = sellerid + buyerid + this.fooditem.id;
+   // this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem, chatroomName);
+     this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
 
     this.chatMessages$.subscribe(messages => {
       console.log('observable chat messages', messages);

@@ -8,6 +8,7 @@ import * as firebase from 'firebase/app';
 
 // rxjs imports
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 // local imports
 import { Fooditem, ChatMessage, AppUser } from './models';
@@ -24,10 +25,12 @@ export class DataService {
   private appUserPath:     string;
   private chatroomPath:    string;
   private productlistPath: string;
+  private chatMessages: ChatMessage[];
+  private chat: ChatMessage;
   private appUserRef:     AngularFirestoreCollection<AppUser>;
   private productlistRef: AngularFirestoreCollection<Fooditem>;
   private chatRoomRef:    AngularFirestoreCollection<ChatMessage>;
-
+ 
   constructor(
     private afs: AngularFirestore,
     private storage: AngularFireStorage,
@@ -111,7 +114,7 @@ export class DataService {
 
   // Chat Component Menthods Start
 
-  async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, chatRoomName: string) {
+  async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, buyerid: string, chatRoomName: string) {
 
 
         const sellerId = fooditem.createdBy; // fooditem.createdBy;
@@ -122,10 +125,11 @@ export class DataService {
         console.log('From Chat seller-id', sellerId);
         console.log('From Chat buyer-id', chatRoomName);
 
-       // this.chatRoomRef.doc(`${fooditemId}`).set({ buyerid: `${buyerId}`, sellerid: `${sellerId}`}, {merge: false});
+        // tslint:disable-next-line:max-line-length
+        this.chatRoomRef.doc(`${chatRoomName}`).set({ fooditemID: `${fooditemId}`, buyerid: `${buyerid}`, sellerid: `${sellerId}`}, {merge: true});
 
-      //  this.chatRoomRef.doc(`${fooditemId}`).collection('conversation').add(newMessage)
-        this.chatRoomRef.doc(`${fooditemId}`).collection(`${chatRoomName}`).add(newMessage)
+        this.chatRoomRef.doc(`${chatRoomName}`).collection('conversation').add(newMessage)
+       // this.chatRoomRef.doc(`${fooditemId}`).collection(`${chatRoomName}`).add(newMessage)
         .then(
           result => {
             console.log('first time login, created new room', result);
@@ -136,23 +140,44 @@ export class DataService {
 
 
   getRoomMessages(fooditem: Fooditem, chatRoomName): Observable<ChatMessage[]> {
-    const sellerId = 'sellerid-dummy';
+    const sellerid = fooditem.createdBy;
     const fooditemId = fooditem.id;
     console.log('getroommessage data', fooditem);
     // tslint:disable-next-line:max-line-length
-    return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${chatRoomName}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+   // return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${chatRoomName}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
    // tslint:disable-next-line:max-line-length
-   // return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
+    this.chatRoomRef.valueChanges().subscribe(docs => {
+      console.log('seller document', docs);
+    });
+    // tslint:disable-next-line:max-line-length
+    return this.chatRoomRef.doc(`${chatRoomName}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
 
   }
 
 
   getSellerMessages(fooditem: Fooditem): Observable<ChatMessage[]> {
-    const sellerId = 'sellerid-dummy';
+    const sellerId = fooditem.createdBy;
     const fooditemId = fooditem.id;
-    console.log('getroommessage data', fooditem);
-    return this.chatRoomRef.doc<ChatMessage[]>(`${fooditemId}`).valueChanges();
-    //  return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
+    console.log('seller room data', fooditem);
+
+    this.chatRoomRef.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as ChatMessage;
+        const chatRoomName = a.payload.doc.id;
+        console.log('seller document data', chatRoomName);
+        // tslint:disable-next-line:max-line-length
+        return this.chatRoomRef.doc(`${chatRoomName}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
+
+       // return { id, data };
+      }))
+    ).subscribe();
+
+    // ( docs => {
+    //     console.log('seller document', docs);
+    //     console.log('seller document', docs);
+
+    // });
+    return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
 
   }
 
