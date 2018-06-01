@@ -11,7 +11,7 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 // local imports
-import { Fooditem, ChatMessage, AppUser } from './models';
+import { Fooditem, ChatMessage, AppUser, ChatRoomInfo } from './models';
 
 
 const APP_ROOT_COLLECTIONS = {
@@ -26,7 +26,6 @@ export class DataService {
   private chatroomPath:    string;
   private productlistPath: string;
   private chatMessages: Observable<ChatMessage[]>;
-  private chat: ChatMessage;
   private appUserRef:     AngularFirestoreCollection<AppUser>;
   private productlistRef: AngularFirestoreCollection<Fooditem>;
   private chatRoomRef:    AngularFirestoreCollection<ChatMessage>;
@@ -116,22 +115,11 @@ export class DataService {
 
   // Chat Component Menthods Start
 
-  async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, buyerid: string, chatRoomName: string) {
+  async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, chatRoominfo: ChatRoomInfo) {
 
-
-        const sellerId = fooditem.createdBy; // fooditem.createdBy;
-        const fooditemId = fooditem.id;
         newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
-        newMessage.createdByUserId = chatRoomName;
-
-        console.log('From Chat seller-id', sellerId);
-        console.log('From Chat buyer-id', chatRoomName);
-
-        // tslint:disable-next-line:max-line-length
-        this.chatRoomRef.doc(`${chatRoomName}`).set({ fooditemID: `${fooditemId}`, buyerid: `${buyerid}`, sellerid: `${sellerId}`}, {merge: true});
-
-        this.chatRoomRef.doc(`${chatRoomName}`).collection('conversation').add(newMessage)
-       // this.chatRoomRef.doc(`${fooditemId}`).collection(`${chatRoomName}`).add(newMessage)
+        this.chatRoomRef.doc(`${chatRoominfo.roomID}`).set(chatRoominfo);
+        this.chatRoomRef.doc(`${chatRoominfo.roomID}`).collection('conversation').add(newMessage)
         .then(
           result => {
             console.log('first time login, created new room', result);
@@ -141,19 +129,12 @@ export class DataService {
   }
 
 
-  getRoomMessages(fooditem: Fooditem, chatRoomName): Observable<ChatMessage[]> {
-    const sellerid = fooditem.createdBy;
-    const fooditemId = fooditem.id;
-    console.log('getroommessage data', fooditem);
-    // tslint:disable-next-line:max-line-length
-   // return this.chatRoomRef.doc(`${fooditemId}`).collection<ChatMessage>(`${chatRoomName}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
-   // tslint:disable-next-line:max-line-length
+  getRoomMessages(chatRoominfo: ChatRoomInfo): Observable<ChatMessage[]> {
     this.chatRoomRef.valueChanges().subscribe(docs => {
       console.log('seller document', docs);
     });
     // tslint:disable-next-line:max-line-length
-    return this.chatRoomRef.doc(`${chatRoomName}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
-
+    return this.chatRoomRef.doc(`${chatRoominfo.roomID}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
   }
 
 
@@ -162,13 +143,16 @@ export class DataService {
     const fooditemId = fooditem.id;
     console.log('seller room data', fooditem);
 
-   this.chatRoomRef = this.afs.collection<ChatMessage>('chat-data', ref => ref.where('fooditemID', '==', fooditemId));
-   this.chatRoomRef.valueChanges().subscribe( docData => {
-      console.log('docData', docData);
+   this.afs.collection<ChatRoomInfo>('chat-data', ref => ref.where('fooditemID', '==', fooditemId))
+   .valueChanges()
+   .subscribe( docData => {
+      console.log('ChatRoom Info', docData);
       return docData;
    });
 
-  
+
+
+
 
     // this.chatRoomRef.snapshotChanges().pipe(
     //   map(actions => actions.map(a => {

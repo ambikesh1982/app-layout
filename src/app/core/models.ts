@@ -53,3 +53,10 @@ export interface ChatMessage {
     createdByUserId?: string;
     message?: string;
 }
+
+export interface ChatRoomInfo {
+    buyerID?: string;
+    sellerID?:  string;
+    fooditemID?: string;
+    roomID?: string;
+}

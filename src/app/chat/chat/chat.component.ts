@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatMessage, Fooditem } from '../../core/models';
+import { ChatMessage, Fooditem, ChatRoomInfo } from '../../core/models';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../core/data.service';
@@ -16,6 +16,7 @@ export class ChatComponent implements OnInit {
   private chat: ChatMessage;
   private chatMessages$: Observable<ChatMessage[]>;
   chatMessage: ChatMessage[];
+  chatRoomInfo: ChatRoomInfo;
   private fooditem: Fooditem;
   constructor(private route: ActivatedRoute,
     private dataService: DataService,
@@ -37,7 +38,6 @@ export class ChatComponent implements OnInit {
   }
 
   sendRoomMessage($event) {
-
     // this.dataService.createchatMessages()
     event.preventDefault();
     event.stopPropagation();
@@ -48,10 +48,14 @@ export class ChatComponent implements OnInit {
     const buyerid = this.authService.currUserID;
     const sellerid = this.fooditem.createdBy;
     const chatroomName = sellerid + buyerid + this.fooditem.id;
+    this.chatRoomInfo = { buyerID: buyerid,
+                          sellerID: sellerid,
+                          fooditemID: this.fooditem.id,
+                          roomID: chatroomName};
     // const chatroomName = buyerid;
     console.log('chat-message buyer + seller id', chatroomName);
 
-    this.dataService.createChatMessages(this.chat, this.fooditem, buyerid, chatroomName);
+    this.dataService.createChatMessages(this.chat, this.fooditem, this.chatRoomInfo);
 
     console.log('chat-message buyer id', buyerid);
     console.log('chat-message', this.chat.message);
@@ -64,8 +68,14 @@ export class ChatComponent implements OnInit {
     const buyerid = this.authService.currUserID;
     const sellerid = this.fooditem.createdBy;
     const chatroomName = sellerid + buyerid + this.fooditem.id;
-   // this.chatMessages$ = this.dataService.getRoomMessages(this.fooditem, chatroomName);
-     this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
+    this.chatRoomInfo = {
+      buyerID: buyerid,
+      sellerID: sellerid,
+      fooditemID: this.fooditem.id,
+      roomID: chatroomName
+    };
+    this.chatMessages$ = this.dataService.getRoomMessages(this.chatRoomInfo);
+   // this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
 
      this.chatMessages$.subscribe(messages => {
       console.log('observable chat messages', messages);
