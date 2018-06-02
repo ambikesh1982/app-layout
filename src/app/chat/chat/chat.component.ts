@@ -15,6 +15,7 @@ export class ChatComponent implements OnInit {
 
   private chat: ChatMessage;
   private chatMessages$: Observable<ChatMessage[]>;
+  private chatRoomInfo$: Observable<ChatRoomInfo[]>;
   chatMessage: ChatMessage[];
   chatRoomInfo: ChatRoomInfo;
   private fooditem: Fooditem;
@@ -74,8 +75,8 @@ export class ChatComponent implements OnInit {
       fooditemID: this.fooditem.id,
       roomID: chatroomName
     };
-    this.chatMessages$ = this.dataService.getRoomMessages(this.chatRoomInfo);
-   // this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
+     this.chatMessages$ = this.dataService.getRoomMessages(this.chatRoomInfo);
+    // this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
 
      this.chatMessages$.subscribe(messages => {
       console.log('observable chat messages', messages);
@@ -91,7 +92,7 @@ export class ChatComponent implements OnInit {
     // this.getChatbyQuery();
     // this.scrollToBottom();
     this.fooditem = this.route.snapshot.data['chat'];
-    console.log('chatdata from Router=', this.fooditem);
+    console.log('FoodItem from Router in chat=', this.fooditem);
 
     this.getChatbyQuery();
     // console.log('chatdata from Router=', this.fooditem);
