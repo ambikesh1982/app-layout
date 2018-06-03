@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { Fooditem, ILocation } from '../core/models';
+import { Fooditem } from '../core/models';
 import { LocationService } from '../core/location.service';
 import { ScriptLoadService } from '../core/script-load.service';
 
@@ -20,7 +20,6 @@ import { DataService } from '../core/data.service';
 
 export class SearchComponent implements OnInit {
 
-  geoLocations$: Observable<ILocation[]>;
   public cuisines: string[];
 
   locationFromNavigator: { lat: number, lng: number };

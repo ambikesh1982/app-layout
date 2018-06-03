@@ -7,13 +7,13 @@ import {
 } from 'angularfire2/firestore';
 // tslint:disable-next-line:import-blacklist
 import { Observable } from 'rxjs';
-import { Fooditem, ILocation } from './models';
+import { Fooditem, IGeoInfo } from './models';
 
 @Injectable()
 export class FirestoreService {
   // products$: Observable<Fooditem[]>;
-  products$: Observable<ILocation[]>;
-  geoLoc: ILocation = {};
+  products$: Observable<IGeoInfo[]>;
+  geoLoc: IGeoInfo;
   geoPointType: firebase.firestore.GeoPoint;
 
   constructor(private _afs: AngularFirestore) {
@@ -22,8 +22,8 @@ export class FirestoreService {
     firestore.settings(settings);
   }
 
-  public getProducts$(range: number): Observable<ILocation[]> {
-    this.products$ = this._afs.collection<ILocation>('geoLocationsTest').valueChanges();
+  public getProducts$(range: number): Observable<IGeoInfo[]> {
+    this.products$ = this._afs.collection<IGeoInfo>('geoLocationsTest').valueChanges();
     return this.products$;
   }
 
@@ -40,7 +40,7 @@ export class FirestoreService {
     // }
 
     const geopoint = new firebase.firestore.GeoPoint(lat, lng);
-    this.geoLoc.userLocation = geopoint;
+    this.geoLoc.coordinates = geopoint;
     const geoCollection = this._afs.collection('geoLocationsTest');
     geoCollection.add(this.geoLoc);
   }

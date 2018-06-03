@@ -14,12 +14,12 @@ export interface Fooditem {
     orderTime?: string; // 24 hours
     availability?: string[]; // All days, Weekends Only, Fri/Sat/Sun
     deliveryTime?: string;
-    images?: string[];
+    images?: { path: string, url: string }[];
+    // images?: string[];
     paymentOptions?: { cashOnDelivery?: boolean, onlinePayment?: boolean };
     deliveryOptions?: { takeAway?: boolean, homeDelivery?: boolean, dineIn?: boolean };
-    coordinates?: firebase.firestore.GeoPoint;
-    autoAddressFromMap?: string;
-    addressFromUser?: string;
+    geoInfoFromAppUser?: boolean;
+    geoInfo?: IGeoInfo;
     createdAt?: Date;
     createdBy?: string;
 }
@@ -28,7 +28,7 @@ export interface AppUser {
     uid: string;
     isAnonymous: boolean;
     displayName?: string;
-    location?: { '_lat': number, '_lng': number };
+    geoInfo?: IGeoInfo;
     address?: string;
     photoURL?: string;
     email?: string;
@@ -42,9 +42,12 @@ export interface AppUser {
     hasWishlisth?: boolean;
 }
 
-export interface ILocation {
-    // userLocation?: {'_lat': number, '_lng': number};
-    userLocation?: firebase.firestore.GeoPoint;
+// 23.135469 83.18172000000004
+
+export interface IGeoInfo {
+    coordinates?: firebase.firestore.GeoPoint;
+    autoAddressFromMap?: string;
+    addressFromUser?: string;
 }
 
 export interface ChatMessage {

@@ -46,7 +46,6 @@ const productRoutes: Routes = [
     path: 'detail/:id',
     component: ProductDetailComponent,
     data: { title: 'PRODUCT_DETAIL_PAGE' },
-    canDeactivate: [CanDeactivateGuard],
     resolve: { product: ProductResolver }
   },
   {

@@ -4,7 +4,7 @@
     <mat-card-title>You can upload up to 4 photos.</mat-card-title>
   </div>
 
-  <div *ngIf="previewURL$|async as previewURL">
+  <!-- <div *ngIf="previewURL$|async as previewURL">
     <img mat-card-image [src]="previewURL">
     <button class="top-right" mat-icon-button (click)="deleteImage(previewURL$)">
       <mat-icon>cancel</mat-icon>
@@ -15,7 +15,23 @@
     <mat-grid-tile *ngFor="let img of downloadURL$">
       <img mat-card-image [src]="img|async" (click)="previewURL$ = img">
     </mat-grid-tile>
+  </mat-grid-list> -->
+
+  <div *ngIf="upload$|async"></div>
+  <div *ngIf="preview">
+    <img mat-card-image [src]="preview.url">
+    <button class="top-right" mat-icon-button (click)="deleteImage(preview)">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  
+  <mat-grid-list cols="4">
+    <mat-grid-tile *ngFor="let img of images">
+      <img mat-card-image [src]="img.url" (click)="preview = img">
+    </mat-grid-tile>
   </mat-grid-list>
+
+
 
   <div>
     <button 

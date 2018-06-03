@@ -5,14 +5,15 @@ import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import { AngularFireStorage } from 'angularfire2/storage';
 
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { AuthService } from '../../core/auth.service';
 import { DialogService } from '../../core/dialog.service';
 import { DataService } from '../../core/data.service';
 
-import { Fooditem } from '../../core/models';
+import { Fooditem, AppUser, IGeoInfo } from '../../core/models';
+
 
 @Component({
   selector: 'app-product-new',
@@ -25,6 +26,9 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   newFooditem: Fooditem;
   productForm: FormGroup;
   canNavigateAway: boolean;
+  currentAppUser: AppUser;
+
+  subscription: Subscription;
 
   // Viewchild accessors to access properties and methods of child component directly from parent component.
   @ViewChild('upload') upload;
@@ -38,6 +42,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private storage: AngularFireStorage
   ) {
+    this.currentAppUser = this.auth.currAppUser;
     this.canNavigateAway = false;
     this.newFooditem = this.intializeNewFooditem(); // Initialize New Fooditem with default values
     console.log('Newly initialize fooditem >>>>', this.newFooditem);
@@ -45,10 +50,18 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
+    this.patchUserAddress();
 
-    this.productForm.valueChanges.pipe(
+    this.subscription = this.productForm.valueChanges.pipe(
       debounceTime(5000)
     ).subscribe( value => {
+      if (this.currentAppUser.geoInfo ) {
+        this.productForm.get('autoAddressFromMap').disable();
+        this.productForm.get('addressFromUser').disable();
+      } else {
+        this.productForm.get('autoAddressFromMap').enable();
+        this.productForm.get('addressFromUser').enable();
+      }
       console.log('productForm2 value: ', value);
     });
   }
@@ -56,11 +69,12 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   intializeNewFooditem(): Fooditem {
     return {
       id: this.dataService.getFirebaseDocumentKey(),
-      createdBy: this.auth.currUser.uid,
+      createdBy: this.currentAppUser.uid,
       images: [],
       availability: [],
       paymentOptions: {},
       deliveryOptions: {},
+      geoInfo: {},
       createdAt: new Date()
     };
   }
@@ -83,13 +97,29 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       takeAway: true,
       homeDelivery: false,
       dineIn: false,
-      autoAddressFromMap: 'Ambikapur, Chhattisgarh, India',
+      // geoInfoFromAppUser: this.currentAppUser.geoInfo,
+      autoAddressFromMap: ['',  Validators.required],
       addressFromUser: ['', Validators.required],
     });
   }
 
+  patchUserAddress() {
+    if (this.auth.currAppUser.geoInfo) {
+      console.log('geoInfo form user profile: ', this.currentAppUser.geoInfo);
+      this.productForm.patchValue(
+        { autoAddressFromMap: this.currentAppUser.geoInfo.autoAddressFromMap,
+          addressFromUser: this.currentAppUser.geoInfo.addressFromUser
+        });
+    } else {
+      console.log('#### activate place autoComplete #### ');
+    }
+  }
+
   prepareFooditem(fooditemForm: FormGroup) {
     // User input: urls from image upload component
+    // this.newFooditem.images = this.upload.images.map(image => {
+    //   return image.path;
+    // });
     this.newFooditem.images = this.upload.images;
 
     // User input: Formdata
@@ -108,12 +138,18 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     this.newFooditem.deliveryOptions.takeAway = fooditemForm.value.takeAway;
     this.newFooditem.deliveryOptions.homeDelivery = fooditemForm.value.homeDelivery;
     this.newFooditem.deliveryOptions.dineIn = fooditemForm.value.dineIn;
-    this.newFooditem.autoAddressFromMap = fooditemForm.value.autoAddressFromMap;
-    this.newFooditem.addressFromUser = fooditemForm.value.addressFromUser;
+
+
+    this.autoComplete.geoInfo.addressFromUser = fooditemForm.value.addressFromUser;
+    this.newFooditem.geoInfo = this.autoComplete.geoInfo;
+    // this.newFooditem.autoAddressFromMap = fooditemForm.value.autoAddressFromMap;
+    // this.newFooditem.addressFromUser = fooditemForm.value.addressFromUser;
 
     // User input: geopoint from google place autocomplete
-    const point = this.autoComplete.addressFromGooleMap;
-    this.newFooditem.coordinates = new firebase.firestore.GeoPoint(point.location.lat(), point.location.lng());
+    // const point = this.autoComplete.addressFromGooleMap;
+    // this.newFooditem.coordinates = new firebase.firestore.GeoPoint(point.location.lat(), point.location.lng());
+    // const point = this.autoComplete.addressFromGooleMap;
+    // this.newFooditem.coordinates = this.autoComplete.userGeoInfo.coordinates;
 
     // Add a timestamp
     this.newFooditem.createdAt = new Date();
@@ -123,6 +159,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   // Save fooditem to firebase and navigate back to list page
   createFooditem() {
     this.prepareFooditem(this.productForm);
+
+    if ( !this.currentAppUser.geoInfo) {
+      this.updateUserGeoInfo(this.currentAppUser.uid, this.autoComplete.geoInfo);
+    }
 
     console.log('Fooditem to be saved >>>> ', this.newFooditem);
     this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
@@ -138,9 +178,17 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     );
   }
 
+  // handleGeoInfo(geoInfo: IGeoInfo, updateUserAddress: boolean) {
+  //   if (this.currentAppUser.geoInfo && )
+  // }
+
+  updateUserGeoInfo(uid: string, geoInfo: IGeoInfo) {
+    this.dataService.updateUserData(uid, {geoInfo: geoInfo});
+  }
+
   cleanupOnCancel() {
       this.upload.images.forEach( image => {
-        this.storage.ref(image).delete();
+        this.storage.ref(image.path).delete();
         console.log('Cleanup: Delete the image from fb: ', image);
       });
   }
@@ -154,6 +202,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     }
 
   ngOnDestroy() {
+    this.subscription.unsubscribe();
     console.log('#### From ngOnDestroy ####');
     if (!this.canNavigateAway) {
       this.cleanupOnCancel();

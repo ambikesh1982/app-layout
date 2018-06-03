@@ -1,8 +1,9 @@
 import { Injectable, ElementRef, NgZone } from '@angular/core';
-// tslint:disable-next-line:import-blacklist
-import { Observable, Observer, of, BehaviorSubject } from 'rxjs';
+import { Observable, Observer, of, BehaviorSubject, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ScriptLoadService } from './script-load.service';
+import { IGeoInfo } from './models';
+import * as firebase from 'firebase/app';
 
 const GEOLOCATION_ERRORS = {
   'errors.location.unsupportedBrowser': 'Browser does not support location services',
@@ -15,8 +16,9 @@ const GEOLOCATION_ERRORS = {
 export class LocationService {
 
   myCurrentPosition: Observable<Position>;
+  geoFromAutoComplete$ = new BehaviorSubject<IGeoInfo>({});
 
-  addressFromAutoComplete$ = new BehaviorSubject<any>('');
+  isGoogle$ = new Subject<boolean>();
 
   constructor(private load: ScriptLoadService, private ngZone: NgZone) {
     this.myCurrentPosition = this.getCurrentPosition();
@@ -53,24 +55,29 @@ export class LocationService {
     });
   }
 
-  loadGoogleMapScript() {
-    this.load.loadScript(environment.googleMapURL, 'google-map', () => {
+  async loadGoogleMapScript() {
+    await this.load.loadScript(environment.googleMapURL, 'google-map', () => {
       console.log('Google-Maps Initiated!!');
+      this.isGoogle$.next(true);
     });
   }
 
+  // Create a map with the marker.
   createMap(mapElement: ElementRef, myLat: any, myLng: any): google.maps.Map {
+
+    const myLatLng = { lat: myLat, lng: myLng };
     const map = new google.maps.Map(mapElement.nativeElement, {
       zoom: 18,
-      center: {
-        // lat: geo.coords.latitude,
-        // lng: geo.coords.longitude
-        lat: myLat,
-        lng: myLng
-      },
+      center: myLatLng,
       disableDefaultUI: true,
       scrollwheel: false,
     });
+
+    const marker = new google.maps.Marker({
+      position: myLatLng,
+      map: map,
+    });
+
     return map;
   }
 
@@ -81,16 +88,25 @@ export class LocationService {
         console.log('place ####: ', place);
 
         if (place.geometry) {
-          const loc = place.geometry.location;
-          const address = place.formatted_address;
-          this.addressFromAutoComplete$.next({address, loc});
-          // console.log(address);
-          // return of({ address, loc });
-          // this.addressForm.setValue({ gmapAddress: this.address, userAddress: 'address from autocmp' });
+          const geoPoint = new firebase.firestore.GeoPoint(
+            place.geometry.location.lat(),
+            place.geometry.location.lng()
+          );
+
+          const geo: IGeoInfo = {
+            coordinates: geoPoint,
+            autoAddressFromMap: place.formatted_address,
+            addressFromUser: null
+          };
+
+          this.geoFromAutoComplete$.next({
+            coordinates: geoPoint,
+            autoAddressFromMap: place.formatted_address,
+            addressFromUser: null
+          });
         } else {
           console.log('Unable to find a place!');
-          this.addressFromAutoComplete$.next('NO_PLACE');
-          // return ('no place');
+          this.geoFromAutoComplete$.next({});
         }
 
       });

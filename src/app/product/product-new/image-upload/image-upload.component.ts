@@ -3,7 +3,7 @@ import { DataService } from '../../../core/data.service';
 import { Fooditem } from '../../../core/models';
 import { Observable, Subscription } from 'rxjs';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, tap, map } from 'rxjs/operators';
 
 
 @Component({
@@ -21,19 +21,21 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   /** STORAGE **/
   storagePath: string;
-  images: string[];
+  images: { path: string, url: string }[];
   uploadPercent$: Observable<number>;
-  downloadURL$: Observable<string>[];
-  previewURL$: Observable<string>;
+
+  // previewURL$: Observable<string>;
+  // previewURL$: any;
+  preview: { path: string, url: string };
+  upload$;
 
   subscription: Subscription;
 
-  constructor(private dataService: DataService, private storage: AngularFireStorage ) {
-    this.storagePath = 'foodz9';
+  constructor(private dataService: DataService, private storage: AngularFireStorage) {
+    this.storagePath = 'foodz9test';
     this.images = [];
     this.maxFileUploadCount = 4;
     this.selectedFileCount = 0;
-    this.downloadURL$ = [];
   }
 
   // <Storage...>
@@ -50,28 +52,49 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       this.uploadPercent$ = uploadTask.percentageChanges();
 
       // Get download url
+      // this.subscription = uploadTask.snapshotChanges().pipe(
+      //   tap( snap => {
+      //     if (snap.bytesTransferred === snap.totalBytes) {
+      //       this.manageFileCount(imageFiles.length);
+      //     }
+      //   }),
+      //   finalize(() => {
+      //     this.previewURL$ = storageRef.getDownloadURL();
+      //     this.images.push({ path: imagePath, url: this.pre});
+      //     this.downloadURL$.push(this.previewURL$);
+      //       })
+      // ).subscribe();
+
+      // Get download url
       this.subscription = uploadTask.snapshotChanges().pipe(
-        tap( snap => {
+        tap(snap => {
           if (snap.bytesTransferred === snap.totalBytes) {
-            this.images.push(imagePath);
             this.manageFileCount(imageFiles.length);
           }
         }),
         finalize(() => {
-          this.previewURL$ = storageRef.getDownloadURL();
-          this.downloadURL$.push(this.previewURL$);
+          this.upload$ = storageRef.getDownloadURL().pipe(
+            map( (url: string) => {
+              if ( url ) {
+                this.preview = { path: imagePath, url: url };
+                this.images.push(this.preview);
+              }
             })
+          );
+        })
       ).subscribe();
     }
   }
 
-  deleteImage(img: Observable<string>) {
-    const index = this.downloadURL$.indexOf(img);
+  deleteImage(img: any) {
+    const index = this.images.indexOf(img);
+    console.log('Image index: ', index, ': ', img);
     if (index !== -1) {
-      this.downloadURL$.splice(index, 1);
-      this.previewURL$ = this.downloadURL$[0];
-      this.storage.ref(this.images[index]).delete();
+      // Delete the image from the storage
+      this.storage.ref(this.images[index].path).delete();
+      // Remove the image from the images array
       this.images.splice(index, 1);
+      this.preview = this.images[0];
       this.manageFileCount(-1);
     }
   }

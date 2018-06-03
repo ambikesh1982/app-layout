@@ -1,9 +1,70 @@
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" *ngIf="fooditem as fi">
 
-  <app-product-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="1" [fooditem]="fi" isDetailCard="true"></app-product-card>
+  
+  
+  
   <div><button mat-raised-button routerLink="/product/chat/{{fooditem.id}}">LiveChat
-      </button>
-  </div>
+  </button>
+</div>
+
+
+
+<!-- <app-product-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="1" [fooditem]="fi" isDetailCard="true"></app-product-card> -->
+<div>
+  <mat-card *ngIf="fooditem as fi" style="max-width:380px; padding-bottom: 0">
+  
+    <div *ngIf="preview">
+      <img mat-card-image [src]="preview" style="height: 180px">
+  
+      <mat-grid-list *ngIf="fooditemImageCount > 1" cols="4">
+        <mat-grid-tile *ngFor="let img of fi.images">
+          <img mat-card-image [src]="img.url" (click)="preview = img.url">
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  
+    <div fxLayout="row wrap">
+      <h3 fxFlex="0 1 50" [style.color]="fi.isNonVeg? 'red':'green'">{{fi.title}}</h3>
+      <span class="spacer"></span>
+  
+      <!-- <h3>
+              <mat-icon>attach_money</mat-icon>
+          </h3> -->
+      <h3>SGD {{fi.price}}</h3>
+  
+    </div>
+  
+    <mat-card-content>
+      <h3>[{{fi.category}}] . [{{fi.cuisine}}]</h3>
+      <h3>Availability: [{{ fi.availability }}]</h3>
+  
+    </mat-card-content>
+  
+    <div fxLayout="row wrap">
+      <h3>
+        <mat-icon>room_service</mat-icon>
+      </h3>
+      <h3>{{fi.serving}} persons</h3>
+  
+      <span class="spacer"></span>
+  
+      <h3>
+        <mat-icon>schedule</mat-icon>
+      </h3>
+      <h3> {{fi.orderTime}} {{fi.orderType == 'instant'? 'minutes':'hours'}} </h3>
+  
+      <span class="spacer"></span>
+  
+      <h3>
+        <mat-icon>place</mat-icon>
+      </h3>
+      <h3>1.0 km</h3>
+    </div>
+  
+  </mat-card>
+</div>
+
+
   <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="2">
     <h3>Payment and delivery options</h3>
     <mat-selection-list>
@@ -44,11 +105,11 @@
     <mat-card-content>Hello food lover! Serving you authentic north indian food. Please check my other food posts as well.</mat-card-content>
     <h3>More from Ambikesh</h3>
 
-    <mat-grid-list cols="3">
+    <!-- <mat-grid-list cols="3">
       <mat-grid-tile *ngFor="let fooditem of fooditems$|async">
         <img mat-card-image [src]="fooditem.images[0]">
       </mat-grid-tile>
-    </mat-grid-list>
+    </mat-grid-list> -->
 
   </mat-card>
 

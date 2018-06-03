@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map, take, tap } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 
 import { DataService } from './data.service';
@@ -21,6 +21,8 @@ export class AuthService {
   currUser: firebase.User;
 
   currUser$: Observable<AppUser | null>; // Use this in other component't template.
+  currAppUser: AppUser|null;
+
   currUserID: string;
 
   constructor(public afAuth: AngularFireAuth, private dataService: DataService) {
@@ -30,7 +32,12 @@ export class AuthService {
           console.log('### Retrieving user from firestore ###');
           this.currUserID = user.uid;
           this.currUser = user;
-          return this.dataService.getUserFromFirestore(user.uid);
+          return this.dataService.getUserFromFirestore(user.uid).pipe(
+            take(1),
+            tap( currAppUser => {
+              this.currAppUser = currAppUser;
+            }),
+          );
         } else {
           return of(null);
         }

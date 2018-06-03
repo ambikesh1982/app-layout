@@ -14,9 +14,9 @@ import { Fooditem, ChatMessage, AppUser } from './models';
 
 
 const APP_ROOT_COLLECTIONS = {
-  'PRODUCTS': 'foodListData',
-  'USERS': 'appUsers',
-  'CHATS': 'chat-data',
+  'PRODUCTS': 'products',
+  'USERS': 'appusers',
+  'CHATS': 'appchats',
 };
 
 @Injectable()
@@ -65,7 +65,7 @@ export class DataService {
   getProductList(): Observable<Fooditem[]> {
     this.productlistRef.ref.orderBy('createdAt', 'desc');
     return this.afs.collection<Fooditem>
-    ('foodListData', ref => ref.orderBy('createdAt', 'desc')).valueChanges();
+      (APP_ROOT_COLLECTIONS['PRODUCTS'], ref => ref.orderBy('createdAt', 'desc')).valueChanges();
   }
 
 
@@ -182,8 +182,16 @@ export class DataService {
     });
   }
 
-   updateUserData(user) {
+   async updateUserData(uid: string, data: any) {
     // Sets user data to firestore on login
+     const promise = this.appUserRef.doc(uid).update(data);
+     await promise.then(
+       res => {
+         console.log('User data updated!!');
+       }, err => {
+         console.log('Error during update User: ', err);
+       }
+     );
   }
 
 

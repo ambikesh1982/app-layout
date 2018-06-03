@@ -1,14 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Fooditem } from '../../core/models';
-// tslint:disable-next-line:import-blacklist
-import { Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { DataService } from '../../core/data.service';
-import { DialogComponent } from '../../shared/dialog/dialog.component';
-import { MatDialogRef } from '@angular/material';
-import { DialogService } from '../../core/dialog.service';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-detail',
@@ -17,27 +9,29 @@ import { DialogService } from '../../core/dialog.service';
 })
 export class ProductDetailComponent implements OnInit {
 
-  fooditem$: Observable<Fooditem>;
-  fooditems$: Observable<Fooditem[]>;
+  // fooditems$: Observable<Fooditem>; // To show more fooditems form the same user.
   fooditem: Fooditem;
-  userName: string;
+  preview: string;
+  fooditemImageCount: number;
+
 
   constructor(
-    // private productService: ProductService,
-    private dataService: DataService,
-    private dialogService: DialogService,
     private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     // TODO: Unsubscribe the subscription to avoid memory leak.
     this.fooditem = this.route.snapshot.data['product'];
+    this.fooditemImageCount = this.fooditem.images.length;
     console.log('Fooditem from resolver: ', this.fooditem);
+    this.preview = this.fooditem.images[0].url;
+
+    // this.imageUrls = this.fooditem.images.map(image => {
+    //   return this.storage.ref(image).getDownloadURL();
+    // });
+    // this.preveiwUrl$ = this.imageUrls[0];
 
     // this.fooditems$ = this.dataService.getProductsByUser();
   }
-  canDeactivate(): boolean {
-    // return this.dialogService.openDialog('Discard changes for this Product?');
-    return true;
-  }
+
 }

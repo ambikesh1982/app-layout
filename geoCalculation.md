@@ -1,0 +1,7 @@
+Country	Singapore
+Latitude	1.290270
+Longitude	103.851959
+
+Singapore   : 1.352083, 103.81983600000001
+Hougang     : 1.3612182, 103.88625290000004
+Punggol     : 1.3984457, 103.9072046
