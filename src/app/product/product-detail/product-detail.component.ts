@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Fooditem } from '../../core/models';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-detail',
@@ -16,7 +16,7 @@ export class ProductDetailComponent implements OnInit {
 
 
   constructor(
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
@@ -32,6 +32,11 @@ export class ProductDetailComponent implements OnInit {
     // this.preveiwUrl$ = this.imageUrls[0];
 
     // this.fooditems$ = this.dataService.getProductsByUser();
+  }
+
+  onClickFab() {
+    // routerLink = "/product/chat/{{fooditem.id}}
+    this.router.navigate(['/product/chat/', this.fooditem.id]);
   }
 
 }

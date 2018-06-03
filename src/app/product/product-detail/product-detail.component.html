@@ -1,68 +1,63 @@
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" *ngIf="fooditem as fi">
 
-  
-  
-  
-  <div><button mat-raised-button routerLink="/product/chat/{{fooditem.id}}">LiveChat
-  </button>
-</div>
+  <!-- <div>
+    <button mat-raised-button routerLink="/product/chat/{{fooditem.id}}">LiveChat
+    </button>
+  </div> -->
 
+  <div>
+    <mat-card *ngIf="fooditem as fi" style="max-width:380px; padding-bottom: 0">
 
+      <div *ngIf="preview">
+        <img mat-card-image [src]="preview" style="height: 220px">
 
-<!-- <app-product-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="1" [fooditem]="fi" isDetailCard="true"></app-product-card> -->
-<div>
-  <mat-card *ngIf="fooditem as fi" style="max-width:380px; padding-bottom: 0">
-  
-    <div *ngIf="preview">
-      <img mat-card-image [src]="preview" style="height: 180px">
-  
-      <mat-grid-list *ngIf="fooditemImageCount > 1" cols="4">
-        <mat-grid-tile *ngFor="let img of fi.images">
-          <img mat-card-image [src]="img.url" (click)="preview = img.url">
-        </mat-grid-tile>
-      </mat-grid-list>
-    </div>
-  
-    <div fxLayout="row wrap">
-      <h3 fxFlex="0 1 50" [style.color]="fi.isNonVeg? 'red':'green'">{{fi.title}}</h3>
-      <span class="spacer"></span>
-  
-      <!-- <h3>
+        <mat-grid-list *ngIf="fooditemImageCount > 1" cols="4">
+          <mat-grid-tile *ngFor="let img of fi.images">
+            <img mat-card-image [src]="img.url" (click)="preview = img.url">
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+
+      <div fxLayout="row wrap">
+        <h3 fxFlex="0 1 50" [style.color]="fi.isNonVeg? 'red':'green'">{{fi.title}}</h3>
+        <span class="spacer"></span>
+
+        <!-- <h3>
               <mat-icon>attach_money</mat-icon>
           </h3> -->
-      <h3>SGD {{fi.price}}</h3>
-  
-    </div>
-  
-    <mat-card-content>
-      <h3>[{{fi.category}}] . [{{fi.cuisine}}]</h3>
-      <h3>Availability: [{{ fi.availability }}]</h3>
-  
-    </mat-card-content>
-  
-    <div fxLayout="row wrap">
-      <h3>
-        <mat-icon>room_service</mat-icon>
-      </h3>
-      <h3>{{fi.serving}} persons</h3>
-  
-      <span class="spacer"></span>
-  
-      <h3>
-        <mat-icon>schedule</mat-icon>
-      </h3>
-      <h3> {{fi.orderTime}} {{fi.orderType == 'instant'? 'minutes':'hours'}} </h3>
-  
-      <span class="spacer"></span>
-  
-      <h3>
-        <mat-icon>place</mat-icon>
-      </h3>
-      <h3>1.0 km</h3>
-    </div>
-  
-  </mat-card>
-</div>
+        <h3>SGD {{fi.price}}</h3>
+
+      </div>
+
+      <mat-card-content>
+        <h3>[{{fi.category}}] . [{{fi.cuisine}}]</h3>
+        <h3>Availability: [{{ fi.availability }}]</h3>
+
+      </mat-card-content>
+
+      <div fxLayout="row wrap">
+        <h3>
+          <mat-icon>room_service</mat-icon>
+        </h3>
+        <h3>{{fi.serving}} persons</h3>
+
+        <span class="spacer"></span>
+
+        <h3>
+          <mat-icon>schedule</mat-icon>
+        </h3>
+        <h3> {{fi.orderTime}} {{fi.orderType == 'instant'? 'minutes':'hours'}} </h3>
+
+        <span class="spacer"></span>
+
+        <h3>
+          <mat-icon>place</mat-icon>
+        </h3>
+        <h3>1.0 km</h3>
+      </div>
+
+    </mat-card>
+  </div>
 
 
   <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="2">
@@ -85,7 +80,7 @@
       </mat-list-option>
     </mat-selection-list>
   </mat-card>
- 
+
 
   <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="4">
     <h3>Ratings and reviews</h3>
@@ -113,7 +108,7 @@
 
   </mat-card>
 
-  <app-fab-action fabIcon="shopping_basket"></app-fab-action>
+  <app-fab-action fabIcon="chat_bubble_outline" (click)="onClickFab()"></app-fab-action>
 
   <!-- <button mat-fab style="position: fixed; bottom: 20px; right: 20px;">
     <mat-icon>shopping_basket</mat-icon>
