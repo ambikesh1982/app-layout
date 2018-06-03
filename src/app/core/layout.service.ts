@@ -8,6 +8,7 @@ export interface AppToolbar {
   showSideNavToggleIcon?: boolean;
   showNewProductIcon?: boolean;
   showAppTrayIcon?: boolean;
+  showUserIcon?: boolean;
   showCancelIcon?: boolean;
   showGoBackIcon?: boolean;
 }
@@ -20,6 +21,7 @@ export class LayoutService {
     showSideNavToggleIcon: true,
     showNewProductIcon: true,
     showAppTrayIcon: true,
+    showUserIcon: true
   };
 
   cancelToolbar: AppToolbar = {
@@ -89,7 +91,10 @@ export class LayoutService {
         this.appToolBar$.next({ pageTitle: 'Search', showCancelIcon: true });
         break;
       case 'CHAT_PAGE':
-        this.appToolBar$.next({ pageTitle: 'Search', showGoBackIcon: true });
+        this.appToolBar$.next({ pageTitle: 'Chat', showGoBackIcon: true });
+        break;
+      case 'USER_PAGE':
+        this.appToolBar$.next({ pageTitle: 'User Profile', showGoBackIcon: true });
         break;
       default:
         this.appToolBar$.next(this.defaultToolbar);
