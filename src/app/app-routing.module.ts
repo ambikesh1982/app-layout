@@ -13,8 +13,8 @@ const routes: Routes = [
       { path: 'app-cart', loadChildren: './app-cart/app-cart.module#AppCartModule' },
       { path: 'product', loadChildren: './chat/chat.module#ChatModule' },
       { path: 'search', loadChildren: './app-search/app-search.module#AppSearchModule' },
+      { path: 'user', loadChildren: './app-user/app-user.module#AppUserModule' },
       { path: '', loadChildren: './product/product.module#ProductModule' },
-      { path: 'user', loadChildren: './app-user/app-user.module#AppUserModule' }
 
     ]
   },

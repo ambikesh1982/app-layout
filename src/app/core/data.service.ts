@@ -160,7 +160,8 @@ export class DataService {
     //     const chatRoomName = a.payload.doc.id;
     //     console.log('seller document data', chatRoomName);
     //     // tslint:disable-next-line:max-line-length
-    //     console.log('chat-observable', this.chatRoomRef.doc(`${chatRoomName}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges());
+    //     console.log('chat-observable', this.chatRoomRef.doc(`${chatRoomName}`)
+    // .collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges());
 
     //     return { chatRoomName, data };
     //   }))
@@ -197,16 +198,7 @@ export class DataService {
     });
   }
 
-<<<<<<< HEAD
    async updateUserData(uid: string, data: any) {
-=======
-  getUserByID(userID: string): Observable<AppUser> {
-    const userPath = `${this.appUserPath}/${userID}`;
-    return this.afs.doc<AppUser>(userPath).valueChanges();
-  }
-
-   updateUserData(user) {
->>>>>>> dba6fc9745cbf72a5c4b4df2e7540e2c69fab069
     // Sets user data to firestore on login
      const promise = this.appUserRef.doc(uid).update(data);
      await promise.then(

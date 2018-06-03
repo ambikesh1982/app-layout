@@ -158,7 +158,9 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnDest
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

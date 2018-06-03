@@ -37,15 +37,12 @@ import { ProductResolver } from './core/product.resolver';
 import { LocationService } from './core/location.service';
 import { TestnavComponent } from './testnav/testnav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
 import { AuthService } from './core/auth.service';
-import { ChatModule } from './chat/chat.module';
 import { AuthGuard } from './core/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { AppShellComponent } from './app-shell.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { ChatResolver } from './core/chat.resolver';
-import { AppUserModule } from './app-user/app-user.module';
 
 
 @NgModule({
@@ -70,13 +67,7 @@ import { AppUserModule } from './app-user/app-user.module';
     FlexLayoutModule,
     MaterialModule,
     SharedModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
     AppRoutingModule,
-    AppUserModule
   ],
   providers: [
     CanDeactivateGuard,

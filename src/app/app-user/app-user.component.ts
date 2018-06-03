@@ -15,15 +15,13 @@ export class AppUserComponent implements OnInit {
   userid: string;
   constructor(private authService: AuthService,
               private dataService: DataService ) {
-
-
   }
 
 
   ngOnInit() {
      this.userid = this.authService.currUserID;
      console.log(this.userid);
-     this.user = this.dataService.getUserByID(this.userid);
+    this.user = this.dataService.getUserFromFirestore(this.userid);
      this.user.subscribe(user => {
        const name = user.displayName;
        const url = user.photoURL;
