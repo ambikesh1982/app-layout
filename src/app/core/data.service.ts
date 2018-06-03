@@ -197,6 +197,11 @@ export class DataService {
     });
   }
 
+  getUserByID(userID: string): Observable<AppUser> {
+    const userPath = `${this.appUserPath}/${userID}`;
+    return this.afs.doc<AppUser>(userPath).valueChanges();
+  }
+
    updateUserData(user) {
     // Sets user data to firestore on login
   }

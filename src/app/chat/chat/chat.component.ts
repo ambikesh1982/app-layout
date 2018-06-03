@@ -19,6 +19,7 @@ export class ChatComponent implements OnInit {
   chatMessage: ChatMessage[];
   chatRoomInfo: ChatRoomInfo;
   private fooditem: Fooditem;
+
   constructor(private route: ActivatedRoute,
     private dataService: DataService,
     private authService: AuthService
@@ -67,6 +68,7 @@ export class ChatComponent implements OnInit {
 
   getChatbyQuery() {
     const buyerid = this.authService.currUserID;
+    console.log('buyerid---', buyerid);
     const sellerid = this.fooditem.createdBy;
     const chatroomName = sellerid + buyerid + this.fooditem.id;
     this.chatRoomInfo = {

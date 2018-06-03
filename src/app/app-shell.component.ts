@@ -20,10 +20,12 @@ export class AppShellComponent implements OnInit {
     { menuIcon: 'order', menuName: 'My Orders', menuRoute: 'product/addnew' },
     { menuIcon: 'cart', menuName: 'Cart', menuRoute: './' },
     { menuIcon: 'heart', menuName: 'Wish List', menuRoute: './' },
+    { menuIcon: 'user', menuName: 'Profile', menuRoute: './' },
     { menuIcon: 'language', menuName: 'Language', menuRoute: './' },
     { menuIcon: 'download', menuName: 'Download App', menuRoute: './' },
     { menuIcon: 'help', menuName: 'Help', menuRoute: './' },
     { menuIcon: 'feedback', menuName: 'Feedback', menuRoute: './' },
+
   ];
 
   constructor( private auth: AuthService ) {

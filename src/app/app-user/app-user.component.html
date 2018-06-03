@@ -1,1 +1,44 @@
-<p>USER PROFILE</p>
+
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" *ngIf="user|async as user">
+    <mat-card  style="max-width:380px; padding-bottom: 0">
+        <mat-card-header>
+            <mat-card-title>{{user.displayName}}</mat-card-title>
+            <mat-card-subtitle>Speciality - North Indian Cuisines </mat-card-subtitle>
+        </mat-card-header>
+        <span class="spacer"></span>
+        <img style="max-width:120px;  
+                    position: absolute;
+                    right: 0;
+                    top: 0;" 
+                    align="right" mat-card-image src= {{user.photoURL}}>
+                    
+     <div fxLayout="row wrap">
+        <mat-icon>home</mat-icon>
+        <mat-card-content> 02-02, 22 Sing Ming Walk, Singapore
+        </mat-card-content>
+     </div>
+    <span class="spacer"></span>
+    <div fxLayout="row wrap">
+        
+        <mat-icon>email</mat-icon>
+        <span> {{user.email  }}</span>
+        <span class="spacer"></span>
+    </div>
+</mat-card>
+<mat-card style="max-width:380px; padding-bottom: 0">
+    <mat-card-header>
+        <mat-card-title><h3>Products & Likes</h3></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    </mat-card-content>
+    <span class="spacer"></span>
+    <div fxLayout="row wrap">
+   
+    <mat-card-content>
+        <h4>Butter Chicken</h4>
+    </mat-card-content>
+    </div>
+    <div fxLayout="row wrap">
+        <span class="spacer"></span>
+    </div>
+</mat-card>
