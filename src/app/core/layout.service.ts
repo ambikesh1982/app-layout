@@ -91,10 +91,10 @@ export class LayoutService {
         this.appToolBar$.next({ pageTitle: 'Search', showCancelIcon: true });
         break;
       case 'CHAT_PAGE':
-        this.appToolBar$.next({ pageTitle: 'Chat', showGoBackIcon: true });
+        this.appToolBar$.next({ pageTitle: 'Chat', showCancelIcon: true });
         break;
       case 'USER_PAGE':
-        this.appToolBar$.next({ pageTitle: 'User Profile', showGoBackIcon: true });
+        this.appToolBar$.next({ pageTitle: 'User Profile', showCancelIcon: true });
         break;
       default:
         this.appToolBar$.next(this.defaultToolbar);

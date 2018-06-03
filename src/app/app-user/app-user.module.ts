@@ -25,7 +25,7 @@ const userRoute: Routes = [
     RouterModule.forChild(userRoute)
   ],
   declarations: [AppUserComponent],
-  exports: [AppUserComponent]
+  // exports: [AppUserComponent]
 
 })
 export class AppUserModule { }
