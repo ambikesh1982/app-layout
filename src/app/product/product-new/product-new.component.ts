@@ -139,9 +139,12 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     this.newFooditem.deliveryOptions.homeDelivery = fooditemForm.value.homeDelivery;
     this.newFooditem.deliveryOptions.dineIn = fooditemForm.value.dineIn;
 
-
-    this.autoComplete.geoInfo.addressFromUser = fooditemForm.value.addressFromUser;
-    this.newFooditem.geoInfo = this.autoComplete.geoInfo;
+    if (this.currentAppUser) {
+      this.newFooditem.geoInfo = this.currentAppUser.geoInfo;
+    } else {
+      this.autoComplete.geoInfo.addressFromUser = fooditemForm.value.addressFromUser;
+      this.newFooditem.geoInfo = this.autoComplete.geoInfo;
+    }
     // this.newFooditem.autoAddressFromMap = fooditemForm.value.autoAddressFromMap;
     // this.newFooditem.addressFromUser = fooditemForm.value.addressFromUser;
 
