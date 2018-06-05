@@ -9,8 +9,8 @@ import { FabActionComponent } from './fab-action.component';
 import { FooterComponent } from './footer.component';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { DialogComponent } from './dialog/dialog.component';
-import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material';
 import { ShowGmapComponent } from './show-gmap/show-gmap.component';
+import { ImageCarouselComponent } from './image-carousel/image-carousel.component';
 
 const SHARED_COMPONENTS = [
   AppToolbarComponent,
@@ -18,6 +18,7 @@ const SHARED_COMPONENTS = [
   FooterComponent,
   ProductCardComponent,
   ShowGmapComponent,
+  ImageCarouselComponent
 ];
 
 @NgModule({
@@ -26,12 +27,21 @@ const SHARED_COMPONENTS = [
     FlexLayoutModule,
     MaterialModule,
     RouterModule,
-    MatDialogModule
   ],
-  declarations: [AppToolbarComponent, FabActionComponent, FooterComponent, ProductCardComponent, DialogComponent, ShowGmapComponent],
+  declarations: [
+    AppToolbarComponent,
+    FabActionComponent,
+    FooterComponent,
+    ProductCardComponent,
+    DialogComponent,
+    ShowGmapComponent,
+    ImageCarouselComponent
+  ],
   exports: [
     SHARED_COMPONENTS
   ],
-  entryComponents: [DialogComponent]
+  entryComponents: [
+    DialogComponent
+  ]
 })
 export class SharedModule { }

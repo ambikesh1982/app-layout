@@ -50,12 +50,12 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.patchUserAddress();
 
     this.subscription = this.productForm.valueChanges.pipe(
       debounceTime(5000)
     ).subscribe( value => {
       if (this.currentAppUser.geoInfo ) {
+        this.patchUserAddress(this.currentAppUser.geoInfo);
         this.productForm.get('autoAddressFromMap').disable();
         this.productForm.get('addressFromUser').disable();
       } else {
@@ -103,16 +103,11 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     });
   }
 
-  patchUserAddress() {
-    if (this.auth.currAppUser.geoInfo) {
-      console.log('geoInfo form user profile: ', this.currentAppUser.geoInfo);
+  patchUserAddress(geoInfo: IGeoInfo) {
       this.productForm.patchValue(
-        { autoAddressFromMap: this.currentAppUser.geoInfo.autoAddressFromMap,
-          addressFromUser: this.currentAppUser.geoInfo.addressFromUser
+        { autoAddressFromMap: geoInfo.autoAddressFromMap,
+          addressFromUser: geoInfo.addressFromUser
         });
-    } else {
-      console.log('#### activate place autoComplete #### ');
-    }
   }
 
   prepareFooditem(fooditemForm: FormGroup) {
@@ -145,14 +140,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       this.autoComplete.geoInfo.addressFromUser = fooditemForm.value.addressFromUser;
       this.newFooditem.geoInfo = this.autoComplete.geoInfo;
     }
-    // this.newFooditem.autoAddressFromMap = fooditemForm.value.autoAddressFromMap;
-    // this.newFooditem.addressFromUser = fooditemForm.value.addressFromUser;
-
-    // User input: geopoint from google place autocomplete
-    // const point = this.autoComplete.addressFromGooleMap;
-    // this.newFooditem.coordinates = new firebase.firestore.GeoPoint(point.location.lat(), point.location.lng());
-    // const point = this.autoComplete.addressFromGooleMap;
-    // this.newFooditem.coordinates = this.autoComplete.userGeoInfo.coordinates;
 
     // Add a timestamp
     this.newFooditem.createdAt = new Date();
