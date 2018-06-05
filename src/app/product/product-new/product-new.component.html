@@ -1,4 +1,4 @@
-<!-- [linear]="true" (selectionChange)=prepareDataFromStepper($event) -->
+<!--  -->
 <div>
   <mat-horizontal-stepper
     [linear]="true"
@@ -9,15 +9,15 @@
       <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
     </mat-step>
 
-    <mat-step>
+    <mat-step [completed]="productForm.get('form1').status == 'VALID'">
       <app-product-form1 [productForm]="productForm"></app-product-form1>
     </mat-step>
 
-    <mat-step>
+    <mat-step [completed]="productForm.get('form1').status == 'VALID'">
        <app-product-form2 [productForm]="productForm"></app-product-form2>
     </mat-step>
 
-    <mat-step>
+    <mat-step [completed]="productForm.get('addressForm').status == 'VALID'">
       <app-place-autocomplete 
         #autoComplete 
         [productForm]="productForm"

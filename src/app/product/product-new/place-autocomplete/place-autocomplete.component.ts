@@ -41,6 +41,7 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnDest
     this.locationService.isGoogle$.pipe(
       tap(() => {
         if (this.userGeoInfo) {
+          console.log('this.userGeoInfo = true >>>>', this.userGeoInfo);
 
           // this.patchGeoInfoFromAppUser(this.userGeoInfo);
 
