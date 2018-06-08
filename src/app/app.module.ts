@@ -43,6 +43,8 @@ import { HomeComponent } from './home/home.component';
 import { AppShellComponent } from './app-shell.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { ChatResolver } from './core/chat.resolver';
+import { ChatService } from './chat/chat.service';
+import { AppUserService } from './app-user/app-user.service';
 
 
 @NgModule({
@@ -80,7 +82,9 @@ import { ChatResolver } from './core/chat.resolver';
     ProductResolver,
     ScriptLoadService,
     AuthService,
-    ChatResolver
+    ChatResolver,
+    ChatService,
+    AppUserService
   ],
   bootstrap: [AppComponent]
 })

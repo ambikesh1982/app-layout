@@ -4,7 +4,7 @@
 
 <div  class="speech-bubble" 
       style="border-color: #7c7fbc; background: #7c7fbc; color: white" 
-      *ngFor="let msg of chatMessage">
+      *ngFor="let msg of chatMessages$|async">
    {{msg.message}}
 </div>
 
