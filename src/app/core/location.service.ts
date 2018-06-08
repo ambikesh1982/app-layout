@@ -81,7 +81,8 @@ export class LocationService {
     return map;
   }
 
-  placeAutoComplete(autoComplete) {
+  placeAutoComplete(searchElement: ElementRef) {
+    const autoComplete = new google.maps.places.Autocomplete(searchElement.nativeElement /*, {types: ['geocode']}*/);
     autoComplete.addListener('place_changed', () => {
       this.ngZone.run(() => {
         const place = autoComplete.getPlace();
@@ -98,19 +99,19 @@ export class LocationService {
             autoAddressFromMap: place.formatted_address,
             addressFromUser: null
           };
+          //   this.geoFromAutoComplete$.next({
+          //     coordinates: geoPoint,
+          //     autoAddressFromMap: place.formatted_address,
+          //     addressFromUser: null
+          //   });
+          // } else {
+          //   console.log('Unable to find a place!');
+          //   this.geoFromAutoComplete$.next({});
+          // }
 
-          this.geoFromAutoComplete$.next({
-            coordinates: geoPoint,
-            autoAddressFromMap: place.formatted_address,
-            addressFromUser: null
-          });
-        } else {
-          console.log('Unable to find a place!');
-          this.geoFromAutoComplete$.next({});
         }
-
       });
-    });
 
+    });
   }
 }

@@ -41,8 +41,9 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnDest
     this.locationService.isGoogle$.pipe(
       tap(() => {
         if (this.userGeoInfo) {
+          console.log('this.userGeoInfo = true >>>>', this.userGeoInfo);
 
-          this.patchGeoInfoFromAppUser(this.userGeoInfo);
+          // this.patchGeoInfoFromAppUser(this.userGeoInfo);
 
           this.geoInfo = this.userGeoInfo;
 
@@ -86,76 +87,13 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnDest
     ).subscribe();
   }
 
-  // this.locationService.myCurrentPosition.pipe(
-  //   take(1)
-  // ).subscribe(loc => {
-  //   console.log('Current location is set to: ', loc.coords);
-  //   const map = this.locationService.createMap(this.mapElm, loc.coords.latitude, loc.coords.longitude);
-  //   const autoComplete = new google.maps.places.Autocomplete(this.searchElm.nativeElement /*, {types: ['geocode']}*/);
-  //   autoComplete.addListener('place_changed', () => {
-  //     this.ngZone.run(() => {
-  //       const place = autoComplete.getPlace();
-  //       console.log('place ####: ', place);
-
-  //       if (place.geometry) {
-  //         map.setCenter(place.geometry.location);
-  //         const lat = place.geometry.location.lat();
-  //         const lng = place.geometry.location.lng();
-  //         const geoPoint = new firebase.firestore.GeoPoint(lat, lng);
-
-  //         this.geoInfo = {
-  //           coordinates: geoPoint,
-  //           autoAddressFromMap: place.formatted_address,
-  //           addressFromUser: null
-  //         };
-  //       } else {
-  //         console.log('Unable to find a place! try again!!');
-  //       }
+  // patchGeoInfoFromAppUser(geo: IGeoInfo) {
+  //   this.productForm.patchValue(
+  //     {
+  //       autoAddressFromMap: geo.autoAddressFromMap,
+  //       addressFromUser: geo.addressFromUser
   //     });
-  //   });
-  // });
-
-  // .subscribe(
-  //   g => {
-  //     if (this.userGeoInfo) {
-  //       console.log('#### Populating geoInfo from user. ####');
-  //       this.patchGeoInfoFromAppUser(this.userGeoInfo);
-  //       const lat = this.userGeoInfo.coordinates.latitude;
-  //       const lng = this.userGeoInfo.coordinates.longitude;
-  //       const map = this.locationService.createMap(this.mapElm, lat, lng);
-  //     } else {
-  //       console.log('#### geoInfo not availabel: Activating placeAutoComplete. ####');
-  //       this.locationService.myCurrentPosition.subscribe(
-  //         myLoc => {
-  //           const map = this.locationService.createMap(this.mapElm, myLoc.coords.latitude, myLoc.coords.longitude);
-
-  //           const autoComplete = new google.maps.places.Autocomplete(this.searchElm.nativeElement /*, {types: ['geocode']}*/);
-
-  //           this.locationService.placeAutoComplete(autoComplete);
-
-  //           this.locationService.addressFromAutoComplete$.subscribe(res => {
-  //             if (res) {
-  //               console.log('addressFromAutoComplete$: ', res);
-  //               map.setCenter(res.loc);
-  //               this.addressFromGooleMap = { address: res.address, location: res.loc };
-  //             }
-  //           });
-  //         },
-  //         e => console.log('Error from myCurrentPosition: ', e)
-  //       );
-
-  //     }
-  //   }
-  // );
-
-
-  patchGeoInfoFromAppUser(geo: IGeoInfo) {
-    this.productForm.patchValue(
-      {
-        autoAddressFromMap: geo.autoAddressFromMap,
-        addressFromUser: geo.addressFromUser
-      });
-  }
+  // }
 
   ngOnDestroy() {
     if (this.subscription) {

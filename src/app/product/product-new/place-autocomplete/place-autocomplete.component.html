@@ -1,6 +1,7 @@
+<div [formGroup]="productForm">
 <mat-card>
 
-  <form fxLayout="column" fxLayoutAlign="center stretch" [formGroup]="productForm">
+  <form fxLayout="column" fxLayoutAlign="center stretch" formGroupName="addressForm">
 
     <!-- <mat-checkbox *ngIf="userGeoInfo" formControlName="geoInfoFromAppUser">Address from your profile!</mat-checkbox> -->
 
@@ -19,3 +20,4 @@
   <div #gmap style="height: 220px;"></div>
 
 </mat-card>
+</div>

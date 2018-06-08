@@ -50,20 +50,16 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.patchUserAddress();
 
-    this.subscription = this.productForm.valueChanges.pipe(
-      debounceTime(5000)
-    ).subscribe( value => {
-      if (this.currentAppUser.geoInfo ) {
-        this.productForm.get('autoAddressFromMap').disable();
-        this.productForm.get('addressFromUser').disable();
-      } else {
-        this.productForm.get('autoAddressFromMap').enable();
-        this.productForm.get('addressFromUser').enable();
-      }
-      console.log('productForm2 value: ', value);
-    });
+    if (this.currentAppUser.geoInfo) {
+      this.patchUserAddress(this.currentAppUser.geoInfo);
+    }
+
+    // this.subscription = this.productForm.valueChanges.pipe(
+    //   debounceTime(5000)
+    // ).subscribe( value => {
+    //   console.log('productForm2 value: ', value);
+    // });
   }
 
   intializeNewFooditem(): Fooditem {
@@ -82,108 +78,100 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   createForm() {
     // User input values
     this.productForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      description: '',
-      price: [0.0, Validators.required],
-      serving: [1, Validators.required],
-      isNonVeg: true,
-      category: '',
-      cuisine: '',
-      cashOnDelivery: true,
-      onlinePayment: false,
-      orderType: 'instant',
-      orderTime: '',
-      availability: [['All Days'], Validators.required],
-      takeAway: true,
-      homeDelivery: false,
-      dineIn: false,
-      // geoInfoFromAppUser: this.currentAppUser.geoInfo,
-      autoAddressFromMap: ['',  Validators.required],
-      addressFromUser: ['', Validators.required],
+      form1: this.formBuilder.group({
+        title: ['', Validators.required],
+        description: '',
+        price: [0.0, Validators.required],
+        serving: [1, Validators.required],
+        isNonVeg: [true, Validators.required],
+        category: ['', Validators.required],
+        cuisine: ['', Validators.required],
+        cashOnDelivery: [true, Validators.required],
+        onlinePayment: [false, Validators.required],
+      }),
+      form2: this.formBuilder.group({
+        orderType: 'instant',
+        orderTime: '',
+        availability: [['All Days'], Validators.required],
+        takeAway: true,
+        homeDelivery: false,
+        dineIn: false,
+      }),
+      addressForm: this.formBuilder.group({
+        autoAddressFromMap: ['', Validators.required],
+        addressFromUser: ['', Validators.required],
+      })
     });
   }
 
-  patchUserAddress() {
-    if (this.auth.currAppUser.geoInfo) {
-      console.log('geoInfo form user profile: ', this.currentAppUser.geoInfo);
-      this.productForm.patchValue(
-        { autoAddressFromMap: this.currentAppUser.geoInfo.autoAddressFromMap,
-          addressFromUser: this.currentAppUser.geoInfo.addressFromUser
+  patchUserAddress(geoInfo: IGeoInfo) {
+      this.productForm.get('addressForm').patchValue(
+        { autoAddressFromMap: geoInfo.autoAddressFromMap,
+          addressFromUser: geoInfo.addressFromUser
         });
-    } else {
-      console.log('#### activate place autoComplete #### ');
-    }
   }
 
   prepareFooditem(fooditemForm: FormGroup) {
-    // User input: urls from image upload component
-    // this.newFooditem.images = this.upload.images.map(image => {
-    //   return image.path;
-    // });
+    // 1. User input: urls from image upload component
     this.newFooditem.images = this.upload.images;
 
-    // User input: Formdata
-    this.newFooditem.title = fooditemForm.value.title;
-    this.newFooditem.description = fooditemForm.value.description;
-    this.newFooditem.isNonVeg = fooditemForm.value.isNonVeg;
-    this.newFooditem.price = fooditemForm.value.price;
-    this.newFooditem.serving = fooditemForm.value.serving;
-    this.newFooditem.category = fooditemForm.value.category;
-    this.newFooditem.cuisine = fooditemForm.value.cuisine;
-    this.newFooditem.paymentOptions.cashOnDelivery = fooditemForm.value.cashOnDelivery;
-    this.newFooditem.paymentOptions.onlinePayment = fooditemForm.value.onlinePayment;
-    this.newFooditem.orderType = fooditemForm.value.orderType;
-    this.newFooditem.orderTime = fooditemForm.value.orderTime; // not hooked up yet: slider
-    this.newFooditem.availability = fooditemForm.value.availability; // not hooked up yet: multiselect
-    this.newFooditem.deliveryOptions.takeAway = fooditemForm.value.takeAway;
-    this.newFooditem.deliveryOptions.homeDelivery = fooditemForm.value.homeDelivery;
-    this.newFooditem.deliveryOptions.dineIn = fooditemForm.value.dineIn;
+    // 2. User input: Formdata (form1)
+    this.newFooditem.title = fooditemForm.get('form1.title').value;
+    this.newFooditem.description = fooditemForm.get('form1.description').value;
+    this.newFooditem.isNonVeg = fooditemForm.get('form1.isNonVeg').value;
+    this.newFooditem.price = fooditemForm.get('form1.price').value;
+    this.newFooditem.serving = fooditemForm.get('form1.serving').value;
+    this.newFooditem.category = fooditemForm.get('form1.category').value;
+    this.newFooditem.cuisine = fooditemForm.get('form1.cuisine').value;
+    this.newFooditem.paymentOptions.cashOnDelivery = fooditemForm.get('form1.cashOnDelivery').value;
+    this.newFooditem.paymentOptions.onlinePayment = fooditemForm.get('form1.onlinePayment').value;
 
+    // 3. User input: Formdata (form2)
+    this.newFooditem.orderType = fooditemForm.get('form2.orderType').value;
+    this.newFooditem.orderTime = fooditemForm.get('form2.orderTime').value;
+    this.newFooditem.availability = fooditemForm.get('form2.availability').value;
+    this.newFooditem.deliveryOptions.takeAway = fooditemForm.get('form2.takeAway').value;
+    this.newFooditem.deliveryOptions.homeDelivery = fooditemForm.get('form2.homeDelivery').value;
+    this.newFooditem.deliveryOptions.dineIn = fooditemForm.get('form2.dineIn').value;
+
+    // 4. User input: Formdata (addressForm)
     if (this.currentAppUser) {
       this.newFooditem.geoInfo = this.currentAppUser.geoInfo;
     } else {
-      this.autoComplete.geoInfo.addressFromUser = fooditemForm.value.addressFromUser;
+      this.autoComplete.geoInfo.addressFromUser = fooditemForm.get('addressForm.addressFromUser').value;
       this.newFooditem.geoInfo = this.autoComplete.geoInfo;
     }
-    // this.newFooditem.autoAddressFromMap = fooditemForm.value.autoAddressFromMap;
-    // this.newFooditem.addressFromUser = fooditemForm.value.addressFromUser;
 
-    // User input: geopoint from google place autocomplete
-    // const point = this.autoComplete.addressFromGooleMap;
-    // this.newFooditem.coordinates = new firebase.firestore.GeoPoint(point.location.lat(), point.location.lng());
-    // const point = this.autoComplete.addressFromGooleMap;
-    // this.newFooditem.coordinates = this.autoComplete.userGeoInfo.coordinates;
-
-    // Add a timestamp
+    // 5. Add a timestamp
     this.newFooditem.createdAt = new Date();
 
   }
 
   // Save fooditem to firebase and navigate back to list page
   createFooditem() {
+    console.log('ProductForm before prepareFooditem >>>>', this.newFooditem);
     this.prepareFooditem(this.productForm);
+    console.log('ProductForm after prepareFooditem >>>>', this.newFooditem);
 
     if ( !this.currentAppUser.geoInfo) {
       this.updateUserGeoInfo(this.currentAppUser.uid, this.autoComplete.geoInfo);
     }
 
     console.log('Fooditem to be saved >>>> ', this.newFooditem);
-    this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
-      rep => {
-        console.log('#### New fooditem created #### :', this.newFooditem);
-        this.canNavigateAway = true;
-        console.log('New Fooditme after upload: ', this.newFooditem);
-        this.router.navigate(['/']);
-      },
-      error => {
-        console.log('error: Fooditem not created >>>> ', error);
-      }
-    );
+    if ( this.productForm.status === 'VALID') {
+      this.dataService.createProduct(this.newFooditem, this.newFooditem.id).then(
+        rep => {
+          console.log('#### New fooditem created #### :', this.newFooditem);
+          this.canNavigateAway = true;
+          console.log('New Fooditme after upload: ', this.newFooditem);
+          this.router.navigate(['/']);
+        },
+        error => {
+          console.log('error: Fooditem not created >>>> ', error);
+        }
+      );
+    }
   }
-
-  // handleGeoInfo(geoInfo: IGeoInfo, updateUserAddress: boolean) {
-  //   if (this.currentAppUser.geoInfo && )
-  // }
 
   updateUserGeoInfo(uid: string, geoInfo: IGeoInfo) {
     this.dataService.updateUserData(uid, {geoInfo: geoInfo});
@@ -205,7 +193,9 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if ( this.subscription) {
+      this.subscription.unsubscribe();
+    }
     console.log('#### From ngOnDestroy ####');
     if (!this.canNavigateAway) {
       this.cleanupOnCancel();
