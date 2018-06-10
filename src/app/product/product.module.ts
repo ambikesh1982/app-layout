@@ -14,32 +14,30 @@ import { ProductResolver } from '../core/product.resolver';
 
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
-import { ProductNewComponent } from './product-new/product-new.component';
-  import { ImageUploadComponent } from './product-new/image-upload/image-upload.component';
-  import { ProductForm1Component } from './product-new/product-form/product-form1/product-form1.component';
-  import { ProductForm2Component } from './product-new/product-form/product-form2/product-form2.component';
-  import { PlaceAutocompleteComponent } from './product-new/place-autocomplete/place-autocomplete.component';
-import { ProductModifyComponent } from './product-modify/product-modify.component';
-import { ChatComponent } from '../chat/chat/chat.component';
-import { AuthGuard } from '../core/auth.guard';
 import { ProductManageComponent } from './product-manage/product-manage.component';
+  import { ImageUploadComponent } from './product-manage/image-upload/image-upload.component';
+  import { ProductForm1Component } from './product-manage/product-form/product-form1/product-form1.component';
+  import { ProductForm2Component } from './product-manage/product-form/product-form2/product-form2.component';
+  import { PlaceAutocompleteComponent } from './product-manage/place-autocomplete/place-autocomplete.component';
+import { AuthGuard } from '../core/auth.guard';
+
 
 
 
 // Product module router paths go here...
 const productRoutes: Routes = [
   // { path: '', redirectTo: '/product/list', pathMatch: 'full' },
+  // {
+  //   path: 'add-new',
+  //   component: ProductNewComponent,
+  //   data: { title: 'PRODUCT_NEW_PAGE' },
+  //   canDeactivate: [CanDeactivateGuard],
+  //   canActivate: [AuthGuard]
+  // },
   {
-    path: 'add-new',
-    component: ProductNewComponent,
-    data: { title: 'PRODUCT_NEW_PAGE' },
-    canDeactivate: [CanDeactivateGuard],
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'modify/:id',
-    component: ProductModifyComponent,
-    data: { title: 'PRODUCT_MODIFY_PAGE' },
+    path: 'manage/:id',
+    component: ProductManageComponent,
+    data: { title: 'PRODUCT_MANAGE_PAGE' },
     resolve: { product: ProductResolver },
     canDeactivate: [CanDeactivateGuard],
     canActivate: [AuthGuard]
@@ -72,13 +70,11 @@ const productRoutes: Routes = [
   declarations: [
     ProductListComponent,
     ProductDetailComponent,
-    ProductNewComponent,
+    ProductManageComponent,
       ImageUploadComponent,
       ProductForm1Component,
       ProductForm2Component,
       PlaceAutocompleteComponent,
-    ProductModifyComponent,
-    ProductManageComponent,
   ]
 })
 export class ProductModule { }

@@ -66,15 +66,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         this.router.navigate(['chat', this.fooditem.id]);
         break;
       case 'edit':
-        this.router.navigate(['modify', this.fooditem.id]);
+        this.router.navigate(['manage', this.fooditem.id]);
         break;
       default:
         this.router.navigate(['chat', this.fooditem.id]);
         this.fabActionIcon = 'chat_bubble_outline';
         break;
     }
-    // routerLink = "/product/chat/{{fooditem.id}}
-    // this.router.navigate(['/product/chat/', this.fooditem.id]);
   }
 
   ngOnDestroy() {
