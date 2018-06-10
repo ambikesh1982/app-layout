@@ -94,9 +94,9 @@ export class DataService {
 
   }
 
-  updateProduct(productId: Fooditem): Promise<any> {
-    const productPath = `${this.productlistPath}/${productId}`;
-    return this.afs.doc<Fooditem>(productPath).update(productId);
+  updateProduct(fooditem: Fooditem): Promise<any> {
+    const productPath = `${this.productlistPath}/${fooditem.id}`;
+    return this.afs.doc<Fooditem>(productPath).update(fooditem);
   }
 
   deleteProduct(productId: Fooditem): Promise<any> {

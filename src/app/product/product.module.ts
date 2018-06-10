@@ -22,6 +22,7 @@ import { ProductNewComponent } from './product-new/product-new.component';
 import { ProductModifyComponent } from './product-modify/product-modify.component';
 import { ChatComponent } from '../chat/chat/chat.component';
 import { AuthGuard } from '../core/auth.guard';
+import { ProductManageComponent } from './product-manage/product-manage.component';
 
 
 
@@ -40,6 +41,7 @@ const productRoutes: Routes = [
     component: ProductModifyComponent,
     data: { title: 'PRODUCT_MODIFY_PAGE' },
     resolve: { product: ProductResolver },
+    canDeactivate: [CanDeactivateGuard],
     canActivate: [AuthGuard]
   },
   {
@@ -76,6 +78,7 @@ const productRoutes: Routes = [
       ProductForm2Component,
       PlaceAutocompleteComponent,
     ProductModifyComponent,
+    ProductManageComponent,
   ]
 })
 export class ProductModule { }

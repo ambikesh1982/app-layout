@@ -63,19 +63,19 @@
   <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="2">
     <h3>Payment and delivery options</h3>
     <mat-selection-list>
-      <mat-list-option [selected]="fi.paymentOptions.cashOnDelivery">
+      <mat-list-option [selected]="fi.cashOnDelivery">
         Cash of delivery
       </mat-list-option>
-      <mat-list-option [selected]="fi.paymentOptions.onlinePayment">
+      <mat-list-option [selected]="fi.onlinePayment">
         Pay online
       </mat-list-option>
-      <mat-list-option [selected]="fi.deliveryOptions.takeAway">
+      <mat-list-option [selected]="fi.takeAway">
         Take away
       </mat-list-option>
-      <mat-list-option [selected]="fi.deliveryOptions.homeDelivery">
+      <mat-list-option [selected]="fi.homeDelivery">
         Home delivery
       </mat-list-option>
-      <mat-list-option [selected]="fi.deliveryOptions.dineIn">
+      <mat-list-option [selected]="fi.dineIn">
         Dine in
       </mat-list-option>
     </mat-selection-list>
@@ -108,7 +108,8 @@
 
   </mat-card>
 
-  <app-fab-action fabIcon="chat_bubble_outline" (click)="onClickFab()"></app-fab-action>
+  <app-fab-action 
+    [fabIcon]="fabActionIcon" (click)="onClickFab(fabActionIcon)"></app-fab-action>
 
   <!-- <button mat-fab style="position: fixed; bottom: 20px; right: 20px;">
     <mat-icon>shopping_basket</mat-icon>

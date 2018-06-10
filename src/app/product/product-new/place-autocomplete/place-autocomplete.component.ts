@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone, AfterViewInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, AfterViewInit, Input, OnDestroy, OnChanges } from '@angular/core';
 import { ScriptLoadService } from '../../../core/script-load.service';
 import { LocationService } from '../../../core/location.service';
 import { FormGroup } from '@angular/forms';
@@ -13,7 +13,7 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./place-autocomplete.component.scss']
 })
 
-export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   subscription: Subscription;
 
@@ -31,8 +31,25 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnDest
     this.locationService.loadGoogleMapScript(); // Initialize googe-maps
   }
 
-  ngOnInit() {
+  ngOnChanges() {
+    console.log('#### from ngOnChanges() ####');
+    if (this.userGeoInfo ) {
+      this.patchUserAddress(this.userGeoInfo);
+    }
+  }
 
+  ngOnInit() {
+  }
+
+
+  patchUserAddress(geoInfo: IGeoInfo) {
+    this.productForm.get('addressForm').patchValue(
+      {
+        autoAddressFromMap: geoInfo.autoAddressFromMap,
+        addressFromUser: geoInfo.addressFromUser,
+        coordinates: geoInfo.coordinates
+      });
+    this.productForm.get('addressForm').disable();
   }
 
   ngAfterViewInit() {
@@ -40,20 +57,16 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnDest
 
     this.locationService.isGoogle$.pipe(
       tap(() => {
-        if (this.userGeoInfo) {
+        if (this.productForm.get('addressForm.coordinates').value) {
           console.log('this.userGeoInfo = true >>>>', this.userGeoInfo);
-
-          // this.patchGeoInfoFromAppUser(this.userGeoInfo);
-
-          this.geoInfo = this.userGeoInfo;
-
           this.locationService.createMap(
             this.mapElm,
-            this.userGeoInfo.coordinates.latitude,
-            this.userGeoInfo.coordinates.longitude
+            this.productForm.get('addressForm.coordinates').value.latitude,
+            this.productForm.get('addressForm.coordinates').value.longitude
           );
 
-        } else {
+        }
+        // else {
 
           const autoComplete = new google.maps.places.Autocomplete(this.searchElm.nativeElement /*, {types: ['geocode']}*/);
 
@@ -68,13 +81,11 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnDest
 
                 const geoPoint = new firebase.firestore.GeoPoint(lat, lng);
 
-                const map = this.locationService.createMap(this.mapElm, lat, lng);
+                this.productForm.get('addressForm.coordinates').patchValue(geoPoint);
+                this.productForm.get('addressForm.autoAddressFromMap').patchValue(place.formatted_address);
 
-                this.geoInfo = {
-                  coordinates: geoPoint,
-                  autoAddressFromMap: place.formatted_address,
-                  addressFromUser: null
-                };
+
+                const map = this.locationService.createMap(this.mapElm, lat, lng);
 
               } else {
                 console.log('Unable to find a place! try again!!');
@@ -82,18 +93,11 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnDest
               }
             }); // ngZone.run
           }); // autoComplete.addListener
-        } // else
+        // } // else
       }) // tap
     ).subscribe();
   }
 
-  // patchGeoInfoFromAppUser(geo: IGeoInfo) {
-  //   this.productForm.patchValue(
-  //     {
-  //       autoAddressFromMap: geo.autoAddressFromMap,
-  //       addressFromUser: geo.addressFromUser
-  //     });
-  // }
 
   ngOnDestroy() {
     if (this.subscription) {

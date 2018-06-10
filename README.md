@@ -98,3 +98,19 @@ ChatRoomsTest { // collection
     }
     
 }
+
+
+
+      // Get download url
+      // this.subscription = uploadTask.snapshotChanges().pipe(
+      //   tap( snap => {
+      //     if (snap.bytesTransferred === snap.totalBytes) {
+      //       this.manageFileCount(imageFiles.length);
+      //     }
+      //   }),
+      //   finalize(() => {
+      //     this.previewURL$ = storageRef.getDownloadURL();
+      //     this.images.push({ path: imagePath, url: this.pre});
+      //     this.downloadURL$.push(this.previewURL$);
+      //       })
+      // ).subscribe();

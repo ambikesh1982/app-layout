@@ -11,7 +11,7 @@ const routes: Routes = [
     path: '', component: AppShellComponent, data: { title: 'APP_SHELL_PAGE' },
     children: [
       { path: 'app-cart', loadChildren: './app-cart/app-cart.module#AppCartModule' },
-      { path: 'product', loadChildren: './chat/chat.module#ChatModule' },
+      { path: 'chat', loadChildren: './chat/chat.module#ChatModule' },
       { path: 'search', loadChildren: './app-search/app-search.module#AppSearchModule' },
       { path: 'app-user', loadChildren: './app-user/app-user.module#AppUserModule' },
       { path: '', loadChildren: './product/product.module#ProductModule' },

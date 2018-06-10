@@ -2,6 +2,12 @@ import * as firebase from 'firebase/app';
 
 export interface Fooditem {
     id?: string;
+    createdAt?: Date;
+    createdBy?: string;
+    isModified?: boolean;
+    modifiedAt?: Date;
+    geoInfoFromAppUser?: boolean;
+    // <product form fields>
     title?: string;
     description?: string;
     currency?: string;
@@ -10,18 +16,18 @@ export interface Fooditem {
     isNonVeg?: boolean;
     category?: string;
     cuisine?: string;
-    orderType?: string; // Pre-Order or Instant
-    orderTime?: string; // 24 hours
-    availability?: string[]; // All days, Weekends Only, Fri/Sat/Sun
+    orderType?: string;
+    orderTime?: string;
+    availability?: string[];
     deliveryTime?: string;
-    images?: { path: string, url: string }[];
-    // images?: string[];
-    paymentOptions?: { cashOnDelivery?: boolean, onlinePayment?: boolean };
-    deliveryOptions?: { takeAway?: boolean, homeDelivery?: boolean, dineIn?: boolean };
-    geoInfoFromAppUser?: boolean;
+    cashOnDelivery?: boolean;
+    onlinePayment?: boolean;
+    takeAway?: boolean;
+    homeDelivery?: boolean;
+    dineIn?: boolean;
     geoInfo?: IGeoInfo;
-    createdAt?: Date;
-    createdBy?: string;
+    // </product form fields>
+    images?: { path: string, url: string }[];
 }
 
 export interface AppUser {

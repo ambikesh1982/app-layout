@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges, EventEmitter, Output, } from '@angular/core';
 import { DataService } from '../../../core/data.service';
 import { Fooditem } from '../../../core/models';
 import { Observable, Subscription } from 'rxjs';
@@ -12,30 +12,50 @@ import { finalize, tap, map } from 'rxjs/operators';
   styleUrls: ['./image-upload.component.scss']
 })
 
-export class ImageUploadComponent implements OnInit, OnDestroy {
+export class ImageUploadComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() productId: string;
+  @Input() fooditem: Fooditem;
+  @Output() imageUploaded = new EventEmitter();
+
+  actions = ['SUCCESS', 'DISCARD', 'FAIL'];
+
+  manageProductActions$: Observable<string>;
 
   maxFileUploadCount: number;
   selectedFileCount: number;
 
   /** STORAGE **/
-  storagePath: string;
-  images: { path: string, url: string }[];
-  uploadPercent$: Observable<number>;
-
-  // previewURL$: Observable<string>;
-  // previewURL$: any;
-  preview: { path: string, url: string };
   upload$;
-
+  uploadPercent$: Observable<number>;
   subscription: Subscription;
+
+  storagePath: string;
+
+  preview: { path: string, url: string };
+  images: { path: string, url: string }[];
+  imagesDeleted: { path: string, url: string }[];
+  imagesAdded: { path: string, url: string }[];
+
 
   constructor(private dataService: DataService, private storage: AngularFireStorage) {
     this.storagePath = 'foodz9test';
-    this.images = [];
     this.maxFileUploadCount = 4;
-    this.selectedFileCount = 0;
+    this.imagesAdded = [];
+    this.imagesDeleted = [];
+  }
+
+  ngOnChanges() { }
+
+  ngOnInit() {
+    if (this.fooditem.images.length === 0) {
+      this.images = [];
+      this.selectedFileCount = 0;
+    } else {
+      this.preview = this.fooditem.images[0];
+      this.images = this.fooditem.images;
+      this.selectedFileCount = this.images.length;
+    }
+    console.log('from ngOnInit');
   }
 
   // <Storage...>
@@ -44,7 +64,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     if (imageFiles[0]) {
 
       const image = imageFiles[0];
-      const imagePath = `${this.storagePath}/${this.productId}/${new Date().getTime()}_${image.name}`;
+      const imagePath = `${this.storagePath}/${this.fooditem.id}/${new Date().getTime()}_${image.name}`;
       const storageRef = this.storage.ref(imagePath);
       const uploadTask = this.storage.upload(imagePath, image);
 
@@ -52,24 +72,10 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       this.uploadPercent$ = uploadTask.percentageChanges();
 
       // Get download url
-      // this.subscription = uploadTask.snapshotChanges().pipe(
-      //   tap( snap => {
-      //     if (snap.bytesTransferred === snap.totalBytes) {
-      //       this.manageFileCount(imageFiles.length);
-      //     }
-      //   }),
-      //   finalize(() => {
-      //     this.previewURL$ = storageRef.getDownloadURL();
-      //     this.images.push({ path: imagePath, url: this.pre});
-      //     this.downloadURL$.push(this.previewURL$);
-      //       })
-      // ).subscribe();
-
-      // Get download url
       this.subscription = uploadTask.snapshotChanges().pipe(
         tap(snap => {
           if (snap.bytesTransferred === snap.totalBytes) {
-            this.manageFileCount(imageFiles.length);
+            this.manageFileCount(1);
           }
         }),
         finalize(() => {
@@ -78,6 +84,8 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
               if ( url ) {
                 this.preview = { path: imagePath, url: url };
                 this.images.push(this.preview);
+                this.imagesAdded.push(this.preview);
+                this.imageUploaded.emit(this.images);
               }
             })
           );
@@ -88,14 +96,13 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   deleteImage(img: any) {
     const index = this.images.indexOf(img);
-    console.log('Image index: ', index, ': ', img);
     if (index !== -1) {
-      // Delete the image from the storage
-      this.storage.ref(this.images[index].path).delete();
-      // Remove the image from the images array
-      this.images.splice(index, 1);
-      this.preview = this.images[0];
-      this.manageFileCount(-1);
+      this.imagesDeleted.push(img);         // 1. Add the image to imagesDeleted array.
+      this.images.splice(index, 1);         // 2. Soft delete: Remove the image form images array.
+      this.preview = this.images[0];        // 3. Set the preview to first image of the images array.
+      this.manageFileCount(-1);             // 4. Set the selected file count.
+      this.imageUploaded.emit(this.images); // 5. Emit the images array to parent component.
+      console.log('TODO: CLEANUP >> imagesDeleted[]: ', this.imagesDeleted);
     }
   }
 
@@ -103,8 +110,23 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this.selectedFileCount = this.selectedFileCount + counter;
   }
 
-  ngOnInit() {
-    console.log('from ngOnInit');
+
+  storageCleanup(images: any) {
+    // Pass imagesDeleted[] on product save action.
+    // Pass imagesAdded[]   on product cancle action.
+    console.log(' #### Cleanup: Free storage for these images ####');
+    images.forEach(image => {
+      // this.storage.ref(image.path).delete();
+      console.log(image);
+    });
+  }
+
+  cleanupOnSave() {
+    this.storageCleanup(this.imagesDeleted);
+  }
+
+  cleanupOnDiscard() {
+    this.storageCleanup(this.imagesAdded);
   }
 
   ngOnDestroy() {

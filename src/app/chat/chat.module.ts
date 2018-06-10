@@ -10,7 +10,7 @@ import { AuthGuard } from '../core/auth.guard';
 
 const chatRoute: Routes = [
   {
-    path: 'chat/:fid',
+    path: ':fid',
     component: ChatComponent,
     data: { title: 'CHAT_PAGE' },
     resolve: { chat: ChatResolver },

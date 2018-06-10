@@ -5,8 +5,11 @@
     style="padding: 0px"  
     #stepper>
 
-    <mat-step [completed]="upload.images.length != 0">
-      <app-image-upload #upload [productId]="newFooditem.id"></app-image-upload>
+    <mat-step [completed]="imageUploadDone">
+      <app-image-upload 
+      #upload 
+      [fooditem]="newFooditem"
+      (imageUploaded)="imageUploadCompleted($event)"></app-image-upload>
     </mat-step>
 
     <mat-step [completed]="productForm.get('form1').status == 'VALID'">
