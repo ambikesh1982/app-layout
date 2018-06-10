@@ -8,7 +8,7 @@ import * as firebase from 'firebase/app';
 
 // rxjs imports
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap, filter, flatMap } from 'rxjs/operators';
 
 // local imports
 import { Fooditem, ChatMessage, AppUser, ChatRoomInfo } from './models';
@@ -30,6 +30,11 @@ export class DataService {
   private productlistRef: AngularFirestoreCollection<Fooditem>;
   private chatRoomRef:    AngularFirestoreCollection<ChatMessage>;
   FooditemID$: BehaviorSubject<string>;
+
+
+  ccc: any;
+
+  currentChatPath: any;
 
   constructor(
     private afs: AngularFirestore,
@@ -115,68 +120,7 @@ export class DataService {
 
   // Chat Component Menthods Start
 
-  async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, chatRoominfo: ChatRoomInfo) {
-
-        newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
-        this.chatRoomRef.doc(`${chatRoominfo.roomID}`).set(chatRoominfo);
-        this.chatRoomRef.doc(`${chatRoominfo.roomID}`).collection('conversation').add(newMessage)
-        .then(
-          result => {
-            console.log('first time login, created new room', result);
-          },
-          err => console.error(err, 'You do not have access!')
-          );
-  }
-
-
-  getRoomMessages(chatRoominfo: ChatRoomInfo): Observable<ChatMessage[]> {
-    this.chatRoomRef.valueChanges().subscribe(docs => {
-      console.log('seller document', docs);
-    });
-    // tslint:disable-next-line:max-line-length
-    return this.chatRoomRef.doc(`${chatRoominfo.roomID}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
-  }
-
-
-  getSellerMessages(fooditem: Fooditem): Observable<ChatMessage[]> {
-    const sellerId = fooditem.createdBy;
-    const fooditemId = fooditem.id;
-    console.log('seller room data', fooditem);
-
-   this.afs.collection<ChatRoomInfo>('chat-data', ref => ref.where('fooditemID', '==', fooditemId))
-   .valueChanges()
-   .subscribe( docData => {
-      console.log('ChatRoom Info', docData);
-      return docData;
-   });
-
-
-
-
-
-    // this.chatRoomRef.snapshotChanges().pipe(
-    //   map(actions => actions.map(a => {
-    //     const data = a.payload.doc.data() as ChatMessage;
-    //     const chatRoomName = a.payload.doc.id;
-    //     console.log('seller document data', chatRoomName);
-    //     // tslint:disable-next-line:max-line-length
-    //     console.log('chat-observable', this.chatRoomRef.doc(`${chatRoomName}`)
-    // .collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges());
-
-    //     return { chatRoomName, data };
-    //   }))
-    // ).subscribe();
-
-    return this.chatRoomRef.valueChanges();
-   // return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
-
-  }
-
-
-  removeRoom(chatroom: ChatMessage): Promise<any> {
-    const roomPath = `${this.chatroomPath}/${chatroom.createdByUserId}`;
-    return this.afs.doc<ChatMessage>(roomPath).delete();
-  }
+ 
 
   // Chat Component Menthods Ends here
 

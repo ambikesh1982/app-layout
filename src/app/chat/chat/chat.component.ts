@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { ChatMessage, Fooditem, ChatRoomInfo } from '../../core/models';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { DataService } from '../../core/data.service';
 import { AuthService } from '../../core/auth.service';
 import { map } from 'rxjs/operators';
+import { ChatService } from '../chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -13,20 +13,27 @@ import { map } from 'rxjs/operators';
 })
 export class ChatComponent implements OnInit {
 
+  @Input() roomMetaData: ChatRoomInfo;
   private chat: ChatMessage;
-  private chatMessages$: Observable<ChatMessage[]>;
-  private chatRoomInfo$: Observable<ChatRoomInfo[]>;
+  chatMessages$: Observable<ChatMessage[]>;
+  chatRoomInfo$: Observable<ChatRoomInfo[]>;
   chatMessage: ChatMessage[];
   chatRoomInfo: ChatRoomInfo;
   private fooditem: Fooditem;
+  isBuyer: boolean;
+  isSeller: boolean;
+
+
+  ccc: any;
 
   constructor(private route: ActivatedRoute,
-    private dataService: DataService,
+    private chatService: ChatService,
     private authService: AuthService
 
   ) {
     this.chat = {};
     // this.roomMessages = [];
+    this.isBuyer = false;
   }
 
   inputMessageText: string;
@@ -40,27 +47,26 @@ export class ChatComponent implements OnInit {
   }
 
   sendRoomMessage($event) {
-    // this.dataService.createchatMessages()
+    // this.chatService.createchatMessages()
     event.preventDefault();
     event.stopPropagation();
 
     this.chat.message = this.inputMessageText;
+    if (this.authService.currUserID === this.fooditem.createdBy) {
+        this.isSeller = true;
+      } else {
+        this.isBuyer = true;
+      }
 
 
-    const buyerid = this.authService.currUserID;
-    const sellerid = this.fooditem.createdBy;
-    const chatroomName = sellerid + buyerid + this.fooditem.id;
-    this.chatRoomInfo = { buyerID: buyerid,
-                          sellerID: sellerid,
-                          fooditemID: this.fooditem.id,
-                          roomID: chatroomName};
-    // const chatroomName = buyerid;
-    console.log('chat-message buyer + seller id', chatroomName);
+        const chatroomName = this.fooditem.id + this.authService.currUserID;
+        this.chatRoomInfo = { buyerID:    this.authService.currUserID,
+                              fooditemID: this.fooditem.id,
+                              roomID:     chatroomName};
 
-    this.dataService.createChatMessages(this.chat, this.fooditem, this.chatRoomInfo);
+    console.log('chat-message buyer + fooditem id', chatroomName);
+    this.chatService.createChatMessages(this.chat, this.fooditem, this.chatRoomInfo, this.isBuyer);
 
-    console.log('chat-message buyer id', buyerid);
-    console.log('chat-message', this.chat.message);
     this.chat = {};
     this.inputMessageText = '';
     return false;
@@ -70,24 +76,31 @@ export class ChatComponent implements OnInit {
     const buyerid = this.authService.currUserID;
     console.log('buyerid---', buyerid);
     const sellerid = this.fooditem.createdBy;
-    const chatroomName = sellerid + buyerid + this.fooditem.id;
+
+    if (buyerid !== sellerid) {
+      this.isBuyer = true;
+    }
+    const chatroomName = this.fooditem.id + buyerid;
     this.chatRoomInfo = {
       buyerID: buyerid,
-      sellerID: sellerid,
       fooditemID: this.fooditem.id,
       roomID: chatroomName
     };
-     this.chatMessages$ = this.dataService.getRoomMessages(this.chatRoomInfo);
-    // this.chatMessages$ = this.dataService.getSellerMessages(this.fooditem);
 
-     this.chatMessages$.subscribe(messages => {
-      console.log('observable chat messages', messages);
-      this.chatMessage = messages;
-    });
+    if (this.isBuyer) {
+    this.chatMessages$ = this.chatService.getRoomMessages(this.chatRoomInfo);
+    console.log ('buyer true or false ', this.isBuyer);
+    } else {
+      console.log('buyer id true or false ', this.isBuyer);
+      this.chatMessages$ = this.chatService.getSellerMessages(this.fooditem);
+    }
 
-
+    //  this.chatMessages$.subscribe(messages => {
+    //   console.log('observable chat messages', messages);
+    //   this.chatMessage = messages;
 
   }
+
   ngOnInit() {
     console.log('Chat-Room route', this.route);
     console.log('input=', this.inputMessageText);
