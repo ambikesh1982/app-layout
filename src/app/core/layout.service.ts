@@ -81,15 +81,12 @@ export class LayoutService {
       case 'PRODUCT_DETAIL_PAGE':
         this.appToolBar$.next({ pageTitle: routerData.product.title, showCancelIcon: true });
         break;
-      case 'PRODUCT_MODIFY_PAGE':
+      case 'PRODUCT_MANAGE_PAGE':
         if ( routerData.product) {
           this.appToolBar$.next({ pageTitle: `${routerData.product.title}*`, showCancelIcon: true });
         } else {
           this.appToolBar$.next({ pageTitle: 'New Fooditem*', showCancelIcon: true });
         }
-        break;
-      case 'PRODUCT_NEW_PAGE':
-        this.appToolBar$.next({ pageTitle: 'New fooditem', showCancelIcon: true });
         break;
       case 'APP_CART_PAGE':
         this.appToolBar$.next({ pageTitle: 'Cart', showCancelIcon: true });
