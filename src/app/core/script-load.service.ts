@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ScriptLoadService {
@@ -11,7 +12,7 @@ export class ScriptLoadService {
       script.type = 'text/javascript';
       script.src = url;
       script.id = id;
-      if (c) {
+      if (c)  {
         script.addEventListener('load', function (e) {
           c(null, e);
         }, false);

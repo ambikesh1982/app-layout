@@ -1,9 +1,9 @@
-import { Injectable, ElementRef, NgZone } from '@angular/core';
-import { Observable, Observer, of, BehaviorSubject, Subject } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { ScriptLoadService } from './script-load.service';
-import { IGeoInfo } from './models';
+import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as firebase from 'firebase/app';
+import { BehaviorSubject, Observable, Observer } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { IGeoInfo } from './models';
+import { ScriptLoadService } from './script-load.service';
 
 const GEOLOCATION_ERRORS = {
   'errors.location.unsupportedBrowser': 'Browser does not support location services',
@@ -18,10 +18,13 @@ export class LocationService {
   myCurrentPosition: Observable<Position>;
   geoFromAutoComplete$ = new BehaviorSubject<IGeoInfo>({});
 
-  isGoogle$ = new Subject<boolean>();
+  isGoogle$ = new BehaviorSubject<any>(null);
+
+  googleScriptLoaded: boolean;
 
   constructor(private load: ScriptLoadService, private ngZone: NgZone) {
     this.myCurrentPosition = this.getCurrentPosition();
+    this.googleScriptLoaded = false;
   }
 
   // retruns user position detected by browser navigator
@@ -55,11 +58,16 @@ export class LocationService {
     });
   }
 
-  async loadGoogleMapScript() {
-    await this.load.loadScript(environment.googleMapURL, 'google-map', () => {
-      console.log('Google-Maps Initiated!!');
-      this.isGoogle$.next(true);
-    });
+  loadGoogleMapScript() {
+    if (!this.googleScriptLoaded ) {
+      this.load.loadScript(environment.googleMapURL, 'google-map', () => {
+        console.log('Google-Maps Initiated!!');
+        const googleMaps = window['google']['maps'];
+        this.isGoogle$.next(googleMaps);
+      });
+      this.googleScriptLoaded = true;
+
+    }
   }
 
   // Create a map with the marker.
@@ -99,15 +107,6 @@ export class LocationService {
             autoAddressFromMap: place.formatted_address,
             addressFromUser: null
           };
-          //   this.geoFromAutoComplete$.next({
-          //     coordinates: geoPoint,
-          //     autoAddressFromMap: place.formatted_address,
-          //     addressFromUser: null
-          //   });
-          // } else {
-          //   console.log('Unable to find a place!');
-          //   this.geoFromAutoComplete$.next({});
-          // }
 
         }
       });
@@ -115,3 +114,40 @@ export class LocationService {
     });
   }
 }
+
+
+/*
+import { Injectable } from '@angular/core';
+
+const url = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAwVnwE1bEZf_Bkk_pSkGM0XlBSXJocVUY&callback=initMap';
+
+@Injectable()
+export class GmapService {
+
+      private loadAPI: Promise<any>;
+
+      constructor() {}
+
+      private loadScript(): void {
+          if (!document.getElementById('gmap')) {
+              const script = document.createElement('script');
+              script.type = 'text/javascript';
+              script.src = url;
+              script.id = 'gmap';
+              document.head.appendChild(script);
+          }
+      }
+
+      get init(): Promise<any> {
+          if (!this.loadAPI) {
+              this.loadAPI = new Promise((resolve) => {
+                window['initMap'] = (ev: any) => {
+                    resolve(window['google'].maps);
+                  };
+                this.loadScript();
+              });
+          }
+          return this.loadAPI;
+      }
+}
+*/

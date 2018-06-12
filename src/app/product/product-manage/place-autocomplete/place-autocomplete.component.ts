@@ -33,7 +33,7 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnChan
 
   ngOnChanges() {
     console.log('#### from ngOnChanges() ####');
-    if (this.userGeoInfo ) {
+    if (this.userGeoInfo) {
       this.patchUserAddress(this.userGeoInfo);
     }
   }
@@ -55,20 +55,22 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnChan
   ngAfterViewInit() {
     console.log('afterViewInit: #### View Initialized ####');
 
-    this.locationService.isGoogle$.pipe(
-      tap(() => {
-        if (this.productForm.get('addressForm.coordinates').value) {
-          console.log('this.userGeoInfo = true >>>>', this.userGeoInfo);
-          this.locationService.createMap(
-            this.mapElm,
-            this.productForm.get('addressForm.coordinates').value.latitude,
-            this.productForm.get('addressForm.coordinates').value.longitude
-          );
+    this.subscription = this.locationService.isGoogle$.subscribe(
+      google => {
+        if (google) {
+          console.log('##### Google-maps api loaded #####');
 
-        }
-        // else {
+          if (this.productForm.get('addressForm.coordinates').value) {
 
-          const autoComplete = new google.maps.places.Autocomplete(this.searchElm.nativeElement /*, {types: ['geocode']}*/);
+            this.locationService.createMap(
+              this.mapElm,
+              this.productForm.get('addressForm.coordinates').value.latitude,
+              this.productForm.get('addressForm.coordinates').value.longitude
+            );
+
+          }
+
+          const autoComplete = new google.places.Autocomplete(this.searchElm.nativeElement /*, {types: ['geocode']}*/);
 
           autoComplete.addListener('place_changed', () => {
             this.ngZone.run(() => {
@@ -93,9 +95,10 @@ export class PlaceAutocompleteComponent implements OnInit, AfterViewInit, OnChan
               }
             }); // ngZone.run
           }); // autoComplete.addListener
-        // } // else
-      }) // tap
-    ).subscribe();
+        } else {
+          console.log('##### Waiting for Google-maps api ##### ', google);
+        }
+      });
   }
 
 

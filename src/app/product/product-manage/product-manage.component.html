@@ -2,7 +2,7 @@
 <app-fab-action fabIcon="done" (click)="createOrUpdateProduct()"></app-fab-action> -->
 <!-- [linear]="true" -->
 <div>
-    <mat-horizontal-stepper [linear]="true" style="padding: 0px" #stepper>
+    <mat-horizontal-stepper style="padding: 0px" #stepper>
 
         <mat-step [completed]="imageUploadCompleted">
             <app-image-upload #upload [fooditem]="tempFooditem" (imageUploaded)="imagesFromImageUpload($event)"></app-image-upload>
