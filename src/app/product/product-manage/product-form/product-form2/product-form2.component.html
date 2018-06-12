@@ -19,13 +19,13 @@
     [max]="orderTimeSliderRange"
     [step]="orderTimeSliderStep"
     [tickInterval]="orderTimeSliderStep"
-    [(ngModel)]="orderTimeSliderValue"
+    [value]="orderTimeSliderValue"
     thumbLabel=true>
     Delivery time
   </mat-slider>
   <h3>
     Order before: 
-    <span style="color: teal">[ {{orderTimeSliderValue}}/{{orderTimeUnit}} ]</span>
+    <span style="color: teal">[ {{this.orderTimeSliderValue}}/{{orderTimeUnit}} ]</span>
   </h3>
   </div>
 

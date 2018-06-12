@@ -89,7 +89,7 @@ export class ProductManageComponent implements OnInit, OnDestroy {
 
       form2: this.fb.group({
         orderType: ['instant', Validators.required],
-        orderTime: ['', Validators.required],
+        orderTime: ['30', Validators.required],
         availability: [['All Days'], Validators.required],
         takeAway: [true, Validators.required],
         homeDelivery: [false, Validators.required],

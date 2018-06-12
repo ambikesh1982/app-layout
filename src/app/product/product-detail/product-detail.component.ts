@@ -39,6 +39,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       ).subscribe(user => {
         if (user) {
           this.setFabAction(user.uid);
+        } else {
+          this.setFabAction('nouser');
         }
       });
     }
@@ -50,13 +52,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   }
 
   setFabAction(uid: string) {
-    switch (uid) {
-      case this.fooditem.createdBy:
-        this.fabActionIcon = 'edit';
-        break;
-      default:
-        this.fabActionIcon = 'chat_bubble_outline';
-        break;
+    if ( uid === this.fooditem.createdBy ) {
+      this.fabActionIcon = 'edit';
+    } else {
+      this.fabActionIcon = 'chat_bubble_outline';
     }
   }
 
