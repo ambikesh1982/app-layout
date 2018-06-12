@@ -75,7 +75,7 @@ export class LocationService {
 
     const myLatLng = { lat: myLat, lng: myLng };
     const map = new google.maps.Map(mapElement.nativeElement, {
-      zoom: 18,
+      zoom: 16,
       center: myLatLng,
       disableDefaultUI: true,
       scrollwheel: false,
