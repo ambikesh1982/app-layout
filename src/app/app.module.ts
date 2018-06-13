@@ -45,6 +45,8 @@ import { PageNotFoundComponent } from './page-not-found.component';
 import { ChatResolver } from './core/chat.resolver';
 import { ChatService } from './chat/chat.service';
 import { AppUserService } from './app-user/app-user.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -66,7 +68,9 @@ import { AppUserService } from './app-user/app-user.service';
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
     BrowserAnimationsModule,
     BrowserModule,
+    CommonModule,
     FlexLayoutModule,
+    FormsModule,
     MaterialModule,
     SharedModule,
     AppRoutingModule,
