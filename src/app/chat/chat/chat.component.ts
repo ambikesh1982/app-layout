@@ -13,7 +13,7 @@ import { ChatService } from '../chat.service';
 })
 export class ChatComponent implements OnInit {
 
-  @Input() roomMetaData: ChatRoomInfo;
+ // @Input() sellerChatMessages: Observable<ChatMessage[]>;
   private chat: ChatMessage;
   chatMessages$: Observable<ChatMessage[]>;
   chatRoomInfo$: Observable<ChatRoomInfo[]>;
@@ -46,23 +46,30 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  isBuyerSeller() {
+    if (this.authService.currUserID === this.fooditem.createdBy) {
+       this.isSeller = true;
+    } else {
+       this.isBuyer = true;
+    }
+  }
+
   sendRoomMessage($event) {
     // this.chatService.createchatMessages()
     event.preventDefault();
     event.stopPropagation();
 
     this.chat.message = this.inputMessageText;
-    if (this.authService.currUserID === this.fooditem.createdBy) {
-        this.isSeller = true;
-      } else {
-        this.isBuyer = true;
-      }
-
+    this.chat.createdByUserId = this.authService.currUserID;
+    this.isBuyerSeller();
 
         const chatroomName = this.fooditem.id + this.authService.currUserID;
         this.chatRoomInfo = { buyerID:    this.authService.currUserID,
+                              buyerName: this.authService.currUserName,
+                              sellerID:   this.fooditem.createdBy,
                               fooditemID: this.fooditem.id,
-                              roomID:     chatroomName};
+                              roomID:     chatroomName,
+                              imageURL:   this.fooditem.images[0].url};
 
     console.log('chat-message buyer + fooditem id', chatroomName);
     this.chatService.createChatMessages(this.chat, this.fooditem, this.chatRoomInfo, this.isBuyer);
@@ -89,16 +96,16 @@ export class ChatComponent implements OnInit {
 
     if (this.isBuyer) {
     this.chatMessages$ = this.chatService.getRoomMessages(this.chatRoomInfo);
-    console.log ('buyer true or false ', this.isBuyer);
+    console.log ('I am a buyer-', this.isBuyer);
     } else {
-      console.log('buyer id true or false ', this.isBuyer);
-      this.chatMessages$ = this.chatService.getSellerMessages(this.fooditem);
+      this.isBuyerSeller();
+      console.log('I am seller- ', this.isSeller);
+      this.chatMessages$ = this.chatService.sellerChatMessages;
     }
-
-    //  this.chatMessages$.subscribe(messages => {
-    //   console.log('observable chat messages', messages);
-    //   this.chatMessage = messages;
-
+      this.chatMessages$.subscribe(messages => {
+        console.log('observable chat messages', messages);
+      this.chatMessage = messages;
+  });
   }
 
   ngOnInit() {

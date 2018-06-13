@@ -26,6 +26,9 @@ export class ChatService {
   private chatMessages: Observable<ChatMessage[]>;
   private chatRoomRef: AngularFirestoreCollection<ChatMessage>;
   FooditemID$: BehaviorSubject<string>;
+  chatMessages$: BehaviorSubject<ChatMessage[]>;
+  sellerChatMessages: Observable<ChatMessage[]>;
+
   roomID$: BehaviorSubject<any>;
 
   ccc: any;
@@ -78,59 +81,42 @@ async createChatMessages(newMessage: ChatMessage, fooditem: Fooditem, chatRoomin
 }
 
 
-getRoomID(fooditem: Fooditem): Observable<any> {
-  const fooditemId = fooditem.id;
-  return this.afs.collection<any>('appchats', ref => ref.where('fooditemID', '==', fooditemId)).valueChanges();
-}
+// getRoomID(fooditem: Fooditem): Observable<any[]> {
+//   const fooditemId = fooditem.id;
+//   return this.afs.collection<any>('appchats', ref => ref.where('fooditemID', '==', fooditemId)).valueChanges();
+// }
 
-getSellerMessages(fooditem: Fooditem): Observable < any > {
- const sellerId = fooditem.createdBy;
- const fooditemId = fooditem.id;
-  console.log('seller id from Chatservice', sellerId);
+// getSellerMessages(fooditem: Fooditem): Observable < any > {
+//  const sellerId = fooditem.createdBy;
+//  const fooditemId = fooditem.id;
+//   console.log('seller id from Chatservice', sellerId);
 
-  return this.afs.collection<any>('appchats').valueChanges().pipe(
-    flatMap(res => res),
-    filter(item => item.fooditemID === fooditemId),
-    switchMap(s => {
-      console.log('seller filtered data', s);
-      this.currentChatPath = `${s.roomID}`;
-      console.log('this.currentChatPath: ', this.currentChatPath);
-      this.roomID$ = this.currentChatPath;
-      return this.chatRoomRef.doc(s.roomID).collection('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
-    }
-    )
-  );
-
-
-
-  // this.chatRoomRef.snapshotChanges().pipe(
-  //   map(actions => actions.map(a => {
-  //     const data = a.payload.doc.data() as ChatMessage;
-  //     const chatRoomName = a.payload.doc.id;
-  //     console.log('seller document data', chatRoomName);
-  //     // tslint:disable-next-line:max-line-length
-  //     console.log('chat-observable', this.chatRoomRef.doc(`${chatRoomName}`)
-  // .collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges());
-
-  //     return { chatRoomName, data };
-  //   }))
-  // ).subscribe();
-
-  // return this.chatRoomRef.valueChanges();
-  // return this.chatRoomRef.doc('fooditemId').collection<ChatMessage>(`${sellerId}`, ref => ref.orderBy('msgCreatedAt')).valueChanges();
-
-}
+//   return this.afs.collection<any>('appchats').valueChanges().pipe(
+//     flatMap(res => res),
+//     filter(item => item.fooditemID === fooditemId),
+//     switchMap(s => {
+//       console.log('seller filtered data', s);
+//       this.currentChatPath = `${s.roomID}`;
+//       console.log('this.currentChatPath: ', this.currentChatPath);
+//       this.roomID$ = this.currentChatPath;
+//       return this.chatRoomRef.doc(s.roomID).collection('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
+//     }
+//     )
+//   );
+// }
 
   getRoomMetaData(sellerID: string): Observable<any> {
-    return this.afs.collection<any>('appchats').valueChanges();
+    return this.afs.collection<any>('appchats', ref => ref.where('sellerID', '==', sellerID)).valueChanges();
   }
 
-getRoomMessages(chatRoominfo: ChatRoomInfo): Observable < ChatMessage[] > {
+getRoomMessages(chatRoomInfo: any): Observable < ChatMessage[] > {
   this.chatRoomRef.valueChanges().subscribe(docs => {
     console.log('seller document', docs);
   });
   // tslint:disable-next-line:max-line-length
-  return this.chatRoomRef.doc(`${chatRoominfo.roomID}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
+  this.roomID$ = chatRoomInfo.roomID;
+  // tslint:disable-next-line:max-line-length
+  return this.chatRoomRef.doc(`${chatRoomInfo.roomID}`).collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).valueChanges();
 }
 
 
