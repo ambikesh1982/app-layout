@@ -18,7 +18,7 @@ export class ProductForm2Component implements OnInit, OnChanges, OnDestroy {
 
   subscription: Subscription;
 
-  daysOfWeek = ['All Days', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'];
+  daysOfWeek = ['All Days', 'Weekends', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu'];
 
   constructor() { }
 

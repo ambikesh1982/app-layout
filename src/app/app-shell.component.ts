@@ -16,11 +16,11 @@ export class AppShellComponent implements OnInit {
 
 
   navList = [
-    { menuIcon: 'home', menuName: 'Home', menuRoute: './' },
-    { menuIcon: 'order', menuName: 'My Orders', menuRoute: 'product/addnew' },
-    { menuIcon: 'cart', menuName: 'Cart', menuRoute: './' },
-    { menuIcon: 'heart', menuName: 'Wish List', menuRoute: './' },
-    { menuIcon: 'user', menuName: 'Profile', menuRoute: './' },
+    { menuIcon: 'home', menuName: 'Home', menuRoute: '/home' },
+    { menuIcon: 'order', menuName: 'My Orders', menuRoute: '/app-user' },
+    { menuIcon: 'cart', menuName: 'Cart', menuRoute: '/app-cart' },
+    { menuIcon: 'heart', menuName: 'Wish List', menuRoute: '/wishlist' },
+    { menuIcon: 'user', menuName: 'Profile', menuRoute: '/app-user' },
     { menuIcon: 'language', menuName: 'Language', menuRoute: './' },
     { menuIcon: 'download', menuName: 'Download App', menuRoute: './' },
     { menuIcon: 'help', menuName: 'Help', menuRoute: './' },
