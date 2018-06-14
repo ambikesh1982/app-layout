@@ -65,7 +65,10 @@ export interface ChatMessage {
 
 export interface ChatRoomInfo {
     buyerID?: string;
+    buyerName?: string;
     sellerID?:  string;
+    sellerName?: string;
     fooditemID?: string;
     roomID?: string;
+    imageURL?: string;
 }

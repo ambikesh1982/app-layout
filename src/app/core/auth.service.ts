@@ -24,6 +24,7 @@ export class AuthService {
   currAppUser: AppUser|null;
 
   currUserID: string;
+  currUserName: string;
 
   constructor(public afAuth: AngularFireAuth, private dataService: DataService) {
     this.currUser$ = this.afAuth.authState.pipe(
@@ -31,11 +32,13 @@ export class AuthService {
         if (user) {
           console.log('### Retrieving user from firestore ###');
           this.currUserID = user.uid;
+          this.currUserName = user.displayName;
           this.currUser = user;
           return this.dataService.getUserFromFirestore(user.uid).pipe(
             take(1),
             tap( currAppUser => {
               this.currAppUser = currAppUser;
+              this.currUserName = currAppUser.displayName;
             }),
           );
         } else {
@@ -53,6 +56,7 @@ export class AuthService {
         const anomymousUser: AppUser = {
           uid:          credential.user.uid,
           isAnonymous:  credential.user.isAnonymous,
+          displayName:  'Guest'
         };
 
         // Save user data to fireabase...
