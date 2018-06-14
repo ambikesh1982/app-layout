@@ -1,38 +1,39 @@
-
-        <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" *ngIf="user|async as user">
-            <mat-card  style="max-width:380px; padding-bottom: 0">
-                <mat-card-header>
-                    <mat-card-title>{{user.displayName}}</mat-card-title>
-                    <mat-card-subtitle>Speciality - North Indian Cuisines </mat-card-subtitle>
-                </mat-card-header>
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch" *ngIf="user|async as user">
+            <mat-card style="max-width:380px; padding-bottom: 0">
                 <span class="spacer"></span>
-                <img style="max-width:120px;  
-                            position: absolute;
-                            right: 0;
-                            top: 0;" 
-                            align="right" mat-card-image src= {{user.photoURL}}>
+                <img  class = "center" mat-card-image src= {{user.photoURL}}>
+                <div fxLayout="row wrap">
+                    <mat-card-title>{{user.displayName}}</mat-card-title>
+                </div>
+                <div fxLayout="row wrap">
+                    <mat-card-subtitle>Speciality - North Indian Cuisines </mat-card-subtitle>
+                </div>
         </mat-card>
- <span class="spacer"></span>
-        <mat-card>
+        <span class="spacer"></span>
+        <mat-card style="max-width:380px; padding-bottom: 0">
+            <mat-card-title>
+                <h3>Contacts</h3>
+            </mat-card-title>
             <div fxLayout="row wrap">
+                <h3>
                 <mat-icon>home</mat-icon>
-                <mat-card-content> 02-02, 22 Sing Ming Walk, Singapore</mat-card-content>
+                </h3>
+                <h3>02-02, 22 Sing Ming Walk, Singapore</h3>
             </div>
             <span class="spacer"></span>
-            <span class="spacer"></span>
             <div fxLayout="row wrap">
-
+                <h4>
                 <mat-icon>email</mat-icon>
-                <span> {{user.email  }}</span>
+                </h4>
+                <h4> {{user.email  }}</h4>
                 <span class="spacer"></span>
             </div>
         </mat-card>
         <mat-card style="max-width:380px; padding-bottom: 0">
-            <mat-card-header>
-                <mat-card-title><h3>Products & Likes</h3></mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-            </mat-card-content>
+            <mat-card-title>
+                <h3>Products & Likes</h3>
+            </mat-card-title>
+            
             <span class="spacer"></span>
             <div fxLayout="row wrap">
         
