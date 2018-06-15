@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LayoutService } from '../../core/layout.service';
 import { Location } from '@angular/common';
+import { AuthService } from '../../core/auth.service';
 
 
 
@@ -13,9 +14,10 @@ import { Location } from '@angular/common';
 export class AppToolbarComponent implements OnInit, OnChanges {
 
   @Input() sidenavRef: any;
-  @Input() title: any;
 
-  constructor( public layoutService: LayoutService,
+  constructor(
+    public layoutService: LayoutService,
+    private auth: AuthService,
     private location: Location) {
   }
 

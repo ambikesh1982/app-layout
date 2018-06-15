@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { AppCartService } from '../../app-cart/app-cart.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -23,7 +24,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private cartService: AppCartService) {
     this.fooditem = this.route.snapshot.data['product'];
   }
 
@@ -55,21 +57,22 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     if ( uid === this.fooditem.createdBy ) {
       this.fabActionIcon = 'edit';
     } else {
-      this.fabActionIcon = 'chat_bubble_outline';
+      this.fabActionIcon = 'add';
     }
   }
 
   onClickFab(action: string) {
     switch (action) {
-      case 'chat_bubble_outline':
-        this.router.navigate(['chat', this.fooditem.id]);
+      case 'add':
+        this.cartService.manageAppCart(this.auth.currAppUser.uid, this.fooditem);
+        this.router.navigate(['app-cart']);
         break;
       case 'edit':
         this.router.navigate(['manage', this.fooditem.id]);
         break;
       default:
-        this.router.navigate(['chat', this.fooditem.id]);
-        this.fabActionIcon = 'chat_bubble_outline';
+        this.router.navigate(['app-cart']);
+        this.fabActionIcon = 'add';
         break;
     }
   }

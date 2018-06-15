@@ -4,9 +4,15 @@ import { AppCartComponent } from './app-cart.component';
 import { Routes, RouterModule } from '@angular/router';
 import { MaterialModule } from '../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AppCartService } from './app-cart.service';
+import { AuthGuard } from '../core/auth.guard';
 
 const appCartRoutes: Routes = [
-  { path: '', component: AppCartComponent, data: {title: 'APP_CART_PAGE'} },
+  {
+    path: '',
+    component: AppCartComponent,
+    canActivate: [AuthGuard],
+    data: {title: 'APP_CART_PAGE'} },
   ];
 
 @NgModule({
@@ -16,6 +22,7 @@ const appCartRoutes: Routes = [
     MaterialModule,
     RouterModule.forChild(appCartRoutes),
   ],
-  declarations: [AppCartComponent]
+  declarations: [AppCartComponent],
+  providers: [AppCartService]
 })
 export class AppCartModule { }

@@ -1,5 +1,19 @@
 <div fxLayout="row wrap" fxLayout.xs="column">
-  <mat-card>
-    <mat-card-title> Your Cart is empty. Go Shopping :)</mat-card-title>
-  </mat-card>
+
+  <div *ngIf="cartItems$|async as cartItems; else emptyCart">
+    <mat-card *ngFor="let item of cartItems">
+      <mat-card-title-group>
+        <mat-card-title>{{item.title}} [SGD {{item.price}}]</mat-card-title>
+        <mat-card-subtitle>{{item.price}}</mat-card-subtitle>
+        <img mat-card-sm-image [src]="item.url">
+      </mat-card-title-group>
+    </mat-card>
+  </div>
+
+  <ng-template #emptyCart>
+    <mat-card>
+      <mat-card-title> Your Cart is empty. Go Shopping :)</mat-card-title>
+    </mat-card>
+  </ng-template>
+
 </div>

@@ -120,7 +120,6 @@ export class DataService {
 
   // Chat Component Menthods Start
 
- 
 
   // Chat Component Menthods Ends here
 
