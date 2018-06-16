@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, interval } from 'rxjs';
 import { Fooditem } from '../core/models';
 import { first, tap } from 'rxjs/operators';
 
@@ -12,6 +12,7 @@ export class AppCartService {
 
   cartCollection: string;
   itemSubCollection: string;
+  cartSize$ = new BehaviorSubject(0);
 
   constructor(private afs: AngularFirestore) {
     this.cartCollection = 'appcart';
@@ -31,10 +32,10 @@ export class AppCartService {
   }
 
   manageAppCart(cartID: string, fooditem: Fooditem) {
-
     const itemPath = `${this.cartCollection}/${cartID}/${this.itemSubCollection}/${fooditem.id}`;
     const cartItem: ICartItem = {
       id: fooditem.id,
+      seller: {id: fooditem.createdBy, name: 'abc'},
       title: fooditem.title,
       url: fooditem.images[0].url,
       price: fooditem.price,

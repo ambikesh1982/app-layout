@@ -47,6 +47,7 @@ import { ChatService } from './chat/chat.service';
 import { AppUserService } from './app-user/app-user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AppCartService } from './app-cart/app-cart.service';
 
 
 @NgModule({
@@ -88,7 +89,8 @@ import { FormsModule } from '@angular/forms';
     AuthService,
     ChatResolver,
     ChatService,
-    AppUserService
+    AppUserService,
+    AppCartService
   ],
   bootstrap: [AppComponent]
 })

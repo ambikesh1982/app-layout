@@ -23,6 +23,6 @@ const appCartRoutes: Routes = [
     RouterModule.forChild(appCartRoutes),
   ],
   declarations: [AppCartComponent],
-  providers: [AppCartService]
+  providers: []
 })
 export class AppCartModule { }

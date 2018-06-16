@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LayoutService } from '../../core/layout.service';
 import { Location } from '@angular/common';
 import { AuthService } from '../../core/auth.service';
+import { AppCartService } from '../../app-cart/app-cart.service';
 
 
 
@@ -14,15 +15,22 @@ import { AuthService } from '../../core/auth.service';
 export class AppToolbarComponent implements OnInit, OnChanges {
 
   @Input() sidenavRef: any;
+  cartSize: number;
 
   constructor(
+    public cartService: AppCartService,
     public layoutService: LayoutService,
     private auth: AuthService,
-    private location: Location) {
+    private location: Location,
+  ) {
+    this.cartService.cartSize$.subscribe(
+      size => {
+        this.cartSize = size;
+        console.log('Get cartSize: ', size);
+    });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges() {
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { switchMap, map, take, tap } from 'rxjs/operators';
+import { switchMap, map, take, tap, first } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 
 import { DataService } from './data.service';
@@ -35,7 +35,7 @@ export class AuthService {
           this.currUserName = user.displayName;
           this.currUser = user;
           return this.dataService.getUserFromFirestore(user.uid).pipe(
-            take(1),
+            first(),
             tap( currAppUser => {
               this.currAppUser = currAppUser;
               this.currUserName = currAppUser.displayName;

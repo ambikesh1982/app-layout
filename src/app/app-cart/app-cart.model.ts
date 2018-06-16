@@ -1,5 +1,6 @@
 interface ICartItem {
   id: string;
+  seller?: { id: string, name: string };
   title: string;
   url: string;
   price: number;
@@ -8,6 +9,7 @@ interface ICartItem {
 
 interface ICart {
     uid: string; // Buyer's user-id to initialize empty cart object.
+    seller?: {id: string, name: string};
     status?: string;
     quantity?: number;
     amtPayable?: number;

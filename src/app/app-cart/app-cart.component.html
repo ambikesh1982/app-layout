@@ -1,14 +1,62 @@
-<div fxLayout="row wrap" fxLayout.xs="column">
+<div fxLayout="column" fxLayout.xs="column" *ngIf="cartItems$|async as cartItems; else emptyCart">
 
-  <div *ngIf="cartItems$|async as cartItems; else emptyCart">
-    <mat-card *ngFor="let item of cartItems">
-      <mat-card-title-group>
-        <mat-card-title>{{item.title}} [SGD {{item.price}}]</mat-card-title>
-        <mat-card-subtitle>{{item.price}}</mat-card-subtitle>
-        <img mat-card-sm-image [src]="item.url">
-      </mat-card-title-group>
-    </mat-card>
-  </div>
+  <mat-card>
+    <h3>Seller-1</h3>
+    
+
+<mat-list>
+  <mat-list-item *ngFor="let item of cartItems">
+    <mat-icon mat-list-icon color="primary">room_service</mat-icon>
+    <!-- <img matListAvatar [src]="item.url" alt="..."> -->
+    <h4 mat-line>{{item.title}}</h4>
+    <p mat-line> SGD {{item.price}} </p>
+    <button mat-icon-button (click)="icrementItemCount(item.id)">
+      <mat-icon>remove</mat-icon>
+    </button>
+    [1]
+    <button mat-icon-button (click)="decrementItemCount(item.id)">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-icon-button (click)="removeItem(item.id)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-list>
+
+<mat-card-actions align="right">
+  <mat-icon color="accent">chat_bubble_outline</mat-icon>
+</mat-card-actions>
+
+  </mat-card>
+
+  <mat-divider></mat-divider>
+
+  <mat-card>
+    <h3>Seller-2</h3>
+    <mat-list>
+      <mat-list-item *ngFor="let item of cartItems">
+        <mat-icon mat-list-icon color="primary">room_service</mat-icon>
+        <!-- <img matListAvatar [src]="item.url" alt="..."> -->
+        <h4 mat-line>{{item.title}}</h4>
+        <p mat-line> SGD {{item.price}} </p>
+        <button mat-icon-button (click)="icrementItemCount(item.id)">
+          <mat-icon>remove</mat-icon>
+        </button>
+        [1]
+        <button mat-icon-button (click)="decrementItemCount(item.id)">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button (click)="removeItemCount(item.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+
+    <mat-card-actions align="right">
+      <mat-icon color="accent">chat_bubble_outline</mat-icon>
+    </mat-card-actions>
+  </mat-card>
+
 
   <ng-template #emptyCart>
     <mat-card>
