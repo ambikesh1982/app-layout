@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-cart-list',
@@ -8,21 +8,27 @@ import { Component, OnInit, Input } from '@angular/core';
 export class CartListComponent implements OnInit {
 
   @Input() cartItems: ICartItem[];
+  @Output() qtyChange = new EventEmitter();
+  @Output() deleteItem = new EventEmitter();
+
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  icrementItemCount(id: string) {
-    console.log('TODO: updateItemQuantity(path: string, count: number): ', id);
+  icrementItemCount(item: ICartItem) {
+    console.log('TODO: updateItemQuantity(path: string, count: number): ', item);
+    this.qtyChange.emit({count: 1, item: item});
   }
 
-  decrementItemCount(id: string) {
-    console.log('TODO: updateItemQuantity(path: string, count: number): ', id);
+  decrementItemCount(item: ICartItem) {
+    this.qtyChange.emit({ count: -1, item: item });
+    console.log('TODO: updateItemQuantity(path: string, count: number): ', item);
   }
 
   removeItem(id: string) {
+    this.deleteItem.emit(id);
     console.log('TODO: removeItemFromCart(id: string): ', id);
   }
 

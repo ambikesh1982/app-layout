@@ -5,6 +5,8 @@ import { environment } from '../../environments/environment';
 import { IGeoInfo } from './models';
 import { ScriptLoadService } from './script-load.service';
 
+import { } from '@types/google-maps';
+
 const GEOLOCATION_ERRORS = {
   'errors.location.unsupportedBrowser': 'Browser does not support location services',
   'errors.location.permissionDenied': 'You have rejected access to your location',

@@ -23,7 +23,7 @@ export class AppToolbarComponent implements OnInit, OnChanges {
     private auth: AuthService,
     private location: Location,
   ) {
-    this.cartService.cartSize$.subscribe(
+    this.cartService.getCartSize$.subscribe(
       size => {
         this.cartSize = size;
         console.log('Get cartSize: ', size);

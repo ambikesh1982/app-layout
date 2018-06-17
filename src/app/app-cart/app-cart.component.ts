@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AppCartService } from './app-cart.service';
+import { Observable } from 'rxjs';
 import { AuthService } from '../core/auth.service';
-import { AppUser, Fooditem } from '../core/models';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { AppUser } from '../core/models';
+import { AppCartService } from './app-cart.service';
 
 @Component({
   selector: 'app-app-cart',
@@ -24,12 +23,7 @@ export class AppCartComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cartItems$ = this.cartService.getCartItems(this.cartID).pipe(
-      tap( items => {
-        console.log('Announce CartSize: ', items.length);
-        this.cartService.cartSize$.next(items.length);
-      })
-    );
+    this.cartItems$ = this.cartService.getCartItems$(this.cartID);
   }
 
   onClickDelete() {}
@@ -38,4 +32,18 @@ export class AppCartComponent implements OnInit {
     console.log('TODO: navigateToChatRoute(item: ICartItem): ');
   }
 
+  manageItemCount(data) {
+    const count = data.item.quantity + data.count;
+    if (count > 0) {
+      this.cartService.updateItemQuantity(this.cartID, data.item.id, count);
+    } else {
+      this.deleteItem(data.item.id);
+    }
+  }
+
+  deleteItem(itemID) {
+    console.log('deleteItem(): event data: ', itemID);
+    this.cartService.removeItemFromCart(this.cartID, itemID);
+    // removeItemFromCart(cartID: string, itemID: string)
+  }
 }

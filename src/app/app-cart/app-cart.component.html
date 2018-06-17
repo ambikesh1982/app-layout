@@ -1,23 +1,26 @@
-<div fxLayout="column" fxLayout.xs="column" *ngIf="cartItems$|async as cartItems; else emptyCart">
+<div fxLayout="column" fxLayout.xs="column" *ngIf="cartItems$|async as cartItems">
+  <div *ngIf="cartItems.length; else emptyCart">
 
   <mat-card>
     <h3>Seller-1</h3>
 
-    <app-cart-list [cartItems]="cartItems"></app-cart-list>
+    <app-cart-list [cartItems]="cartItems" (qtyChange)="manageItemCount($event)" (deleteItem)="deleteItem($event)">
+    </app-cart-list>
 
     <mat-card-actions align="right">
       <button mat-icon-button (click)="navigateToChatRoute()">
-        <mat-icon color="accent">chat_bubble_outline</mat-icon>
+        <mat-icon color="primary">chat</mat-icon>
       </button>
     </mat-card-actions>
 
   </mat-card>
+
   <mat-divider></mat-divider>
+</div>
 
-  <ng-template #emptyCart>
-    <mat-card>
-      <mat-card-title> Your Cart is empty. Go Shopping :)</mat-card-title>
-    </mat-card>
-  </ng-template>
-
+<ng-template #emptyCart>
+  <mat-card>
+    <mat-card-title> Your Cart is empty. Go Shopping :)</mat-card-title>
+  </mat-card>
+</ng-template>
 </div>

@@ -1,18 +1,18 @@
 <mat-list>
   <mat-list-item *ngFor="let item of cartItems">
 
-    <mat-icon mat-list-icon color="primary" (click)="removeItem(item.id)">cancel</mat-icon>
+    <mat-icon mat-list-icon color="accent" (click)="removeItem(item.id)">cancel</mat-icon>
 
     <!-- <img matListAvatar [src]="item.url" alt="..."> -->
 
     <h4 mat-line>{{item.title}}</h4>
     <p mat-line> SGD {{item.price}} </p>
 
-    <button mat-icon-button (click)="icrementItemCount(item.id)">
+    <button mat-icon-button (click)="decrementItemCount(item)">
       <mat-icon>remove</mat-icon>
     </button>
-    <span>[1]</span>
-    <button mat-icon-button (click)="decrementItemCount(item.id)">
+    <span>{{item.quantity}}</span>
+    <button mat-icon-button (click)="icrementItemCount(item)">
       <mat-icon>add</mat-icon>
     </button>
     

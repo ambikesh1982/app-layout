@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable, BehaviorSubject, interval } from 'rxjs';
-import { Fooditem } from '../core/models';
-import { first, tap } from 'rxjs/operators';
+import { Fooditem, AppUser } from '../core/models';
+import { first, tap, map } from 'rxjs/operators';
+import { AuthService } from '../core/auth.service';
 
 
 @Injectable({
@@ -12,14 +13,63 @@ export class AppCartService {
 
   cartCollection: string;
   itemSubCollection: string;
-  cartSize$ = new BehaviorSubject(0);
+  getCartSize$ = new BehaviorSubject(0);
+  itemsRef: any;
+  currentUser: AppUser;
+  cartSize: number;
 
-  constructor(private afs: AngularFirestore) {
+
+  constructor(private afs: AngularFirestore, private auth: AuthService) {
+    console.log('From cartservice constructor');
+
     this.cartCollection = 'appcart';
     this.itemSubCollection = 'items';
+
+    this.auth.currUser$.pipe(first()).subscribe(user => {
+      if (user) {
+        this.currentUser = user;
+
+        this.itemsRef = this.afs
+          .collection(this.cartCollection)
+          .doc<ICart>(user.uid)
+          .collection<ICartItem[]>(this.itemSubCollection);
+
+        this.itemsRef.valueChanges().subscribe(
+          items => {
+            console.log('cartSize(): ', items.length);
+            this.getCartSize$.next(items.length);
+          }
+        );
+      } else {
+        this.itemsRef = null;
+        console.log('AppCartService: User not logged in.');
+      }
+    });
   }
 
-  getCartItems(cartID: string): Observable<ICartItem[]> {
+
+  private cartExist(cartID: string) {
+    return this.afs
+      .collection(this.cartCollection)
+      .doc(cartID)
+      .valueChanges().pipe(
+        first()
+      ).toPromise();
+  }
+
+  private itemExist(cartID: string, itemID: string) {
+    return this.afs
+      .collection(this.cartCollection)
+      .doc<ICart>(cartID)
+      .collection<ICartItem>(this.itemSubCollection)
+      .doc(itemID)
+      .valueChanges().pipe(
+        first()
+      ).toPromise();
+  }
+
+
+  getCartItems$(cartID: string): Observable<ICartItem[]> {
     return this.afs
       .collection(this.cartCollection)
       .doc<ICart>(cartID)
@@ -27,15 +77,11 @@ export class AppCartService {
       .valueChanges();
   }
 
-  private itemExistinCart(path: string) {
-    return this.afs.doc(path).valueChanges().pipe(first()).toPromise();
-  }
-
   manageAppCart(cartID: string, fooditem: Fooditem) {
     const itemPath = `${this.cartCollection}/${cartID}/${this.itemSubCollection}/${fooditem.id}`;
     const cartItem: ICartItem = {
       id: fooditem.id,
-      seller: {id: fooditem.createdBy, name: 'abc'},
+      seller: { id: fooditem.createdBy, name: 'abc' },
       title: fooditem.title,
       url: fooditem.images[0].url,
       price: fooditem.price,
@@ -47,7 +93,7 @@ export class AppCartService {
       tap((item: ICartItem) => {
         if (item) {
           console.log('Item already present in the cart. Increment the item counter: ', item.quantity);
-          this.updateItemQuantity(itemPath, item.quantity + 1);
+          this.updateItemQuantity(cartID, fooditem.id, item.quantity + 1);
         } else {
           console.log('Item not present, adding it to the cart: ');
           this.addItemToTheCart(itemPath, cartItem);
@@ -67,8 +113,9 @@ export class AppCartService {
     this.afs.collection(this.cartCollection).doc(cartID).set(newCart);
   }
 
-  private updateItemQuantity(path: string, count: number) {
-    this.afs.doc(path).update({ quantity: count }).then(() => {
+  updateItemQuantity(cartID: string, itemID: string, count: number) {
+    const itemPath = `${this.cartCollection}/${cartID}/${this.itemSubCollection}/${itemID}`;
+    this.afs.doc(itemPath).update({ quantity: count }).then(() => {
       console.log('Item quantity updated');
     }).catch(e => {
       console.log('Error while updating item quantity: ', e);
@@ -83,8 +130,13 @@ export class AppCartService {
     });
   }
 
-  removeItemFromCart(id: string) {
+  removeItemFromCart(cartID: string, itemID: string) {
     console.log('TODO: Remove item from the cart');
+    const itemPath = `${this.cartCollection}/${cartID}/${this.itemSubCollection}/${itemID}`;
+    this.afs.doc(itemPath).delete()
+      .then( () => {
+        console.log(itemID, ' deteled from the cart');
+      }).catch(e => console.log('Error while updating item quantity: ', e));
   }
 
 }
