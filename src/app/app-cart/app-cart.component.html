@@ -2,61 +2,17 @@
 
   <mat-card>
     <h3>Seller-1</h3>
-    
 
-<mat-list>
-  <mat-list-item *ngFor="let item of cartItems">
-    <mat-icon mat-list-icon color="primary">room_service</mat-icon>
-    <!-- <img matListAvatar [src]="item.url" alt="..."> -->
-    <h4 mat-line>{{item.title}}</h4>
-    <p mat-line> SGD {{item.price}} </p>
-    <button mat-icon-button (click)="icrementItemCount(item.id)">
-      <mat-icon>remove</mat-icon>
-    </button>
-    [1]
-    <button mat-icon-button (click)="decrementItemCount(item.id)">
-      <mat-icon>add</mat-icon>
-    </button>
-    <button mat-icon-button (click)="removeItem(item.id)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-list>
-
-<mat-card-actions align="right">
-  <mat-icon color="accent">chat_bubble_outline</mat-icon>
-</mat-card-actions>
-
-  </mat-card>
-
-  <mat-divider></mat-divider>
-
-  <mat-card>
-    <h3>Seller-2</h3>
-    <mat-list>
-      <mat-list-item *ngFor="let item of cartItems">
-        <mat-icon mat-list-icon color="primary">room_service</mat-icon>
-        <!-- <img matListAvatar [src]="item.url" alt="..."> -->
-        <h4 mat-line>{{item.title}}</h4>
-        <p mat-line> SGD {{item.price}} </p>
-        <button mat-icon-button (click)="icrementItemCount(item.id)">
-          <mat-icon>remove</mat-icon>
-        </button>
-        [1]
-        <button mat-icon-button (click)="decrementItemCount(item.id)">
-          <mat-icon>add</mat-icon>
-        </button>
-        <button mat-icon-button (click)="removeItemCount(item.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
+    <app-cart-list [cartItems]="cartItems"></app-cart-list>
 
     <mat-card-actions align="right">
-      <mat-icon color="accent">chat_bubble_outline</mat-icon>
+      <button mat-icon-button (click)="navigateToChatRoute()">
+        <mat-icon color="accent">chat_bubble_outline</mat-icon>
+      </button>
     </mat-card-actions>
-  </mat-card>
 
+  </mat-card>
+  <mat-divider></mat-divider>
 
   <ng-template #emptyCart>
     <mat-card>

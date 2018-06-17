@@ -6,6 +6,7 @@ import { MaterialModule } from '../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppCartService } from './app-cart.service';
 import { AuthGuard } from '../core/auth.guard';
+import { CartListComponent } from './cart-list/cart-list.component';
 
 const appCartRoutes: Routes = [
   {
@@ -22,7 +23,7 @@ const appCartRoutes: Routes = [
     MaterialModule,
     RouterModule.forChild(appCartRoutes),
   ],
-  declarations: [AppCartComponent],
+  declarations: [AppCartComponent, CartListComponent],
   providers: []
 })
 export class AppCartModule { }

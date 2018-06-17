@@ -83,4 +83,8 @@ export class AppCartService {
     });
   }
 
+  removeItemFromCart(id: string) {
+    console.log('TODO: Remove item from the cart');
+  }
+
 }

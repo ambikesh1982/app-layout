@@ -89,7 +89,7 @@ export class LayoutService {
         }
         break;
       case 'APP_CART_PAGE':
-        this.appToolBar$.next({ pageTitle: 'Cart', showCancelIcon: true });
+        this.appToolBar$.next({ pageTitle: 'My Cart', showCancelIcon: true });
         break;
       case 'APP_SEARCH_PAGE':
         this.appToolBar$.next({ pageTitle: 'Search', showCancelIcon: true });

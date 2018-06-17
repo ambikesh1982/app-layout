@@ -1,15 +1,8 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { Fooditem } from '../core/models';
-import { LocationService } from '../core/location.service';
-import { ScriptLoadService } from '../core/script-load.service';
-
-import { } from 'googlemaps';
-import { environment } from '../../environments/environment';
-import { FirestoreService } from '../core/firestore.service';
-// tslint:disable-next-line:import-blacklist
-import { Observable } from 'rxjs';
-import { map, distinct, tap, flatMap, take } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { distinct, flatMap, map } from 'rxjs/operators';
 import { DataService } from '../core/data.service';
+import { Fooditem } from '../core/models';
+
 
 
 @Component({

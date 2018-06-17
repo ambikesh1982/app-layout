@@ -34,4 +34,20 @@ export class AppCartComponent implements OnInit {
 
   onClickDelete() {}
 
+  icrementItemCount(id: string) {
+    console.log('TODO: updateItemQuantity(path: string, count: number): ', id);
+  }
+
+  decrementItemCount(id: string) {
+    console.log('TODO: updateItemQuantity(path: string, count: number): ', id);
+  }
+
+  removeItem(id: string) {
+    console.log('TODO: removeItemFromCart(id: string): ', id);
+  }
+
+  navigateToChatRoute() {
+    console.log('TODO: navigateToChatRoute(item: ICartItem): ');
+  }
+
 }
