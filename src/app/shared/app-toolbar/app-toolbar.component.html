@@ -34,22 +34,32 @@
       routerLink="/manage/new-product">
       <mat-icon>add</mat-icon>
     </a>
+
     <a 
       *ngIf="customeToobar.showAppTrayIcon" 
       mat-icon-button 
       routerLink="/app-cart">
-      <mat-icon>add_shopping_cart</mat-icon>
+      <mat-icon 
+        [matBadge]="cartSize"
+        matBadgeSize="medium"
+        matBadgeColor="accent"
+        [matBadgeHidden]="this.hideCartBadge">
+        add_shopping_cart
+      </mat-icon>
     </a>
+
     <a *ngIf="customeToobar.showUserIcon" 
         mat-icon-button routerLink="/app-user">
       <mat-icon>person</mat-icon>
     </a>
+
     <a 
       *ngIf="customeToobar.showCancelIcon" 
       mat-icon-button 
       routerLink="/">
       <mat-icon>clear</mat-icon>
     </a>
+
   </div>
 
 </mat-toolbar>

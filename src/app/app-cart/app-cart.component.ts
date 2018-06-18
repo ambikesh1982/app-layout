@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { AppUser } from '../core/models';
@@ -14,10 +15,13 @@ export class AppCartComponent implements OnInit {
   currentUser: AppUser;
   cartID: string;
 
-
   cartItems$: Observable<ICartItem[]>;
 
-  constructor( private cartService: AppCartService, private auth: AuthService) {
+  constructor(
+    private cartService: AppCartService,
+    private auth: AuthService,
+    private router: Router
+  ) {
     this.currentUser = this.auth.currentUser;
     this.cartID = this.currentUser.uid;
   }
@@ -26,7 +30,7 @@ export class AppCartComponent implements OnInit {
     this.cartItems$ = this.cartService.getCartItems$(this.cartID);
   }
 
-  onClickDelete() {}
+  onClickDelete() { }
 
   navigateToChatRoute() {
     console.log('TODO: navigateToChatRoute(item: ICartItem): ');
@@ -44,6 +48,14 @@ export class AppCartComponent implements OnInit {
   deleteItem(itemID) {
     console.log('deleteItem(): event data: ', itemID);
     this.cartService.removeItemFromCart(this.cartID, itemID);
-    // removeItemFromCart(cartID: string, itemID: string)
   }
+
+  fabAction(event) {
+    if (event === 'add') {
+      this.router.navigate(['/']);
+    } else {
+      console.log('TODO: Navigate to checkout component.');
+    }
+  }
+
 }

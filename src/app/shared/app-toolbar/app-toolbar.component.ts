@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { LayoutService } from '../../core/layout.service';
 import { Location } from '@angular/common';
-import { AuthService } from '../../core/auth.service';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { AppCartService } from '../../app-cart/app-cart.service';
+import { AuthService } from '../../core/auth.service';
+import { LayoutService } from '../../core/layout.service';
 
 
 
@@ -16,6 +16,7 @@ export class AppToolbarComponent implements OnInit, OnChanges {
 
   @Input() sidenavRef: any;
   cartSize: number;
+  hideCartBadge: boolean;
 
   constructor(
     public cartService: AppCartService,
@@ -26,7 +27,11 @@ export class AppToolbarComponent implements OnInit, OnChanges {
     this.cartService.getCartSize$.subscribe(
       size => {
         this.cartSize = size;
-        console.log('Get cartSize: ', size);
+        if (size > 0) {
+          this.hideCartBadge = false;
+        } else {
+          this.hideCartBadge = true;
+        }
     });
   }
 

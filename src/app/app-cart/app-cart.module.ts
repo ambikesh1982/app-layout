@@ -7,6 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppCartService } from './app-cart.service';
 import { AuthGuard } from '../core/auth.guard';
 import { CartListComponent } from './cart-list/cart-list.component';
+import { SharedModule } from '../shared/shared.module';
 
 const appCartRoutes: Routes = [
   {
@@ -21,6 +22,7 @@ const appCartRoutes: Routes = [
     CommonModule,
     FlexLayoutModule,
     MaterialModule,
+    SharedModule,
     RouterModule.forChild(appCartRoutes),
   ],
   declarations: [AppCartComponent, CartListComponent],

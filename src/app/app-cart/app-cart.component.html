@@ -23,4 +23,8 @@
     <mat-card-title> Your Cart is empty. Go Shopping :)</mat-card-title>
   </mat-card>
 </ng-template>
+
+<app-fab-action 
+  [fabIcon]="cartItems.length==0?'add':'done'" (fabActionEvent)="fabAction($event)">
+</app-fab-action>
 </div>

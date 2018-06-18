@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 
 @Component({
   selector: 'app-fab-action',
   template: `
     <div>
-            <button class="mat-elevation-z8" mat-fab>
+            <button class="mat-elevation-z8" mat-fab (click)="fabActionEvent.emit(fabIcon);">
                 <mat-icon>{{fabIcon}}</mat-icon>
             </button>
         </div>
@@ -14,8 +15,14 @@ import { Component, Input } from '@angular/core';
 export class FabActionComponent {
 
   @Input() fabIcon: string;
+  @Output() fabActionEvent = new EventEmitter();
 
   constructor() {
+  }
+
+  onClickFab(data: string) {
+    this.fabActionEvent.emit(data);
+    console.log('onClickFab(): ', data);
   }
 
   // onClickFabButton(page: string) {
