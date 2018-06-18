@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd, RouterEvent } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map, mergeMap, tap, take } from 'rxjs/operators';
+import { AppCartService } from '../app-cart/app-cart.service';
 
 export interface AppToolbar {
   pageTitle?: string;
@@ -31,7 +32,10 @@ export class LayoutService {
 
   appToolBar$ = new BehaviorSubject<AppToolbar>(this.defaultToolbar);
 
-  constructor(private _router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(
+    private _router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
 
     this._router.events.pipe(
       filter( e => e instanceof NavigationEnd ),

@@ -10,11 +10,11 @@ import { AppCartService } from './app-cart.service';
   templateUrl: './app-cart.component.html',
   styleUrls: ['./app-cart.component.scss']
 })
+
 export class AppCartComponent implements OnInit {
 
   currentUser: AppUser;
   cartID: string;
-
   cartItems$: Observable<ICartItem[]>;
 
   constructor(
@@ -29,8 +29,6 @@ export class AppCartComponent implements OnInit {
   ngOnInit() {
     this.cartItems$ = this.cartService.getCartItems$(this.cartID);
   }
-
-  onClickDelete() { }
 
   navigateToChatRoute() {
     console.log('TODO: navigateToChatRoute(item: ICartItem): ');
