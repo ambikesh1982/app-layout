@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable, BehaviorSubject, interval } from 'rxjs';
 import { Fooditem, AppUser } from '../core/models';
-import { first, tap, map } from 'rxjs/operators';
+import { first, tap, map, flatMap, distinct, filter } from 'rxjs/operators';
 import { AuthService } from '../core/auth.service';
 
 
@@ -36,7 +36,28 @@ export class AppCartService {
 
         this.itemsRef.valueChanges().subscribe(
           items => {
-            console.log('cartSize(): ', items.length);
+            console.log('Items in the cart >>>>: ', items);
+            this.getCartSize$.next(items.length);
+          }
+        );
+      } else {
+        this.itemsRef = null;
+        console.log('AppCartService: User not logged in.');
+      }
+    });
+
+    this.auth.currUser$.pipe(first()).subscribe(user => {
+      if (user) {
+        this.currentUser = user;
+
+        this.itemsRef = this.afs
+          .collection(this.cartCollection)
+          .doc<ICart>(user.uid)
+          .collection<ICartItem[]>(this.itemSubCollection);
+
+        this.itemsRef.valueChanges().subscribe(
+          items => {
+            console.log('Items in the cart >>>>: ', items);
             this.getCartSize$.next(items.length);
           }
         );
@@ -76,6 +97,37 @@ export class AppCartService {
       .collection<ICartItem>(this.itemSubCollection)
       .valueChanges();
   }
+
+  getDistinctSellers$( cartID: string) {
+    return this.afs
+      .collection(this.cartCollection)
+      .doc<ICart>(cartID)
+      .collection<ICartItem>(this.itemSubCollection)
+      .valueChanges().pipe(
+        flatMap(items => items),
+        map(item => item.seller.id),
+        distinct()
+      );
+  }
+
+  getCartItemsBySeller$(cartID, sellerID: string) {
+    return this.afs
+      .collection(this.cartCollection)
+      .doc<ICart>(cartID)
+      .collection<ICartItem>(this.itemSubCollection, ref => ref.where('seller.id', '==', sellerID))
+      .valueChanges();
+  }
+
+  // getDistinctSellers( cartItems: ICartItem[] ) {
+  //   cartItems.map( items => items.seller);
+  //   // : { id: string, name: string } []
+  //   // const distinctSellers = cartItems.pipe(
+  //   //   flatMap( (items: ICartItem[]) => items),
+  //   //   // map( items => items.seller),
+  //   //   distinct(),
+  //   //   tap( seller => console.log('Disticts Sellers in the Cart: ', seller))
+  //   // );
+  // }
 
   manageAppCart(cartID: string, fooditem: Fooditem) {
     const itemPath = `${this.cartCollection}/${cartID}/${this.itemSubCollection}/${fooditem.id}`;

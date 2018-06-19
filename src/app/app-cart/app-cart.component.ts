@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { AppUser } from '../core/models';
 import { AppCartService } from './app-cart.service';
+import { flatMap, map, distinct, tap, filter, toArray, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-app-cart',
@@ -16,6 +17,8 @@ export class AppCartComponent implements OnInit {
   currentUser: AppUser;
   cartID: string;
   cartItems$: Observable<ICartItem[]>;
+  distinctSellers$: Observable<any>;
+  sellerIds: string[] = [];
 
   constructor(
     private cartService: AppCartService,
@@ -28,10 +31,21 @@ export class AppCartComponent implements OnInit {
 
   ngOnInit() {
     this.cartItems$ = this.cartService.getCartItems$(this.cartID);
+
+    this.cartItems$.pipe(
+      flatMap( (items: ICartItem[]) => items),
+      map( items => items.seller.id),
+      distinct()
+    ).subscribe( seller => {
+      this.sellerIds.push(seller);
+      console.log('distinct sellers: ', seller);
+    });
+
   }
 
-  navigateToChatRoute() {
-    console.log('TODO: navigateToChatRoute(item: ICartItem): ');
+  navigateToChatRoute( sellerID: string) {
+    console.log('navigateToChatRoute(sellerID): ', sellerID);
+    console.log('navigateToChatRoute(buyerID): ', this.cartID);
   }
 
   manageItemCount(data) {

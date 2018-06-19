@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AppCartService } from '../app-cart.service';
 
 @Component({
   selector: 'app-cart-list',
@@ -7,14 +9,20 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 })
 export class CartListComponent implements OnInit {
 
-  @Input() cartItems: ICartItem[];
+  @Input() sellerID: string;
+  @Input() cartID: string;
   @Output() qtyChange = new EventEmitter();
   @Output() deleteItem = new EventEmitter();
 
+  cartItemsBySellerID$: Observable<ICartItem[]>;
 
-  constructor() { }
+
+  constructor( private cartService: AppCartService) {
+   }
 
   ngOnInit() {
+    // this.cartItemsBySellerID = this.cartItems.filter(item => item.seller.id === this.sellerID);
+    this.cartItemsBySellerID$ = this.cartService.getCartItemsBySeller$(this.cartID, this.sellerID);
   }
 
   icrementItemCount(item: ICartItem) {
