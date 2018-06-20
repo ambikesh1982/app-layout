@@ -10,7 +10,7 @@
                 </div>
         </mat-card>
         <span class="spacer"></span>
-        <mat-card style="max-width:380px; padding-bottom: 0">
+        <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="2">
             <mat-card-title>
                 <h3>Contacts</h3>
             </mat-card-title>
@@ -29,7 +29,7 @@
                 <span class="spacer"></span>
             </div>
         </mat-card>
-        <mat-card style="max-width:380px; padding-bottom: 0">
+        <mat-card fxFlex="0 1 48" fxFlex.lg="0 1 32" fxFlexOrder.xs="2">
             <mat-card-title>
                 <h3>Products & Likes</h3>
             </mat-card-title>
@@ -47,8 +47,8 @@
             style="max-width:120px; position: absolute" align="left"
             mat-card-image src= {{metaData.imageURL}}>
             <div align="right">
-            <a mat-button (click)=getMessage(metaData) align="right" routerLink="/chat/{{metaData.fooditemID}}"> 
-            {{metaData.buyerName}}
+            <a mat-button (click)=getMessage(metaData) align="right" routerLink="/chat/{{metaData.buyer.id}}/{{metaData.seller.id}}"> 
+            {{metaData.buyer.id}}
             </a>
             </div>
         </mat-card>

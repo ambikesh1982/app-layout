@@ -24,11 +24,9 @@
                 private chatService: ChatService ) {
     }
 
-    getMessage(chatroom: ChatRoomInfo) {
-      console.log('I am in getMessage', this.chatMessages$);
-      this.chatService.sellerChatMessages = this.chatService.getChatRoomMessages(chatroom);
+    getMessage(chatRoom: ChatRoomInfo) {
+      this.chatService.sellerChatMessages = this.chatService.getChatRoomMessages(chatRoom);
     }
-
 
     ngOnInit() {
       this.userid = this.authService.currUserID;

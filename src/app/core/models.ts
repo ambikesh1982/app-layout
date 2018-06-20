@@ -64,11 +64,9 @@ export interface ChatMessage {
 }
 
 export interface ChatRoomInfo {
-    buyerID?: string;
-    buyerName?: string;
-    sellerID?:  string;
-    sellerName?: string;
+    roomID: string;
+    buyer?: {id: string, name?: string, url?: string} ;
+    seller?: { id: string, name?: string, url?: string };
     fooditemID?: string;
-    roomID?: string;
-    imageURL?: string;
+    isRead?: boolean;
 }

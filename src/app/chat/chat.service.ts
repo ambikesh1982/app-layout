@@ -14,7 +14,7 @@
 
 
   const APP_ROOT_COLLECTIONS = {
-    'PRODUCTS': 'products',
+
     'USERS': 'appusers',
     'CHATS': 'appchats',
   };
@@ -31,7 +31,6 @@
 
     roomID$: BehaviorSubject<any>;
 
-    ccc: any;
 
     currentChatPath: any;
 
@@ -61,11 +60,17 @@
       return firebase.firestore.FieldValue.serverTimestamp();
     }
 
-  async createChatMessages(newMessage: ChatMessage, chatRoominfo: ChatRoomInfo, isBuyer: boolean) {
+    createChatRoom(chatRoomInfo: ChatRoomInfo) {
+      this.chatRoomRef.doc(`${chatRoomInfo.roomID}`).set(chatRoomInfo);
+}
 
-    if (isBuyer) {
-      newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
-      this.chatRoomRef.doc(`${chatRoominfo.roomID}`).set(chatRoominfo);
+  async createChatMessages(newMessage: ChatMessage, chatRoominfo: ChatRoomInfo) {
+
+    this.createChatRoom(chatRoominfo);
+
+
+   newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
+     // this.chatRoomRef.doc(`${chatRoominfo.roomID}`).set(chatRoominfo);
       this.chatRoomRef.doc(`${chatRoominfo.roomID}`).collection('conversation').add(newMessage)
         .then(
         result => {
@@ -73,16 +78,17 @@
         },
         err => console.error(err, 'You do not have access!')
         );
-    } else {
-      console.log('seller login', this.roomID$);
-      newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
-      this.chatRoomRef.doc(`${this.roomID$}`).collection('conversation').add(newMessage);
-  }
+
+     // console.log('seller login', this.roomID$);
+    //  newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
+    //  this.chatRoomRef.doc(`${this.roomID$}`).collection('conversation').add(newMessage);
   }
 
+
   getChatRoomMetaData(sellerID: string): Observable<any> {
+    console.log('I am in metadata', sellerID);
       return this.afs.collection<any>
-      ('appchats', ref => ref.where('sellerID', '==', sellerID))
+      ('appchats', ref => ref.where('seller.id', '==', sellerID).where('isRead', '==', false))
       .valueChanges();
     }
 
@@ -91,7 +97,7 @@
     });
 
     // Stored the roomID for further reference
-    this.roomID$ = chatRoomInfo.roomID;
+   // this.roomID$.next(chatRoomInfo.roomID);
 
     return this.chatRoomRef.
     doc(`${chatRoomInfo.roomID}`).

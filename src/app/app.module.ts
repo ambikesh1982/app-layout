@@ -42,7 +42,7 @@ import { AuthGuard } from './core/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { AppShellComponent } from './app-shell.component';
 import { PageNotFoundComponent } from './page-not-found.component';
-import { ChatResolver } from './core/chat.resolver';
+// import { ChatResolver } from './core/chat.resolver';
 import { ChatService } from './chat/chat.service';
 import { AppUserService } from './app-user/app-user.service';
 import { CommonModule } from '@angular/common';
@@ -87,7 +87,7 @@ import { AppCartService } from './app-cart/app-cart.service';
     ProductResolver,
     ScriptLoadService,
     AuthService,
-    ChatResolver,
+    // ChatResolver,
     ChatService,
     AppUserService,
     AppCartService
