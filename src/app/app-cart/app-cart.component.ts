@@ -46,6 +46,8 @@ export class AppCartComponent implements OnInit {
   navigateToChatRoute( sellerID: string) {
     console.log('navigateToChatRoute(sellerID): ', sellerID);
     console.log('navigateToChatRoute(buyerID): ', this.cartID);
+    this.router.navigate(['chat', this.cartID, sellerID]);
+
   }
 
   manageItemCount(data) {
