@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { AppUser } from '../core/models';
 import { AppCartService } from './app-cart.service';
-import { flatMap, map, distinct, tap, filter, toArray, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-app-cart',
@@ -18,7 +17,7 @@ export class AppCartComponent implements OnInit {
   cartID: string;
   cartItems$: Observable<ICartItem[]>;
   distinctSellers$: Observable<any>;
-  sellerIds: string[] = [];
+  sellers: {id: string, name: string}[] = [];
 
   constructor(
     private cartService: AppCartService,
@@ -32,15 +31,19 @@ export class AppCartComponent implements OnInit {
   ngOnInit() {
     this.cartItems$ = this.cartService.getCartItems$(this.cartID);
 
-    this.cartItems$.pipe(
-      flatMap( (items: ICartItem[]) => items),
-      map( items => items.seller.id),
-      distinct()
-    ).subscribe( seller => {
-      this.sellerIds.push(seller);
-      console.log('distinct sellers: ', seller);
+    this.cartService.getDistinctSellers$(this.cartID)
+    .subscribe( seller => {
+      this.sellers.push(seller);
+      console.log('Distict Sellers ####### ', this.sellers);
     });
 
+  }
+
+  removeSeller(event) {
+    console.log('seller id to be removed: ', event);
+    const seller = this.sellers.findIndex( sellers => sellers.id === event);
+    console.log('seller id index: ', seller);
+    this.sellers.splice(seller);
   }
 
   navigateToChatRoute( sellerID: string) {

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable, BehaviorSubject, interval } from 'rxjs';
+import { Observable, BehaviorSubject, interval, combineLatest } from 'rxjs';
 import { Fooditem, AppUser } from '../core/models';
-import { first, tap, map, flatMap, distinct, filter } from 'rxjs/operators';
+import { first, tap, map, flatMap, distinct, filter, toArray, distinctUntilChanged } from 'rxjs/operators';
 import { AuthService } from '../core/auth.service';
+import * as _ from 'lodash';
 
 
 @Injectable({
@@ -25,7 +26,8 @@ export class AppCartService {
     this.cartCollection = 'appcart';
     this.itemSubCollection = 'items';
 
-    this.auth.currUser$.pipe(first()).subscribe(user => {
+    this.auth.currUser$.pipe(
+    ).subscribe(user => {
       if (user) {
         this.currentUser = user;
 
@@ -42,30 +44,22 @@ export class AppCartService {
         );
       } else {
         this.itemsRef = null;
+        this.getCartSize$.next(null);
         console.log('AppCartService: User not logged in.');
       }
     });
 
-    this.auth.currUser$.pipe(first()).subscribe(user => {
-      if (user) {
-        this.currentUser = user;
 
-        this.itemsRef = this.afs
-          .collection(this.cartCollection)
-          .doc<ICart>(user.uid)
-          .collection<ICartItem[]>(this.itemSubCollection);
-
-        this.itemsRef.valueChanges().subscribe(
-          items => {
-            console.log('Items in the cart >>>>: ', items);
-            this.getCartSize$.next(items.length);
-          }
-        );
-      } else {
-        this.itemsRef = null;
-        console.log('AppCartService: User not logged in.');
-      }
-    });
+    // this.auth.currUser$.pipe(
+    //   switchMap((user: AppUser) =>
+    //     this.afs
+    //       .collection(this.cartCollection)
+    //       .doc<ICart>(user.uid)
+    //       .collection<ICartItem[]>(this.itemSubCollection).valueChanges()
+    //   )).subscribe(items => {
+    //     console.log('Items in the cart >>>>: ', items);
+    //     this.getCartSize$.next(items.length);
+    //   });
   }
 
 
@@ -105,8 +99,9 @@ export class AppCartService {
       .collection<ICartItem>(this.itemSubCollection)
       .valueChanges().pipe(
         flatMap(items => items),
-        map(item => item.seller.id),
-        distinct()
+        map(item => item.seller),
+        distinct(seller => seller.id),
+        tap( () => console.log('#### User Cart change event ####'))
       );
   }
 

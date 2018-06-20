@@ -1,17 +1,18 @@
 <div fxLayout="column" fxLayout.xs="column">
-  <!-- <div *ngIf="cartItems.length; else emptyCart"> -->
+  <div *ngIf="sellers.length != 0; else emptyCart">
 
-  <mat-card *ngFor="let ds of sellerIds">
-    <h3>{{ds}}}</h3>
-    <app-cart-list 
-      [cartID]="cartID"
-      [sellerID]="ds"
-      (qtyChange)="manageItemCount($event)"
-      (deleteItem)="deleteItem($event)">
+  <mat-card *ngFor="let ds of sellers">
+    <h3>{{ds.name}}</h3>
+    <app-cart-list
+      [cartID]="cartID" 
+      [sellerID]="ds.id" 
+      (qtyChange)="manageItemCount($event)" 
+      (deleteItem)="deleteItem($event)"
+      (removeSeller)="removeSeller($event)">
     </app-cart-list>
 
     <mat-card-actions align="right">
-      <button mat-icon-button (click)="navigateToChatRoute(ds)">
+      <button mat-icon-button (click)="navigateToChatRoute(ds.id)">
         <mat-icon color="primary">chat</mat-icon>
       </button>
     </mat-card-actions>
@@ -20,15 +21,15 @@
 
   <mat-divider></mat-divider>
   <!-- <button mat-stroked-button style="float: right;">Add more items</button> -->
-<!-- </div> -->
+  </div>
 
-<ng-template #emptyCart>
-  <mat-card>
-    <mat-card-title> Your Cart is empty. Go Shopping :)</mat-card-title>
-  </mat-card>
-</ng-template>
+  <ng-template #emptyCart>
+    <mat-card>
+      <mat-card-title> Your Cart is empty. Go Shopping :)</mat-card-title>
+    </mat-card>
+  </ng-template>
 
-<!-- <app-fab-action 
-  [fabIcon]="cartItems.length==0?'add':'done'" (fabActionEvent)="fabAction($event)">
-</app-fab-action> -->
+  <app-fab-action 
+  [fabIcon]="sellers.length==0?'add':'done'" (fabActionEvent)="fabAction($event)">
+</app-fab-action>
 </div>
