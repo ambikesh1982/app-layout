@@ -5,6 +5,7 @@
   import { Observable } from 'rxjs';
   import { ChatService } from '../chat/chat.service';
   import { tap, flatMap } from 'rxjs/operators';
+  import { ChatListComponent } from '../chat/chat-list/chat-list.component';
 
   @Component({
     selector: 'app-app-user',
@@ -15,27 +16,21 @@
 
     user: Observable<AppUser>;
     userid: string;
-    ChatMetaData$: Observable<any>;
-    roomMetaData: Observable<ChatRoomInfo[]>;
-    fooditems$: Observable<Fooditem>;
-    chatMessages$: Observable<any>;
+    ChatMetaData$: Observable<ChatRoomInfo[]>;
     constructor(private authService: AuthService,
                 private dataService: DataService,
                 private chatService: ChatService ) {
     }
 
-    getMessage(chatRoom: ChatRoomInfo) {
-      this.chatService.sellerChatMessages = this.chatService.getChatRoomMessages(chatRoom);
+    getUserChatMessage(chatRoom: ChatRoomInfo) {
+      this.chatService.getChatRoomMessages(chatRoom);
+      console.log('i m in userprofile');
     }
 
     ngOnInit() {
-      this.userid = this.authService.currUserID;
-      console.log(this.userid);
+        this.userid = this.authService.currUserID;
+        console.log(this.userid);
         this.user = this.dataService.getUserFromFirestore(this.userid);
-        this.user.subscribe(user => {
-        const name = user.displayName;
-        const url = user.photoURL;
         this.ChatMetaData$ = this.chatService.getChatRoomMetaData(this.userid);
-    });
   }
   }

@@ -24,7 +24,7 @@
       FlexLayoutModule,
       RouterModule.forChild(userRoute)
     ],
-    declarations: [AppUserComponent],
+    declarations: [AppUserComponent, ChatListComponent],
     // exports: [AppUserComponent]
 
   })

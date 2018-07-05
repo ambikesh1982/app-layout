@@ -26,7 +26,7 @@ import { AppSearchModule } from './app-search/app-search.module';
 import { ProductModule } from './product/product.module';
 import { SignInModule } from './sign-in/sign-in.module';
 import { SharedModule } from './shared/shared.module';
-
+import {ChatModule} from './chat/chat.module';
 // Application Services
 import { CanDeactivateGuard } from './core/can-deactivate-guard';
 import { DataService } from './core/data.service';

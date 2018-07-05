@@ -25,27 +25,14 @@
     private chatroomPath: string;
     private chatMessages: Observable<ChatMessage[]>;
     private chatRoomRef: AngularFirestoreCollection<ChatMessage>;
-    FooditemID$: BehaviorSubject<string>;
-    chatMessages$: BehaviorSubject<ChatMessage[]>;
-    sellerChatMessages: Observable<ChatMessage[]>;
-
-    roomID$: BehaviorSubject<any>;
-
-
-    currentChatPath: any;
-
     constructor(
       private afs: AngularFirestore,
       private storage: AngularFireStorage,
     ) {
       afs.firestore.settings({ timestampsInSnapshots: true });
-      this.FooditemID$ = new BehaviorSubject(null);
-
       this.appUserPath = APP_ROOT_COLLECTIONS['USERS'];
       this.chatroomPath = APP_ROOT_COLLECTIONS['CHATS'];
-
       this.chatRoomRef = this.createFirestoreCollectionRef(APP_ROOT_COLLECTIONS['CHATS']);
-
     }
 
     createFirestoreCollectionRef(collectionPath: string): AngularFirestoreCollection<any> {
@@ -65,46 +52,33 @@
 }
 
   async createChatMessages(newMessage: ChatMessage, chatRoominfo: ChatRoomInfo) {
-
     this.createChatRoom(chatRoominfo);
-
-
-   newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
-     // this.chatRoomRef.doc(`${chatRoominfo.roomID}`).set(chatRoominfo);
+    newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
       this.chatRoomRef.doc(`${chatRoominfo.roomID}`).collection('conversation').add(newMessage)
         .then(
         result => {
-          console.log('first time login, created new room', result);
+          console.log('chat Added to ChatRoom', result);
         },
-        err => console.error(err, 'You do not have access!')
+        err => console.error(err, 'Something went wrong')
         );
-
-     // console.log('seller login', this.roomID$);
-    //  newMessage.msgCreatedAt = this.serverTimestampFromFirestore;
-    //  this.chatRoomRef.doc(`${this.roomID$}`).collection('conversation').add(newMessage);
   }
 
 
-  getChatRoomMetaData(sellerID: string): Observable<any> {
+  getChatRoomMetaData(sellerID: string): Observable<ChatRoomInfo[]> {
     console.log('I am in metadata', sellerID);
-      return this.afs.collection<any>
-      ('appchats', ref => ref.where('seller.id', '==', sellerID).where('isRead', '==', false))
+      return this.afs.collection<ChatRoomInfo>
+      ('appchats', ref => ref.where('seller.id', '==', sellerID))
       .valueChanges();
     }
 
-    getChatRoomMessages(chatRoomInfo: any): Observable < ChatMessage[] > {
+    getChatRoomMessages(chatRoomInfo: ChatRoomInfo): Observable < ChatMessage[] > {
     this.chatRoomRef.valueChanges().subscribe(docs => {
     });
-
-    // Stored the roomID for further reference
-   // this.roomID$.next(chatRoomInfo.roomID);
-
-    return this.chatRoomRef.
-    doc(`${chatRoomInfo.roomID}`).
-    collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt')).
-    valueChanges();
+    return this.chatRoomRef
+    .doc(`${chatRoomInfo.roomID}`)
+    .collection<ChatMessage>('conversation', ref => ref.orderBy('msgCreatedAt'))
+    .valueChanges();
   }
-
 
   removeRoom(chatroom: ChatMessage): Promise < any > {
     const roomPath = `${this.chatroomPath}/${chatroom.createdByUserId}`;

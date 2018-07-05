@@ -7,6 +7,7 @@
  // import { ChatResolver } from '../core/chat.resolver';
   import { MaterialModule } from '../material.module';
   import { ChatComponent } from './chat/chat.component';
+  import { ChatListComponent } from './chat-list/chat-list.component';
 
   const chatRoute: Routes = [
     {
@@ -26,6 +27,6 @@
       FlexLayoutModule,
       RouterModule.forChild(chatRoute)
     ],
-    declarations: [ChatComponent]
+    declarations: [ChatComponent, ChatListComponent]
   })
   export class ChatModule { }
